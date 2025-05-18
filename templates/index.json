@@ -1,0 +1,212 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "benefits_9eccJL": {
+      "type": "benefits",
+      "blocks": {
+        "benefit_rwDeA4": {
+          "type": "benefit",
+          "settings": {
+            "benefit-title": "Free Shipping & Returns",
+            "benefit-subtitle": "For all orders over $199.00",
+            "benefit-icon": "shopify://shop_images/delivery-truck.svg"
+          }
+        },
+        "benefit_bnLYmh": {
+          "type": "benefit",
+          "settings": {
+            "benefit-title": "Secure Payment",
+            "benefit-subtitle": "We ensure secure payment",
+            "benefit-icon": "shopify://shop_images/card-svg.svg"
+          }
+        },
+        "benefit_T7TX9n": {
+          "type": "benefit",
+          "settings": {
+            "benefit-title": "Money Back Guarantee",
+            "benefit-subtitle": "Returning money 30 days",
+            "benefit-icon": "shopify://shop_images/cycle-svg.svg"
+          }
+        },
+        "benefit_McyrxR": {
+          "type": "benefit",
+          "settings": {
+            "benefit-title": "24/7 Customer Support",
+            "benefit-subtitle": "Friendly customer support",
+            "benefit-icon": "shopify://shop_images/chat-svg.svg"
+          }
+        }
+      },
+      "block_order": [
+        "benefit_rwDeA4",
+        "benefit_bnLYmh",
+        "benefit_T7TX9n",
+        "benefit_McyrxR"
+      ],
+      "name": "Benefits Section",
+      "settings": {
+        "benefits_alignment": "left",
+        "benefits-margin": 72
+      }
+    },
+    "products_with_banner_9zEPM6": {
+      "type": "products-with-banner",
+      "name": "Products Grid With Banner",
+      "settings": {
+        "products-banner-heading": "New Arrivals",
+        "banner-image": "shopify://shop_images/image.png",
+        "banner-button-url": "shopify://collections/computers",
+        "products-list": [
+          "airpods-leather-case",
+          "core-black-black-mesh-watch",
+          "black-brown-leather-core-watch",
+          "core-silver-black-leather-core",
+          "dopp-kit",
+          "crossbody-pack-bag",
+          "genuine-leather-card-holder-brown",
+          "commuter-briefcase-brown"
+        ]
+      }
+    },
+    "trending_products_YrxNTy": {
+      "type": "trending-products",
+      "name": "Trending Products",
+      "settings": {
+        "trending-product-heading": "Trending products",
+        "trending-product-view-all": "View all",
+        "trending-product-link": "shopify://collections",
+        "trending-products-list": [
+          "airpods-leather-case",
+          "black-valet-tray",
+          "commuter-briefcase-black",
+          "commuter-briefcase-brown",
+          "black-black-leather-core-watch",
+          "core-black-black-mesh-watch",
+          "core-silver-brown-leather-watch",
+          "core-silver-black-leather-core",
+          "black-brown-leather-core-watch",
+          "black-water-bottle"
+        ]
+      }
+    },
+    "sale_banner_fmzx9z": {
+      "type": "sale-banner",
+      "name": "Sale Banner",
+      "settings": {
+        "sale-percent": 20,
+        "banner-title": "Seasonal weekly sale 2025",
+        "banner-subtitle": "<p>Use code  <strong>Sale2025</strong>  to get best offer</p>",
+        "banner-image": "shopify://shop_images/camera.png"
+      }
+    },
+    "special_offers_8atPJJ": {
+      "type": "special-offers",
+      "name": "Special Offers",
+      "settings": {
+        "heading-title": "Special offers for you",
+        "count-down-days": 12,
+        "count-down-hours": 12,
+        "count-down-minutes": 12,
+        "count-down-seconds": 0,
+        "special-offers-view-all": "View all",
+        "products-slider-total": 12,
+        "special-offers-link": "",
+        "special-offers-list": [
+          "airpods-leather-case",
+          "black-valet-tray",
+          "classic-leather-backpack-black",
+          "commuter-briefcase-black",
+          "commuter-briefcase-brown",
+          "core-black-black-mesh-watch",
+          "black-black-leather-core-watch",
+          "black-brown-leather-core-watch",
+          "core-silver-black-leather-core",
+          "core-silver-brown-leather-watch",
+          "crossbody-pack-bag",
+          "dopp-kit"
+        ],
+        "products-per-slide-desktop": 4,
+        "products-per-slide-mobile": 2
+      }
+    },
+    "all_brands_cRAkfn": {
+      "type": "all-brands",
+      "blocks": {
+        "brand_4aFtgr": {
+          "type": "brand",
+          "settings": {
+            "brand-logo": "shopify://shop_images/z6605637630634_1e38c04a13c17c1164e036ff7b40b6ef.jpg"
+          }
+        },
+        "brand_d3QqHn": {
+          "type": "brand",
+          "settings": {
+            "brand-logo": "shopify://shop_images/z6605637774152_3de8150ae4e8a2a6a08091fd384554b3.jpg"
+          }
+        },
+        "brand_3dDwNH": {
+          "type": "brand",
+          "settings": {
+            "brand-logo": "shopify://shop_images/z6605637680489_f238ab25c14f1028c7171b5f4d7543d0.jpg"
+          }
+        },
+        "brand_RjnyVm": {
+          "type": "brand",
+          "settings": {
+            "brand-logo": "shopify://shop_images/z6605637747774_d97853c3680ebe091ed26af4bb9c8b87.jpg"
+          }
+        },
+        "brand_aiQteE": {
+          "type": "brand",
+          "settings": {
+            "brand-logo": "shopify://shop_images/z6605637704995_866718cdce506ab568ba93a0875b1591.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "brand_4aFtgr",
+        "brand_d3QqHn",
+        "brand_3dDwNH",
+        "brand_RjnyVm",
+        "brand_aiQteE"
+      ],
+      "name": "All Brand",
+      "settings": {
+        "all-brand-url": "",
+        "all-brands-logo": "shopify://shop_images/z6605754068726_dc628eaea362fbe65aef5874ef84b67d.jpg"
+      }
+    },
+    "newsletter_with_newfeed_JVehC6": {
+      "type": "newsletter-with-newfeed",
+      "name": "Newsletter and Newsfeed",
+      "settings": {
+        "news-letter-title": "Sign up to our newsletter",
+        "news-letter-subtitle": "Receive our latest updates about our products & promotions",
+        "youtube_link": "#",
+        "tiktok_link": "#",
+        "facebook_link": "#",
+        "instagram_link": "#",
+        "article_1": "news/5-new-cool-gadgets-you-must-see-on-cartzilla-cheap-budget",
+        "article_2": "news/top-5-new-amazing-gadgets-on-cartzilla-you-must-see",
+        "article_3": "news/5-super-useful-gadgets-on-cartzilla-you-must-have-in-2023"
+      }
+    }
+  },
+  "order": [
+    "benefits_9eccJL",
+    "products_with_banner_9zEPM6",
+    "trending_products_YrxNTy",
+    "sale_banner_fmzx9z",
+    "special_offers_8atPJJ",
+    "all_brands_cRAkfn",
+    "newsletter_with_newfeed_JVehC6"
+  ]
+}

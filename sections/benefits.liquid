@@ -1,0 +1,102 @@
+{{ 'benefits.css' | asset_url | stylesheet_tag }}
+
+<div class="page-width">
+  <div
+    class="benefits__container align-{{ section.settings.benefits_alignment }}"
+    style="margin : {{ section.settings.benefits-margin }}px 0;"
+  >
+    {% for block in section.blocks %}
+      <div class="benefits__content" {{ block.shopify_attributes }}>
+        <div class="benefits__icon-container">
+          {% if block.settings['benefit-icon'] != blank %}
+            {{
+              block.settings['benefit-icon']
+              | image_url: width: 32, height: 32
+              | image_tag: alt: block.settings['benefit-title'], class: 'benefit-icon'
+            }}
+          {% endif %}
+        </div>
+        <div class="benefits___heading">
+          <div class="benefits__title">
+            {{ block.settings['benefit-title'] }}
+          </div>
+          <div class="benefits__subtitle">
+            {{ block.settings['benefit-subtitle'] }}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Benefits Section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "benefits_alignment",
+      "label": "Benefits alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "middle",
+          "label": "Middle"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "number",
+      "id": "benefits-margin",
+      "label": "Benefits Margin",
+      "default": 72
+    }
+  ],
+  "blocks": [
+    {
+      "name": "benefit",
+      "type": "benefit",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Benefit Setting"
+        },
+        {
+          "type": "text",
+          "id": "benefit-title",
+          "label": "Benefit Title",
+          "default": "Benefit"
+        },
+        {
+          "type": "text",
+          "id": "benefit-subtitle",
+          "label": "Benefit Subitle",
+          "default": "Subtitle"
+        },
+        {
+          "type": "image_picker",
+          "id": "benefit-icon",
+          "label": "Benefit Icon"
+        }
+      ],
+      "limit": 4
+    }
+  ],
+  "presets": [
+    {
+      "name": "Benefits Section"
+    }
+  ]
+}
+{% endschema %}
