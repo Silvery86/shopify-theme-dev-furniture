@@ -356,10 +356,7 @@
                                 </dt>
                                 <dd>
                                   <span class="price-per-item--current">
-                                    {{-
-                                      'products.product.volume_pricing.price_at_each_html'
-                                      | t: price: variant_price
-                                    -}}
+                                    {{- 'products.product.volume_pricing.price_at_each_html' | t: price: variant_price -}}
                                   </span>
                                 </dd>
                               </dl>
@@ -662,10 +659,7 @@
                   {%- endif -%}
                 </product-recommendations>
               {%- when 'icon-with-text' -%}
-              {% when 'product_rating' %}
-                {% render 'product-rating', block: block %}
-              {% when 'upsell-bundles' %}
-                  {% render 'upsell-bundles', block: block, related_type: block.settings.related_type %}
+                {% render 'icon-with-text', block: block %}
             {%- endcase -%}
           {%- endfor -%}
           <a href="{{ product.url }}" class="link product__view-details animate-arrow">
@@ -1680,7 +1674,7 @@
         {
           "type": "header",
           "content": "t:sections.main-product.blocks.icon_with_text.settings.pairing_2.label"
-        },
+        },        
         {
           "type": "select",
           "id": "icon_2",
@@ -1880,7 +1874,7 @@
         {
           "type": "header",
           "content": "t:sections.main-product.blocks.icon_with_text.settings.pairing_3.label"
-        },
+        },        
         {
           "type": "select",
           "id": "icon_3",
@@ -2078,34 +2072,7 @@
           "info": "t:sections.main-product.blocks.icon_with_text.settings.heading.info"
         }
       ]
-    },
-    {
-      "type": "product_rating",
-      "name": "Product Rating Stars"
-    },
-    {
-  "type": "upsell-bundles",
-  "name": "Upsell Bundles",
-  "settings": [
-    {
-      "type": "select",
-      "id": "related_type",
-      "label": "Show related products by",
-      "default": "collection",
-      "options": [
-        {
-          "value": "collection",
-          "label": "Same collection"
-        },
-        {
-          "value": "vendor",
-          "label": "Same vendor"
-        }
-      ]
     }
-  ]
-}
-
   ],
   "settings": [
     {
@@ -2209,7 +2176,7 @@
       ],
       "default": "hide",
       "label": "t:sections.main-product.settings.mobile_thumbnails.label"
-    },
+    },    
     {
       "type": "select",
       "id": "media_position",

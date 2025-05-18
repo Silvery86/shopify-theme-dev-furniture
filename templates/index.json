@@ -1,212 +1,210 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
-    "benefits_9eccJL": {
-      "type": "benefits",
+    "image_banner": {
+      "type": "image-banner",
       "blocks": {
-        "benefit_rwDeA4": {
-          "type": "benefit",
+        "heading": {
+          "type": "heading",
           "settings": {
-            "benefit-title": "Free Shipping & Returns",
-            "benefit-subtitle": "For all orders over $199.00",
-            "benefit-icon": "shopify://shop_images/delivery-truck.svg"
+            "heading": "Image banner",
+            "heading_size": "h0"
           }
         },
-        "benefit_bnLYmh": {
-          "type": "benefit",
+        "text": {
+          "type": "text",
           "settings": {
-            "benefit-title": "Secure Payment",
-            "benefit-subtitle": "We ensure secure payment",
-            "benefit-icon": "shopify://shop_images/card-svg.svg"
+            "text": "Give customers details about the banner image(s) or content on the template.",
+            "text_style": "body"
           }
         },
-        "benefit_T7TX9n": {
-          "type": "benefit",
+        "button": {
+          "type": "buttons",
           "settings": {
-            "benefit-title": "Money Back Guarantee",
-            "benefit-subtitle": "Returning money 30 days",
-            "benefit-icon": "shopify://shop_images/cycle-svg.svg"
-          }
-        },
-        "benefit_McyrxR": {
-          "type": "benefit",
-          "settings": {
-            "benefit-title": "24/7 Customer Support",
-            "benefit-subtitle": "Friendly customer support",
-            "benefit-icon": "shopify://shop_images/chat-svg.svg"
+            "button_label_1": "Shop all",
+            "button_link_1": "shopify://collections/all",
+            "button_style_secondary_1": true,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
           }
         }
       },
       "block_order": [
-        "benefit_rwDeA4",
-        "benefit_bnLYmh",
-        "benefit_T7TX9n",
-        "benefit_McyrxR"
+        "heading",
+        "text",
+        "button"
       ],
-      "name": "Benefits Section",
       "settings": {
-        "benefits_alignment": "left",
-        "benefits-margin": 72
+        "image_overlay_opacity": 40,
+        "image_height": "large",
+        "desktop_content_position": "bottom-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "scheme-3",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": false
       }
     },
-    "products_with_banner_9zEPM6": {
-      "type": "products-with-banner",
-      "name": "Products Grid With Banner",
-      "settings": {
-        "products-banner-heading": "New Arrivals",
-        "banner-image": "shopify://shop_images/image.png",
-        "banner-button-url": "shopify://collections/computers",
-        "products-list": [
-          "airpods-leather-case",
-          "core-black-black-mesh-watch",
-          "black-brown-leather-core-watch",
-          "core-silver-black-leather-core",
-          "dopp-kit",
-          "crossbody-pack-bag",
-          "genuine-leather-card-holder-brown",
-          "commuter-briefcase-brown"
-        ]
-      }
-    },
-    "trending_products_YrxNTy": {
-      "type": "trending-products",
-      "name": "Trending Products",
-      "settings": {
-        "trending-product-heading": "Trending products",
-        "trending-product-view-all": "View all",
-        "trending-product-link": "shopify://collections",
-        "trending-products-list": [
-          "airpods-leather-case",
-          "black-valet-tray",
-          "commuter-briefcase-black",
-          "commuter-briefcase-brown",
-          "black-black-leather-core-watch",
-          "core-black-black-mesh-watch",
-          "core-silver-brown-leather-watch",
-          "core-silver-black-leather-core",
-          "black-brown-leather-core-watch",
-          "black-water-bottle"
-        ]
-      }
-    },
-    "sale_banner_fmzx9z": {
-      "type": "sale-banner",
-      "name": "Sale Banner",
-      "settings": {
-        "sale-percent": 20,
-        "banner-title": "Seasonal weekly sale 2025",
-        "banner-subtitle": "<p>Use code  <strong>Sale2025</strong>  to get best offer</p>",
-        "banner-image": "shopify://shop_images/camera.png"
-      }
-    },
-    "special_offers_8atPJJ": {
-      "type": "special-offers",
-      "name": "Special Offers",
-      "settings": {
-        "heading-title": "Special offers for you",
-        "count-down-days": 12,
-        "count-down-hours": 12,
-        "count-down-minutes": 12,
-        "count-down-seconds": 0,
-        "special-offers-view-all": "View all",
-        "products-slider-total": 12,
-        "special-offers-link": "",
-        "special-offers-list": [
-          "airpods-leather-case",
-          "black-valet-tray",
-          "classic-leather-backpack-black",
-          "commuter-briefcase-black",
-          "commuter-briefcase-brown",
-          "core-black-black-mesh-watch",
-          "black-black-leather-core-watch",
-          "black-brown-leather-core-watch",
-          "core-silver-black-leather-core",
-          "core-silver-brown-leather-watch",
-          "crossbody-pack-bag",
-          "dopp-kit"
-        ],
-        "products-per-slide-desktop": 4,
-        "products-per-slide-mobile": 2
-      }
-    },
-    "all_brands_cRAkfn": {
-      "type": "all-brands",
+    "rich_text": {
+      "type": "rich-text",
       "blocks": {
-        "brand_4aFtgr": {
-          "type": "brand",
+        "heading": {
+          "type": "heading",
           "settings": {
-            "brand-logo": "shopify://shop_images/z6605637630634_1e38c04a13c17c1164e036ff7b40b6ef.jpg"
+            "heading": "Talk about your brand",
+            "heading_size": "h1"
           }
         },
-        "brand_d3QqHn": {
-          "type": "brand",
+        "text": {
+          "type": "text",
           "settings": {
-            "brand-logo": "shopify://shop_images/z6605637774152_3de8150ae4e8a2a6a08091fd384554b3.jpg"
-          }
-        },
-        "brand_3dDwNH": {
-          "type": "brand",
-          "settings": {
-            "brand-logo": "shopify://shop_images/z6605637680489_f238ab25c14f1028c7171b5f4d7543d0.jpg"
-          }
-        },
-        "brand_RjnyVm": {
-          "type": "brand",
-          "settings": {
-            "brand-logo": "shopify://shop_images/z6605637747774_d97853c3680ebe091ed26af4bb9c8b87.jpg"
-          }
-        },
-        "brand_aiQteE": {
-          "type": "brand",
-          "settings": {
-            "brand-logo": "shopify://shop_images/z6605637704995_866718cdce506ab568ba93a0875b1591.jpg"
+            "text": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.<\/p>"
           }
         }
       },
       "block_order": [
-        "brand_4aFtgr",
-        "brand_d3QqHn",
-        "brand_3dDwNH",
-        "brand_RjnyVm",
-        "brand_aiQteE"
+        "heading",
+        "text"
       ],
-      "name": "All Brand",
       "settings": {
-        "all-brand-url": "",
-        "all-brands-logo": "shopify://shop_images/z6605754068726_dc628eaea362fbe65aef5874ef84b67d.jpg"
+        "color_scheme": "scheme-1",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 0
       }
     },
-    "newsletter_with_newfeed_JVehC6": {
-      "type": "newsletter-with-newfeed",
-      "name": "Newsletter and Newsfeed",
+    "featured_collection": {
+      "type": "featured-collection",
       "settings": {
-        "news-letter-title": "Sign up to our newsletter",
-        "news-letter-subtitle": "Receive our latest updates about our products & promotions",
-        "youtube_link": "#",
-        "tiktok_link": "#",
-        "facebook_link": "#",
-        "instagram_link": "#",
-        "article_1": "news/5-new-cool-gadgets-you-must-see-on-cartzilla-cheap-budget",
-        "article_2": "news/top-5-new-amazing-gadgets-on-cartzilla-you-must-see",
-        "article_3": "news/5-super-useful-gadgets-on-cartzilla-you-must-have-in-2023"
+        "title": "Featured products",
+        "heading_size": "h2",
+        "collection": "all",
+        "products_to_show": 8,
+        "columns_desktop": 4,
+        "color_scheme": "scheme-1",
+        "show_view_all": false,
+        "swipe_on_mobile": false,
+        "image_ratio": "adapt",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "columns_mobile": "2",
+        "padding_top": 28,
+        "padding_bottom": 36
+      }
+    },
+    "collage": {
+      "type": "collage",
+      "blocks": {
+        "collection-0": {
+          "type": "collection",
+          "settings": {
+            "collection": ""
+          }
+        },
+        "product": {
+          "type": "product",
+          "settings": {
+            "product": "",
+            "second_image": false
+          }
+        },
+        "collection-1": {
+          "type": "collection",
+          "settings": {
+            "collection": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection-0",
+        "product",
+        "collection-1"
+      ],
+      "settings": {
+        "heading": "Multimedia collage",
+        "heading_size": "h2",
+        "desktop_layout": "left",
+        "mobile_layout": "collage",
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "video": {
+      "type": "video",
+      "settings": {
+        "heading": "",
+        "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+        "heading_size": "h1",
+        "description": "",
+        "full_width": false,
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "multicolumn": {
+      "type": "multicolumn",
+      "blocks": {
+        "column1": {
+          "type": "column",
+          "settings": {
+            "title": "Column",
+            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.<\/p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column2": {
+          "type": "column",
+          "settings": {
+            "title": "Column",
+            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.<\/p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column3": {
+          "type": "column",
+          "settings": {
+            "title": "Column",
+            "text": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.<\/p>",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column1",
+        "column2",
+        "column3"
+      ],
+      "settings": {
+        "title": "",
+        "heading_size": "h1",
+        "image_width": "third",
+        "image_ratio": "adapt",
+        "columns_desktop": 3,
+        "column_alignment": "center",
+        "background_style": "none",
+        "button_label": "",
+        "button_link": "",
+        "swipe_on_mobile": false,
+        "color_scheme": "scheme-1",
+        "columns_mobile": "1",
+        "padding_top": 36,
+        "padding_bottom": 36
       }
     }
   },
   "order": [
-    "benefits_9eccJL",
-    "products_with_banner_9zEPM6",
-    "trending_products_YrxNTy",
-    "sale_banner_fmzx9z",
-    "special_offers_8atPJJ",
-    "all_brands_cRAkfn",
-    "newsletter_with_newfeed_JVehC6"
+    "image_banner",
+    "rich_text",
+    "featured_collection",
+    "collage",
+    "video",
+    "multicolumn"
   ]
 }

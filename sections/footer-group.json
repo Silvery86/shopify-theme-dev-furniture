@@ -1,12 +1,3 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "name": "t:sections.footer.name",
   "type": "footer",
@@ -14,53 +5,45 @@
     "footer": {
       "type": "footer",
       "blocks": {
-        "brand_information_hEq4wP": {
-          "type": "brand_information",
-          "settings": {
-            "show_social": false
-          }
-        },
-        "link_list_THqqFh": {
+        "footer-0": {
           "type": "link_list",
           "settings": {
-            "heading": "Home",
-            "menu": "main-menu"
+            "heading": "Quick links",
+            "menu": "footer"
           }
         },
-        "link_list_h64G8k": {
+        "footer-1": {
           "type": "link_list",
           "settings": {
-            "heading": "Account",
-            "menu": "customer-account-main-menu"
+            "heading": "Info",
+            "menu": "footer"
           }
         },
-        "link_list_JjTmrP": {
-          "type": "link_list",
+        "footer-2": {
+          "type": "text",
           "settings": {
-            "heading": "Our policy",
-            "menu": "our-policy"
+            "heading": "Our mission",
+            "subtext": "<p>Share contact information, store details, and brand content with your customers.<\/p>"
           }
         }
       },
       "block_order": [
-        "brand_information_hEq4wP",
-        "link_list_THqqFh",
-        "link_list_h64G8k",
-        "link_list_JjTmrP"
+        "footer-0",
+        "footer-1",
+        "footer-2"
       ],
       "settings": {
-        "color_scheme": "scheme-3",
-        "newsletter_enable": false,
+        "color_scheme": "scheme-1",
+        "newsletter_enable": true,
         "newsletter_heading": "Subscribe to our emails",
-        "enable_follow_on_shop": false,
-        "show_social": false,
-        "enable_country_selector": true,
+        "show_social": true,
+        "enable_country_selector": false,
         "enable_language_selector": false,
         "payment_enable": true,
         "show_policy": false,
-        "margin_top": 0,
-        "padding_top": 56,
-        "padding_bottom": 56
+        "margin_top": 48,
+        "padding_top": 36,
+        "padding_bottom": 36
       }
     }
   },
