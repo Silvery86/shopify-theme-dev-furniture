@@ -1,0 +1,71 @@
+<div class="page-width">
+  <div class="categories-list__container flex flex-row justify-evenly items-center gap-6  my-[56px]">
+    {% for block in section.blocks %}
+      {% assign custom_title = block.settings['categories-list__collection-title'] %}
+      {% assign collection = collections[block.settings['categories-list__collection']] %}
+
+      {% if collection != blank %}
+        <div
+          class="category-item"
+          {{ block.shopify_attributes }}
+        >
+          <a
+            href="{{ collection.url }}"
+            class="flex flex-col justify-center items-center group h-[236px] relative  text-center transition-all duration-600 ease-in-out"
+          >
+            {% if collection.image %}
+              <div class="image__container bg-gray-50 rounded-full flex items-center justify-center transition-transform duration-600 group-hover:scale-70 ">
+                <img
+                  src="{{ collection.image | img_url: width : 164 , height : 164 }}"
+                  width="164px"
+                  height="164px"
+                  alt="{{ custom_title | default: collection.title }}"
+                  class=" rounded-full"
+                >
+              </div>
+            {% endif %}
+            <h3 class="mt-2 text-base font-medium transition-transform duration-600 group-hover:scale-90 group-hover:-translate-y-2">
+              {{ custom_title | default: collection.title }}
+            </h3>
+            <div class="mt-1 text-s text-gray-500 opacity-0 max-h-0 transition-all duration-600 group-hover:opacity-100 group-hover:-translate-y-2  group-hover:max-h-40">
+              <p>Bookcases and Storage</p>
+              <p>Coffee Tables</p>
+              <p>Cabinets</p>
+            </div>
+          </a>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Categories List",
+  "class": "categories-list",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "text",
+          "id": "categories-list__collection-title",
+          "label": "Input collection custom title"
+        },
+        {
+          "type": "collection",
+          "id": "categories-list__collection",
+          "label": "Select collection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Categories List"
+    }
+  ]
+}
+{% endschema %}

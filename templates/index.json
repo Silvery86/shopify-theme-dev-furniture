@@ -9,6 +9,63 @@
  */
 {
   "sections": {
+    "categories_list_Qd4eBA": {
+      "type": "categories-list",
+      "blocks": {
+        "category_7KyYhk": {
+          "type": "category",
+          "settings": {
+            "categories-list__collection-title": "",
+            "categories-list__collection": "bedroom"
+          }
+        },
+        "category_qhp3f8": {
+          "type": "category",
+          "settings": {
+            "categories-list__collection-title": "",
+            "categories-list__collection": "living-room"
+          }
+        },
+        "category_DYTY6B": {
+          "type": "category",
+          "settings": {
+            "categories-list__collection-title": "",
+            "categories-list__collection": "bathroom"
+          }
+        },
+        "category_Q7fXY3": {
+          "type": "category",
+          "settings": {
+            "categories-list__collection-title": "",
+            "categories-list__collection": "decoration"
+          }
+        },
+        "category_bRBaP7": {
+          "type": "category",
+          "settings": {
+            "categories-list__collection-title": "",
+            "categories-list__collection": "office"
+          }
+        },
+        "category_Niwekr": {
+          "type": "category",
+          "settings": {
+            "categories-list__collection-title": "",
+            "categories-list__collection": "kitchen"
+          }
+        }
+      },
+      "block_order": [
+        "category_7KyYhk",
+        "category_qhp3f8",
+        "category_DYTY6B",
+        "category_Q7fXY3",
+        "category_bRBaP7",
+        "category_Niwekr"
+      ],
+      "name": "Categories List",
+      "settings": {}
+    },
     "image_banner": {
       "type": "image-banner",
       "blocks": {
@@ -38,33 +95,32 @@
       "settings": {
         "image_overlay_opacity": 40,
         "image_height": "large",
-        "desktop_content_position": "bottom-center",
-        "show_text_box": false,
         "image_behavior": "none",
+        "desktop_content_position": "bottom-center",
         "desktop_content_alignment": "center",
+        "show_text_box": false,
         "color_scheme": "scheme-3",
-        "mobile_content_alignment": "center",
         "stack_images_on_mobile": false,
+        "mobile_content_alignment": "center",
         "show_text_below": false
       }
     },
     "featured_collection": {
       "type": "featured-collection",
       "settings": {
+        "collection": "all",
+        "products_to_show": 8,
         "title": "Featured products",
         "heading_size": "h2",
         "description": "",
         "show_description": false,
         "description_style": "body",
-        "collection": "all",
-        "products_to_show": 8,
         "columns_desktop": 4,
-        "color_scheme": "scheme-1",
+        "enable_desktop_slider": false,
         "full_width": false,
         "show_view_all": true,
         "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
+        "color_scheme": "scheme-1",
         "image_ratio": "adapt",
         "image_shape": "default",
         "show_secondary_image": true,
@@ -72,12 +128,14 @@
         "show_rating": false,
         "quick_add": "none",
         "columns_mobile": "2",
+        "swipe_on_mobile": false,
         "padding_top": 44,
         "padding_bottom": 36
       }
     }
   },
   "order": [
+    "categories_list_Qd4eBA",
     "image_banner",
     "featured_collection"
   ]
