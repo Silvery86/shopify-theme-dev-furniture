@@ -1,9 +1,8 @@
 <div class="page-width">
-  <div class="categories-list__container flex flex-row justify-evenly items-center gap-6  my-[56px]">
+  <div id="{{ section.id }}" class="categories-list__container lg:grid-cols-{{ section.settings.categories_per_row }} md:grid-cols-2 grid-cols-2 place-items-center">
     {% for block in section.blocks %}
       {% assign custom_title = block.settings['categories-list__collection-title'] %}
       {% assign collection = collections[block.settings['categories-list__collection']] %}
-
       {% if collection != blank %}
         <div
           class="category-item"
@@ -38,12 +37,29 @@
     {% endfor %}
   </div>
 </div>
-
+<style>
+  .categories-list {
+    margin: 56px 0;
+  }
+  .categories-list__container {
+    display: grid;
+  }
+</style>
 {% schema %}
 {
   "name": "Categories List",
   "class": "categories-list",
-  "settings": [],
+  "settings": [   
+    {
+      "type": "range",
+      "id": "categories_per_row",
+      "label": "Number of categories per row (desktop)",
+      "min": 3,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    }
+  ],
   "blocks": [
     {
       "type": "category",
