@@ -1,5 +1,8 @@
 <div class="page-width">
-  <div id="{{ section.id }}" class="categories-list__container lg:grid-cols-{{ section.settings.categories_per_row }} md:grid-cols-2 grid-cols-2 place-items-center">
+  <div
+    id="{{ section.id }}"
+    class="categories-list__container lg:grid-cols-{{ section.settings.categories_per_row }} md:grid-cols-6 grid-cols-2 place-items-center"
+  >
     {% for block in section.blocks %}
       {% assign custom_title = block.settings['categories-list__collection-title'] %}
       {% assign collection = collections[block.settings['categories-list__collection']] %}
@@ -49,7 +52,7 @@
 {
   "name": "Categories List",
   "class": "categories-list",
-  "settings": [   
+  "settings": [
     {
       "type": "range",
       "id": "categories_per_row",
@@ -78,6 +81,9 @@
       ]
     }
   ],
+  "disabled_on": {
+    "groups": ["footer", "header"]
+  },
   "presets": [
     {
       "name": "Categories List"
