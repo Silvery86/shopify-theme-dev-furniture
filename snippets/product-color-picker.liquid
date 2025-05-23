@@ -8,7 +8,7 @@
   {% render 'product-variant-picker', product: product, product_form_id: product_form_id %}
 {% endcomment %}
 {%- unless product.has_only_default_variant -%}
-  <variant-selects id="variant-selects-{{ section.id }}" data-section="{{ section.id }}" {{ block.shopify_attributes }}>
+  <variant-selects id="variant-selects-{{ section.id }}-{{ product.id }}" data-section="{{ section.id }}" {{ block.shopify_attributes }}>
     {%- for option in product.options_with_values -%}
       {%- liquid
         assign swatch_count = option.values | map: 'swatch' | compact | size
@@ -38,11 +38,11 @@
             -%}
 
             {%- capture input_id -%}
-            {{ section.id }}-{{ option.position }}-{{ forloop.index0 -}}
+            {{ section.id }}-{{ option.position }}-{{ forloop.index0 }}-{{ product.id }}
             {%- endcapture -%}
 
             {%- capture input_name -%}
-            {{ option.name }}-{{ option.position }}
+            Color-{{ option.position }}-{{ product.id }}
             {%- endcapture -%}
 
             {%- capture input_dataset -%}

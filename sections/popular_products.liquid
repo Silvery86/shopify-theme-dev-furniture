@@ -29,7 +29,8 @@
     >
       <div class="popular-products__container swiper-wrapper">
         {% for product in section.settings['popular-products-list'] limit: 8 %}
-          <div class="product_container swiper-slide !flex flex-col justify-between">
+           {% assign product_form_id = 'product-form-' | append: product.id %}
+          <div class="product_container product-{{ product.id }} swiper-slide !flex flex-col justify-between">
             <div class="product__image h-[90px] md:h-[150px]">
               <a href="{{ product.url }}">
                 <img
@@ -42,7 +43,7 @@
               </a>
             </div>
 
-            {% render 'product-color-picker', product: product, product_form_id: product.id %}
+            {% render 'product-color-picker', product: product, product_form_id: product_form_id %}
             <div class="product__title text-[14px] font-medium text-gray-900">{{ product.title }}</div>
             <div class="product__price text-[16px] font-semibold text-gray-900">{{ product.price | money }}</div>
             <div class="product__option flex justify-between items-center">
@@ -65,8 +66,8 @@
     </div>
   </div>
 </div>
-<script src="{{ "swiper-bundle.min.js" |  asset_url }}" defer></script>
-<script defer>
+<script src="{{ "swiper-bundle.min.js" |  asset_url }}" async></script>
+<script async>
   document.addEventListener('DOMContentLoaded', function () {
     const sliderEl = document.querySelector('.popular-products__slider');
     if (sliderEl && typeof Swiper !== 'undefined') {
@@ -90,21 +91,33 @@
     }
   });
 </script>
-<script>
-  // Change product image when select variant color
+
+ <script>
   document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('input.swatch-input__input[type="radio"]').forEach(function (input) {
-      input.addEventListener('change', function () {
-        const imageUrl = this.dataset.imageUrl;
-        const productId = this.dataset.productId;
-        const imageEl = document.getElementById('product-image-' + productId);
-        if (imageEl && imageUrl) {
-          imageEl.src = imageUrl;
+    document.body.addEventListener('change', function (event) {
+      const input = event.target;
+        console.log(input)
+      if (
+        input.matches('input.swatch-input__input:checked') &&
+        input.dataset.imageUrl
+      ) {
+        // Step 1: Scope to correct product container
+        const productContainer = input.closest('.product_container');
+        if (!productContainer) return;
+
+        // Step 2: Find the image element inside that product
+        const imageEl = productContainer.querySelector('.product-main-image');
+        if (imageEl) {
+          imageEl.src = input.dataset.imageUrl;
         }
-      });
+      }
     });
   });
 </script>
+
+
+
+
 
 <style>
   .popular-products {
