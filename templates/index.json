@@ -91,10 +91,54 @@
         "products-per-slide-desktop": 4,
         "products-per-slide-mobile": 2
       }
+    },
+    "gallery_BfrwjK": {
+      "type": "gallery",
+      "blocks": {
+        "collection_tcUnpL": {
+          "type": "collection",
+          "settings": {
+            "collection-custom-title": "",
+            "select-collection": "living-room"
+          }
+        },
+        "collection_WPjyBc": {
+          "type": "collection",
+          "settings": {
+            "collection-custom-title": "Bedroom set",
+            "select-collection": "bedroom"
+          }
+        },
+        "collection_7XYUA6": {
+          "type": "collection",
+          "settings": {
+            "collection-custom-title": "",
+            "select-collection": "kitchen"
+          }
+        },
+        "collection_tkCwRm": {
+          "type": "collection",
+          "settings": {
+            "collection-custom-title": "",
+            "select-collection": "office"
+          }
+        }
+      },
+      "block_order": [
+        "collection_tcUnpL",
+        "collection_WPjyBc",
+        "collection_7XYUA6",
+        "collection_tkCwRm"
+      ],
+      "name": "Collection Gallery",
+      "settings": {
+        "gallery-title": "Interior design and inspiration"
+      }
     }
   },
   "order": [
     "categories_list_Qd4eBA",
-    "popular_products_KcKmJ3"
+    "popular_products_KcKmJ3",
+    "gallery_BfrwjK"
   ]
 }

@@ -1,0 +1,206 @@
+<div class="page-width">
+  <div class="collection-gallery">
+    <div class="colllection-gallery__heading flex justify-between items-center text-gray-900 font-semibold text-[28px] mb-6">
+      {{ section.settings['gallery-title'] }}
+    </div>
+
+    <div class="collection-gallery__container">
+      <!-- Buttons -->
+      <div class="collection-gallery__collections flex flex-wrap gap-4 mb-6">
+        {% for block in section.blocks %}
+          {% assign collection = block.settings['select-collection'] %}
+          <button
+            class="collection-tab text-gray-900 border border-gray-900 rounded-3xl px-5 py-2.5 font-medium text-[14px]"
+            data-collection-id="collection-{{ forloop.index }}"
+          >
+            {{ block.settings['collection-custom-title'] | default: collection.title }}
+          </button>
+        {% endfor %}
+      </div>
+
+      <!-- Image Galleries -->
+      {% for block in section.blocks %}
+        {% assign collection = block.settings['select-collection'] %}
+        {% assign gallery_images = collection.metafields.custom.collection_gallery.value %}
+
+        <div
+          id="collection-{{ forloop.index }}"
+          class="collection-gallery__grid hidden opacity-0 transition-opacity duration-500 ease-in-out flex flex-col md:flex-row gap-4"
+          {{ block.shopify_attributes }}
+        >
+          {% if gallery_images %}
+            {% assign image_1 = null %}
+            {% assign image_2 = null %}
+            {% assign image_3 = null %}
+            {% assign image_4 = null %}
+            {% for image in gallery_images %}
+              {% case forloop.index0 %}
+                {% when 0 -%}
+                  {% assign image_1 = image %}
+                {% when 1 -%}
+                  {% assign image_2 = image %}
+                {% when 2 -%}
+                  {%- assign image_3 = image %}
+                {% when 3 -%}
+                  {%- assign image_4 = image %}
+              {% endcase %}
+            {% endfor %}
+
+            <!-- Left Column -->
+            <div class="flex flex-col md:w-1/2 gap-4 w-full">
+              <!-- Top Large Image -->
+              {% if image_1 != null %}
+                <div class="h-[300px]">
+                  <img
+                    src="{{ image_1 | image_url: width: 800 }}"
+                    alt="Gallery image 1"
+                    class="w-full h-full object-cover rounded-lg"
+                    width="{{ image_1.width }}"
+                    height="{{ image_1.height }}"
+                    loading="lazy"
+                  >
+                </div>
+              {% endif %}
+              <!-- Bottom Short Image -->
+              {% if image_2 != null %}
+                <div class="h-[300px]">
+                  <img
+                    src="{{ image_2 | image_url: width: 800 }}"
+                    alt="Gallery image 2"
+                    class="w-full h-full object-cover rounded-lg"
+                    width="{{ image_2.width }}"
+                    height="{{ image_2.height }}"
+                    loading="lazy"
+                  >
+                </div>
+              {% endif %}
+            </div>
+
+            <!-- Right Column -->
+            <div class="flex flex-col md:w-1/2 gap-4 w-full">
+              <!-- Top Tall Image -->
+              {% if image_3 != null %}
+                <div class="h-[400px]">
+                  <img
+                    src="{{ image_3 | image_url: width: 800 }}"
+                    alt="Gallery image 3"
+                    class="w-full h-full object-cover rounded-lg"
+                    width="{{ image_3.width }}"
+                    height="{{ image_3.height }}"
+                    loading="lazy"
+                  >
+                </div>
+              {% endif %}
+              <!-- Bottom Short Image -->
+              {% if image_4 != null %}
+                <div class="h-[200px]">
+                  <img
+                    src="{{ image_4 | image_url: width: 800 }}"
+                    alt="Gallery image 4"
+                    class="w-full h-full object-cover rounded-lg"
+                    width="{{ image_4.width }}"
+                    height="{{ image_4.height }}"
+                    loading="lazy"
+                  >
+                </div>
+              {% endif %}
+            </div>
+          {% else %}
+            <div class="text-gray-500">At least 4 images are required to display this layout.</div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<style>
+  .collection-gallery {
+    margin: 56px 0;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const buttons = document.querySelectorAll('.collection-tab');
+    const galleries = document.querySelectorAll('.collection-gallery__grid');
+
+    function showGallery(targetId) {
+      galleries.forEach((gallery) => {
+        // Hide with fade-out
+        gallery.classList.add('opacity-0');
+        setTimeout(() => {
+          gallery.classList.add('hidden');
+        }, 300);
+      });
+
+      const target = document.getElementById(targetId);
+      if (target) {
+        // Show with fade-in
+        setTimeout(() => {
+          target.classList.remove('hidden');
+          setTimeout(() => {
+            target.classList.remove('opacity-0');
+          }, 10); // slight delay to trigger transition
+        }, 300);
+      }
+    }
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const targetId = button.getAttribute('data-collection-id');
+        showGallery(targetId);
+      });
+    });
+
+    // Show first gallery by default with fade-in
+    if (galleries.length > 0) {
+      const first = galleries[0];
+      first.classList.remove('hidden');
+      setTimeout(() => {
+        first.classList.remove('opacity-0');
+      }, 10);
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Collection Gallery",
+  "class": "collection-gallery",
+  "settings": [
+    {
+      "type": "text",
+      "id": "gallery-title",
+      "label": "Title",
+      "default": "Interior design and inspiration"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "text",
+          "id": "collection-custom-title",
+          "label": "Add your custom title for collection"
+        },
+        {
+          "type": "collection",
+          "id": "select-collection",
+          "label": "Select your collection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Gallery"
+    }
+  ],
+  "disabled_on": {
+    "groups": ["footer", "header"]
+  }
+}
+{% endschema %}
