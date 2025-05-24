@@ -170,12 +170,20 @@
       ],
       "name": "Benefits",
       "settings": {}
+    },
+    "best_deal_banner_kRWDVB": {
+      "type": "best-deal-banner",
+      "name": "Best Deal Banner",
+      "settings": {
+        "best-deal-product": "napa-sofa"
+      }
     }
   },
   "order": [
     "categories_list_Qd4eBA",
     "popular_products_KcKmJ3",
     "gallery_BfrwjK",
-    "benefits_DaFa43"
+    "benefits_DaFa43",
+    "best_deal_banner_kRWDVB"
   ]
 }
