@@ -134,11 +134,48 @@
       "settings": {
         "gallery-title": "Interior design and inspiration"
       }
+    },
+    "benefits_DaFa43": {
+      "type": "benefits",
+      "blocks": {
+        "benefit_mgHnx4": {
+          "type": "benefit",
+          "settings": {
+            "benefit-title": "Eco-friendly",
+            "benefit-subtitle": "<p>Decorate your space with eco-friendly furniture with low VOCs, environmentally friendly materials and safe coatings.</p>",
+            "benefit-image": "shopify://shop_images/eco-icon.svg"
+          }
+        },
+        "benefit_bdUwEK": {
+          "type": "benefit",
+          "settings": {
+            "benefit-title": "Unbeatable quality",
+            "benefit-subtitle": "<p>We choose raw materials from the best manufacturers, so our furniture and decor are of the highest quality at the best prices.</p>",
+            "benefit-image": "shopify://shop_images/furniture-icon.svg"
+          }
+        },
+        "benefit_9FyiWe": {
+          "type": "benefit",
+          "settings": {
+            "benefit-title": "Delivery to your door",
+            "benefit-subtitle": "<p> We will deliver to your door anywhere in the world. If you're not 100% satisfied, let us know within 30 days and we'll solve the problem.</p>",
+            "benefit-image": "shopify://shop_images/open-box.svg"
+          }
+        }
+      },
+      "block_order": [
+        "benefit_mgHnx4",
+        "benefit_bdUwEK",
+        "benefit_9FyiWe"
+      ],
+      "name": "Benefits",
+      "settings": {}
     }
   },
   "order": [
     "categories_list_Qd4eBA",
     "popular_products_KcKmJ3",
-    "gallery_BfrwjK"
+    "gallery_BfrwjK",
+    "benefits_DaFa43"
   ]
 }

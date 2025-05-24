@@ -1,0 +1,72 @@
+<div class="page-width">
+    <div class="benefits__container flex items-center justify-evenly gap-16 mx-16">
+        {%  for block in section.blocks %}
+            {% liquid
+                assign title = block.settings.benefit-title
+                assign subtitle = block.settings.benefit-subtitle  
+            %}
+            <div 
+            id="{{ block.id }}" 
+            class="benefit__container flex flex-col justify-center items-center" 
+            {{ block.shopify_attributes }}
+            >
+                {%  if block.settings.benefit-image %}
+                      <div class="benefit__icon w-[64px] h-[64px]">
+                    {{ block.settings.benefit-image | image_url: width: 64, height: 64 | image_tag: alt: title, width: 64, height: 64 }}
+                </div>
+                {% endif %}
+                <div class="benefit__title text-gray-900 font-semibold text-[20px]">
+                    {{ title }}
+                </div>
+                <div class="benefit__subtitle text-gray-600 text-[14px] text-center">
+                    {{ subtitle }}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+<style>
+    .benefits {
+        margin: 56px 0;
+    }
+</style>
+{% schema %}
+    {
+        "name": "Benefits",
+        "class": "benefits",
+        "settings": [
+
+        ],
+        "blocks": [
+            {
+                "type": "benefit",
+                "name": "Benefit",
+                "settings": [
+                    {
+                        "type": "text",
+                        "id": "benefit-title",
+                        "label": "Title",
+                        "default": "Benefit Title"
+                    },
+                    {
+                        "type": "richtext",
+                        "id": "benefit-subtitle",
+                        "label": "Subtitle",
+                        "default": "<p>Subtitle for benefit</p>" 
+                    },
+                    {
+                        "type": "image_picker",
+                        "id": "benefit-image",
+                        "label": "Icon for benefit"
+                    }
+                ],
+                "limit": 4
+            }
+        ],
+        "presets": [
+            {
+                "name": "Benefits"
+            }
+        ]
+    }
+{% endschema %}
