@@ -29,7 +29,7 @@
     >
       <div class="popular-products__container swiper-wrapper">
         {% for product in section.settings['popular-products-list'] limit: 8 %}
-           {% assign product_form_id = 'product-form-' | append: product.id %}
+          {% assign product_form_id = 'product-form-' | append: product.id %}
           <div class="product_container product-{{ product.id }} swiper-slide !flex flex-col justify-between">
             <div class="product__image h-[90px] md:h-[150px]">
               <a href="{{ product.url }}">
@@ -92,15 +92,12 @@
   });
 </script>
 
- <script>
+<script>
   document.addEventListener('DOMContentLoaded', function () {
     document.body.addEventListener('change', function (event) {
       const input = event.target;
-        console.log(input)
-      if (
-        input.matches('input.swatch-input__input:checked') &&
-        input.dataset.imageUrl
-      ) {
+      console.log(input);
+      if (input.matches('input.swatch-input__input:checked') && input.dataset.imageUrl) {
         // Step 1: Scope to correct product container
         const productContainer = input.closest('.product_container');
         if (!productContainer) return;
@@ -114,10 +111,6 @@
     });
   });
 </script>
-
-
-
-
 
 <style>
   .popular-products {

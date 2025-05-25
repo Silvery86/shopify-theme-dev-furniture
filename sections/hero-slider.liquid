@@ -1,0 +1,204 @@
+{{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
+<div class="hero-slider h-full flex flex-col justify-center items-center">
+  <div class="hero-slider__title h-1/3 w-1/2 flex justify-center items-center text-grey-900 font-bold text-[34px] lg:text-[56px] md:text-[48px] text-center">
+    {{ section.settings['hero-slider-title'] }}
+  </div>
+  <div class="hero-slider__products swiper hero-slider__slider h-1/3 overflow-hidden">
+    <div class="swiper-wrapper">
+      {% for product in section.settings['hero-slider-products'] %}
+        <div
+          class="swiper-slide product__image"
+          data-handle="{{ product.handle }}"
+        >
+          <img
+            class="product-main-image mx-auto"
+            id="product-image-{{ product.id }}"
+            src="{{ product.featured_media | image_url: width: 600 }}"
+            width="300"
+            height="300"
+          >
+        </div>
+      {% endfor %}
+    </div>
+    <div class="swiper-button-prev left-0 bg-gray-100 rounded-full after:text-gray-700"></div>
+    <div class="swiper-button-next right-0 bg-gray-100 rounded-full after:text-gray-700"></div>
+  </div>
+  <div class="hero-slider__content h-1/3 flex flex-col justify-start items-center gap-4">
+    <div class="product__title text-gray-700 font-medium text-[16px]"></div>
+    <div class="product__price text-gray-900 font-semibold text-[24px]"></div>
+    <div class="product__link bg-gray-800 text-gray-100 px-6 py-3.5 rounded-2xl font-medium text-[16px]">
+      <a href="#" class="product__link-btn">Shop now</a>
+    </div>
+  </div>
+</div>
+<style>
+  .hero-slider {
+    margin: 56px 0;
+  }
+  .hero-slider__slider .swiper-slide-prev,
+  .hero-slider__slider .swiper-slide-next {
+    width: 28% !important;
+    height: 400px !important;
+    transition: all 0.3s ease-in-out;
+    display: flex !important;
+    align-items: center;
+  }
+
+  .hero-slider__slider .swiper-slide-active {
+    width: 40% !important;
+    height: 400px !important;
+    opacity: 1;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hero-slider__slider .swiper-slide-prev img,
+  .hero-slider__slider .swiper-slide-next img {
+    width: 262px;
+    height: 262px;
+    border-radius: 100%;
+    opacity: 0.5 !important;
+  }
+
+  .hero-slider__slider .swiper-slide-active img {
+    width: 636px;
+    height: 400px;
+  }
+
+  .hero-slider__slider .swiper-button-prev {
+    left: 24%;
+  }
+  .hero-slider__slider .swiper-button-next {
+    right: 28%;
+  }
+
+  .hero-slider__slider {
+    max-width: 100%;
+    height: 400px;
+    overflow: hidden;
+  }
+  @media (max-width: 1024px) {
+    .hero-slider__slider .swiper-slide-prev img,
+    .hero-slider__slider .swiper-slide-next img {
+      width: 162px;
+      height: 162px;
+    }
+
+    .hero-slider__slider .swiper-slide-active img {
+      width: 536px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero-slider__slider {
+      margin-top: 24px !important;
+      padding-top: 88px !important;
+      height: 500px;
+    }
+
+    .hero-slider__slider .swiper-wrapper .swiper-slide,
+    .hero-slider__slider .swiper-wrapper .swiper-slide-active,
+    .hero-slider__slider .swiper-wrapper .swiper-slide-prev,
+    .hero-slider__slider .swiper-wrapper .swiper-slide-next {
+      width: 100% !important;
+    }
+
+    .hero-slider__slider .swiper-button-prev {
+      top: 48px;
+      left: 38%;
+    }
+    .hero-slider__slider .swiper-button-next {
+      top: 48px;
+      right: 38%;
+    }
+  }
+</style>
+
+<script src="{{ "swiper-bundle.min.js" |  asset_url }}" async></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const sliderEl = document.querySelector('.hero-slider__slider');
+
+    if (sliderEl && typeof Swiper !== 'undefined') {
+      const swiper = new Swiper(sliderEl, {
+        slidesPerView: 3,
+        centeredSlides: true,
+        loop: true,
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+        breakpoints: {
+          0: { slidesPerView: 1 },
+          768: { slidesPerView: 3 },
+        },
+        on: {
+          init: function () {
+            fetchProductData(this);
+          },
+          slideChange: function () {
+            fetchProductData(this);
+          },
+        },
+      });
+
+      function fetchProductData(swiperInstance) {
+        const activeSlide = swiperInstance.slides[swiperInstance.activeIndex];
+        const handle = activeSlide.dataset.handle;
+
+        if (!handle) return;
+
+        fetch(`/products/${handle}.js`)
+          .then((res) => res.json())
+          .then((product) => {
+            const variant = product.variants[0];
+            document.querySelector('.product__title').textContent = product.title;
+
+            const price = variant.price;
+            const priceContent = formatMoney(price);
+            document.querySelector('.product__price').textContent = priceContent;
+
+            document.querySelector('.product__link-btn').setAttribute('href', product.url);
+          })
+          .catch((err) => {
+            console.error('Error fetching product data:', err);
+          });
+      }
+
+      function formatMoney(cents) {
+        const amount = (cents / 100).toLocaleString(undefined, {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        });
+        return window.currencyFormat?.replace('{{amount}}', amount) || amount;
+      }
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Hero Slider",
+  "class": "hero-slider",
+  "settings": [
+    {
+      "type": "text",
+      "id": "hero-slider-title",
+      "label": "Title",
+      "default": "Everything You Need for a Modern Interior"
+    },
+    {
+      "type": "product_list",
+      "id": "hero-slider-products",
+      "label": "Select your products"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Slider"
+    }
+  ]
+}
+{% endschema %}
