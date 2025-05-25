@@ -1,0 +1,22 @@
+{
+  "name": "Custom Header",
+  "type": "header",
+  "sections": {
+    "header-top" : {
+        "type": "header-top",
+    },
+     "header-main" : {
+        "type": "header-main",
+        
+    },
+     "header-bottom" : {
+        "type": "header-bottom",
+        
+    },  
+  },
+  "order": [
+    "header-top",
+    "header-main",
+    "header-bottom",
+  ]
+}

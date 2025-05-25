@@ -1,0 +1,50 @@
+<div class="page-width">
+  <div class="bg-gray-50 text-sm text-gray-800 h-[40px] flex justify-between items-center">
+    
+        <!-- Left: Contact -->
+        <div class="flex items-center gap-1">
+          <span>{{ section.settings.contact_text }}</span>
+          <span class="font-bold">{{ section.settings.contact_phone }}</span>
+        </div>
+
+        <!-- Center: Announcement -->
+        <div class="md:block text-center font-medium">
+          {{ section.settings.announcement }}
+        </div>
+
+        <!-- Right: Wishlist & Account -->
+        <div class="flex gap-4 items-center">
+          <a href="/pages/wishlist" class="hover:underline">Wishlist</a>
+          <a href="/account" class="hover:underline">Account</a>
+        </div>
+  
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Header Top",
+  "tag": "section",
+  "class": "header-top",
+  "settings": [
+    {
+      "type": "text",
+      "id": "contact_text",
+      "label": "Contact text",
+      "default": "Contact us 24/7"
+    },
+    {
+      "type": "text",
+      "id": "contact_phone",
+      "label": "Phone number",
+      "default": "+1 50 537 53 082"
+    },
+    {
+      "type": "text",
+      "id": "announcement",
+      "label": "Announcement",
+      "default": "🔥 The Biggest Sale Ever 50% Off"
+    }
+  ]
+}
+{% endschema %}
