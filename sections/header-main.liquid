@@ -1,16 +1,77 @@
-<h1>Header Main</h1>
-{% schema %}
-    {
-        "name": "Header Main",
-        "class": "header-main",
-        "settings": [
-        
-        ],
-        "presets": [
-            {
-                "name": "Header Main"
-            }
-        ]
-    }
-{% endschema %}
+<div class="page-width">
+  <div class="header-main flex justify-between items-center bg-white/100 rounded-full h-[60px] shadow-md">
+    <!-- Left: Logo or Shop Name -->
+    <div class="w-1/4 flex justify-start font-bold text-2xl text-gray-900 px-6 py-3 ml-4">
+      <a href="/" class="flex items-center gap-2">
+        {% if section.settings.logo %}
+          <img
+            src="{{ section.settings.logo | image_url: width: 120 }}"
+            alt="{{ shop.name }}"
+            class="h-8 w-auto"
+            width="120"
+            height="32"
+          >
+        {% else %}
+          {{ shop.name }}
+        {% endif %}
+      </a>
+    </div>
 
+    <!-- Center: Menu from Navigation -->
+    <nav class="w-2/4 flex justify-center items-center gap-6 text-gray-800 font-medium text-sm">
+      {% if section.settings['header-main-menu'] != blank %}
+        {% assign header_menu = linklists[section.settings['header-main-menu']] %}
+        {% for link in header_menu.links %}
+          <a
+            href="{{ link.url }}"
+            class="text-gray-900 font-medium text-[14px] hover:underline hover:text-gray-950 transition"
+          >
+            {{ link.title }}
+          </a>
+        {% endfor %}
+      {% endif %}
+    </nav>
+
+    <!-- Right: Icons -->
+    <div class="w-1/4 flex justify-end items-center gap-5 px-6 py-3 mr-4">
+      <!-- Cart -->
+      <a href="/cart" aria-label="View Cart">
+        <div class="flex justify-center items-center hover:bg-gray-100 w-[40px] h-[40px] rounded-full p-2">
+          <img src="{{ "cart-icon.svg" |  asset_url }}" alt="View Cart" width="16" height="16">
+        </div>
+      </a>
+
+      <!-- Search -->
+      <button aria-label="Search">
+        <div class="flex justify-center items-center hover:bg-gray-100 w-[40px] h-[40px] rounded-full p-2">
+          <img src="{{ "search-icon.svg" |  asset_url }}" alt="Search..." width="16" height="16">
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Header Main",
+  "tag": "section",
+  "class": "header-main",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Upload logo (optional)"
+    },
+    {
+      "type": "link_list",
+      "id": "header-main-menu",
+      "label": "Main navigation menu"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Header Main"
+    }
+  ]
+}
+{% endschema %}

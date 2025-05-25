@@ -1,22 +1,33 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "name": "Custom Header",
   "type": "header",
   "sections": {
-    "header-top" : {
-        "type": "header-top",
+    "header-top": {
+      "type": "header-top",
+      "settings": {
+        "contact_text": "Contact us 24/7",
+        "contact_phone": "+1 50 537 53 082",
+        "announcement": "🔥 The Biggest Sale Ever 50% Off"
+      }
     },
-     "header-main" : {
-        "type": "header-main",
-        
-    },
-     "header-bottom" : {
-        "type": "header-bottom",
-        
-    },  
+    "header-main": {
+      "type": "header-main",
+      "settings": {
+        "header-main-menu": "main-menu"
+      }
+    }
   },
   "order": [
     "header-top",
-    "header-main",
-    "header-bottom",
+    "header-main"
   ]
 }

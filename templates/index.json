@@ -9,6 +9,23 @@
  */
 {
   "sections": {
+    "hero_slider_jQeHJM": {
+      "type": "hero-slider",
+      "name": "Hero Slider",
+      "settings": {
+        "hero-slider-title": "Everything You Need for a Modern Interior",
+        "hero-slider-products": [
+          "bolton-100-sofa",
+          "bourges-99-sofa",
+          "bruges-89-sofa",
+          "anzio-sofa",
+          "altira-lift-top-storage-coffee-table",
+          "aledo-nightstand",
+          "ares-bed",
+          "atlas-dining-armchair"
+        ]
+      }
+    },
     "categories_list_Qd4eBA": {
       "type": "categories-list",
       "blocks": {
@@ -191,6 +208,7 @@
     }
   },
   "order": [
+    "hero_slider_jQeHJM",
     "categories_list_Qd4eBA",
     "popular_products_KcKmJ3",
     "gallery_BfrwjK",
