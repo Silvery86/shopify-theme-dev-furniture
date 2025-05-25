@@ -1,0 +1,15 @@
+{
+  "name": "Footer Group Custom",
+  "type": "footer",
+  "sections": {
+    "footer-main": {
+      "type": "footer-main",
+      "settings": {
+      
+      }
+    }
+  },
+  "order": [
+    "footer-main"
+  ]
+}
