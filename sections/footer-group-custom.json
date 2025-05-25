@@ -1,11 +1,73 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "name": "Footer Group Custom",
   "type": "footer",
   "sections": {
     "footer-main": {
       "type": "footer-main",
+      "blocks": {
+        "social_media_T4FzHF": {
+          "type": "social-media",
+          "settings": {
+            "title": "Facebook",
+            "social-link": "/",
+            "social-icon": "shopify://shop_images/facebook-light.svg"
+          }
+        },
+        "social_media_9Vixty": {
+          "type": "social-media",
+          "settings": {
+            "title": "Youtube",
+            "social-link": "/",
+            "social-icon": "shopify://shop_images/youtube-light.svg"
+          }
+        },
+        "social_media_tQFAfN": {
+          "type": "social-media",
+          "settings": {
+            "title": "Instagram",
+            "social-link": "",
+            "social-icon": "shopify://shop_images/instagram-light.svg"
+          }
+        },
+        "social_media_9At7wx": {
+          "type": "social-media",
+          "settings": {
+            "title": "Telegram",
+            "social-link": "",
+            "social-icon": "shopify://shop_images/telegram-light.svg"
+          }
+        },
+        "social_media_6tDpjb": {
+          "type": "social-media",
+          "settings": {
+            "title": "Zalo",
+            "social-link": "",
+            "social-icon": "shopify://shop_images/zalo-light.svg"
+          }
+        }
+      },
+      "block_order": [
+        "social_media_T4FzHF",
+        "social_media_9Vixty",
+        "social_media_tQFAfN",
+        "social_media_9At7wx",
+        "social_media_6tDpjb"
+      ],
       "settings": {
-      
+        "left_menu": "main-menu",
+        "right_menu": "footer",
+        "newsletter_heading": "Stay in touch with us",
+        "newsletter_subtext": "Receive the latest updates about our products & promotions",
+        "copyright-title": "Silvery"
       }
     }
   },

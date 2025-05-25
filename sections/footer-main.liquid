@@ -1,19 +1,149 @@
-<h1>Main Footer</h1>
+<footer class="bg-gray-800 text-gray-300 pt-[80px] pb-[48px] h-[464px]">
+  <div class="page-width">
+    <div class="flex justify-between items-center gap-8">
+      <!-- Left Column Menu -->
+      <div class="w-1/4 flex flex-col justify-center items-center gap-2">
+        {% assign left_menu = linklists[section.settings.left_menu] %}
+        {% if left_menu.links.size > 0 %}
+          {% for link in left_menu.links %}
+            <a href="{{ link.url }}" class="block hover:underline hover:text-gray-200 font-medium text-[14px]">
+              {{- link.title -}}
+            </a>
+          {% endfor %}
+        {% endif %}
+      </div>
+
+      <!-- Center Newsletter -->
+      <div class="w-2/4 flex flex-col justify-center items-center gap-6">
+        <div class="text-gray-100 text-[28px] font-semibold mb-2">{{ section.settings.newsletter_heading }}</div>
+        <p class="text-gray-300 font-normal text-[14px] mb-4 text-center">{{ section.settings.newsletter_subtext }}</p>
+        <form action="/contact#newsletter" method="POST" class="w-full flex justify-center md:justify-start ">
+          <input
+            type="email"
+            name="contact[email]"
+            placeholder="Your email"
+            required
+            class="w-full rounded-l-full px-4 py-3 bg-gray-800 text-white border border-l-none border-gray-600 placeholder-gray-500 focus:outline-none"
+          >
+          <button
+            type="submit"
+            class="rounded-r-full px-4 py-2 border border-r-none border-gray-600 hover:bg-gray-600 text-white"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </button>
+        </form>
+
+        <!-- Social Media Icons -->
+        <div class="flex justify-center md:justify-start mt-4 gap-4 text-white">
+          {% for block in section.blocks %}
+            {% if block.type == 'social-media' %}
+              {% if block.settings['social-icon'] != blank %}
+                <a
+                  href="{{ block.settings.social-link }}"
+                  target="_blank"
+                  aria-label="{{ block.settings.social-title }}"
+                >
+                  {{ block.settings['social-icon'] | image_url: width: 16, height: 16 | image_tag }}
+                </a>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Right Column Menu -->
+      <div class="w-1/4 flex flex-col justify-center items-center gap-2">
+        {% assign right_menu = linklists[section.settings.right_menu] %}
+        {% if right_menu.links.size > 0 %}
+          {% for link in right_menu.links %}
+            <a href="{{ link.url }}" class="block hover:underline hover:text-gray-200 font-medium text-[14px]">
+              {{- link.title -}}
+            </a>
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="text-center flex justify-center items-end text-gray-400 text-[12px] font-normal mt-10">
+      © All rights reserved. Made by
+      <span class="hover:underline text-gray-100 font-medium text-[12px]">
+        {{ section.settings['copyright-title'] }}
+      </span>
+    </div>
+  </div>
+</footer>
 
 {% schema %}
+{
+  "name": "Footer Custom",
+  "tag": "section",
+  "class": "footer-custom",
+  "settings": [
     {
-        "name": "Footer Main",
-        "class": "footer-main",
-        "settings": [
-
-        ],
-        "presets": [
-            {
-                "name": "Footer Main"
-            }
-        ],
-        "enabled_on": {
-            "groups": ["footer"]
-        }
+      "type": "link_list",
+      "id": "left_menu",
+      "label": "Left column menu"
+    },
+    {
+      "type": "link_list",
+      "id": "right_menu",
+      "label": "Right column menu"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Newsletter Heading",
+      "default": "Stay in touch with us"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_subtext",
+      "label": "Newsletter Subtext",
+      "default": "Receive the latest updates about our products & promotions"
+    },
+    {
+      "type": "text",
+      "id": "copyright-title",
+      "label": "Copyright Title",
+      "default": "Silvery"
     }
+  ],
+  "blocks": [
+    {
+      "type": "social-media",
+      "name": "Social Media",
+      "settings": [
+        {
+          "type": "text",
+          "label": "Social Title",
+          "id": "title"
+        },
+        {
+          "type": "url",
+          "id": "social-link",
+          "label": "Social Link"
+        },
+        {
+          "type": "image_picker",
+          "id": "social-icon",
+          "label": "Social Icon"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer Custom"
+    }
+  ]
+}
 {% endschema %}
