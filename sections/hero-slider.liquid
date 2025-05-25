@@ -1,6 +1,6 @@
 {{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
 <div class="hero-slider h-full flex flex-col justify-center items-center">
-  <div class="hero-slider__title h-1/3 w-1/2 flex justify-center items-center text-grey-900 font-bold text-[34px] lg:text-[56px] md:text-[48px] text-center">
+  <div class="hero-slider__title h-1/3 w-3/4 flex justify-center items-center text-grey-900 font-bold text-[34px] md:text-[48px] lg:text-[56px]  text-center">
     {{ section.settings['hero-slider-title'] }}
   </div>
   <div class="hero-slider__products swiper hero-slider__slider h-1/3 overflow-hidden">
@@ -37,7 +37,7 @@
   }
   .hero-slider__slider .swiper-slide-prev,
   .hero-slider__slider .swiper-slide-next {
-    width: 28% !important;
+    width: 25% !important;
     height: 400px !important;
     transition: all 0.3s ease-in-out;
     display: flex !important;
@@ -45,7 +45,7 @@
   }
 
   .hero-slider__slider .swiper-slide-active {
-    width: 40% !important;
+    width: 50% !important;
     height: 400px !important;
     opacity: 1;
     z-index: 10;
@@ -71,7 +71,7 @@
     left: 24%;
   }
   .hero-slider__slider .swiper-button-next {
-    right: 28%;
+    right: 24%;
   }
 
   .hero-slider__slider {
