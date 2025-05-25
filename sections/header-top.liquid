@@ -1,19 +1,19 @@
 <div class="page-width">
-  <div class="bg-gray-50 text-sm text-gray-800 h-[40px] flex justify-between items-center">
+  <div class=" text-sm text-gray-800 h-[40px] flex justify-between items-center">
     
         <!-- Left: Contact -->
-        <div class="flex items-center gap-1">
-          <span>{{ section.settings.contact_text }}</span>
-          <span class="font-bold">{{ section.settings.contact_phone }}</span>
+        <div class="w-1/4 flex justify-start items-center gap-1 ml-4">
+          <span class="text-gray-700 font-normal text-[12px]">{{ section.settings.contact_text }}</span>
+          <span class="text-gray-700 font-semibold text-[12px]">{{ section.settings.contact_phone }}</span>
         </div>
 
         <!-- Center: Announcement -->
-        <div class="md:block text-center font-medium">
+        <div class="w-2/4 flex justify-center items-center text-gray-700 font-normal text-[12px]">
           {{ section.settings.announcement }}
         </div>
 
         <!-- Right: Wishlist & Account -->
-        <div class="flex gap-4 items-center">
+        <div class="w-1/4 flex justify-end items-center gap-4 text-gray-700 font-normal text-[12px] mr-4">
           <a href="/pages/wishlist" class="hover:underline">Wishlist</a>
           <a href="/account" class="hover:underline">Account</a>
         </div>
