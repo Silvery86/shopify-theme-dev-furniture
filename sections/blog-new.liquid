@@ -1,0 +1,90 @@
+<div class="page-width">
+  <div class="blog-news flex flex-col gap-8">
+    <div class="blog-news__heading flex flex-row justify-between items-center">
+      <div class="blog-news__title text-gray-900 font-semibold text-[28px]">
+        {{ section.settings['blog-news-title'] }}
+      </div>
+      <div class="blog-news__link text-gray-800 font-medium text-[14px]">
+        <a href="{{ section.settings.blog-news-link |  default : "/" }}">View all ></a>
+      </div>
+    </div>
+    <div class="blog-new__container flex flex-row justify-between items-start gap-5">
+      <div class="container__left hide-on-mobile md:w-1/2">
+        {% render 'article-custom-card', article: section.settings['article-1'] %}
+      </div>
+
+      <div class="container-right w-full flex flex-col items-center justify-center md:justify-between gap-[48px] md:gap-4 md:w-1/2 md:items-start md:flex-row">
+        <div class="article-card-large w-full hide-on-laptop flex justify-center items-start">
+          {% render 'article-custom-card', article: section.settings['article-2'], size: 'large' %}
+        </div>
+        <div class="article-card-medium w-1/2 h-full hide-on-mobile justify-between">
+          {% render 'article-custom-card', article: section.settings['article-2'], size: 'medium' %}
+        </div>
+
+        <!-- Article 3 -->
+        <div class="article-card-large w-full hide-on-laptop flex justify-center items-start">
+          {% render 'article-custom-card', article: section.settings['article-3'], size: 'large' %}
+        </div>
+        <div class="article-card-medium w-1/2 h-full hide-on-mobile justify-between">
+          {% render 'article-custom-card', article: section.settings['article-3'], size: 'medium' %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  .hide-on-laptop {
+    display: flex;
+  }
+  .hide-on-mobile {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .hide-on-mobile {
+      display: flex;
+    }
+    .hide-on-laptop {
+      display: none;
+    }
+  }
+</style>
+{% schema %}
+{
+  "name": "Blog and news",
+  "class": "blog-news",
+  "settings": [
+    {
+      "type": "text",
+      "id": "blog-news-title",
+      "default": "Blog and news",
+      "label": "Title"
+    },
+    {
+      "type": "url",
+      "id": "blog-news-link",
+      "label": "Blog and news view all link"
+    },
+    {
+      "type": "article",
+      "id": "article-1",
+      "label": "Select article 1"
+    },
+    {
+      "type": "article",
+      "id": "article-2",
+      "label": "Select article 2"
+    },
+    {
+      "type": "article",
+      "id": "article-3",
+      "label": "Select article 3"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blog and news"
+    }
+  ]
+}
+{% endschema %}

@@ -177,6 +177,17 @@
       "settings": {
         "best-deal-product": "napa-sofa"
       }
+    },
+    "blog_new_rgMVxn": {
+      "type": "blog-new",
+      "name": "Blog and news",
+      "settings": {
+        "blog-news-title": "Blog and news",
+        "blog-news-link": "",
+        "article-1": "interior-design/decorate-your-home-for-the-festive-season-in-3-easy-steps",
+        "article-2": "interior-design/transform-your-living-space-with-these-chic-interior-design-tips",
+        "article-3": "furniture/furnishing-your-space-a-guide-to-choosing-the-perfect-furniture-pieces"
+      }
     }
   },
   "order": [
@@ -184,6 +195,7 @@
     "popular_products_KcKmJ3",
     "gallery_BfrwjK",
     "benefits_DaFa43",
-    "best_deal_banner_kRWDVB"
+    "best_deal_banner_kRWDVB",
+    "blog_new_rgMVxn"
   ]
 }

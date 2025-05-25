@@ -1,0 +1,49 @@
+{% comment %}
+  Renders an article card for home page
+
+  Accepts:
+  - article: {Object} Article object
+  - size : Article box size for rendering ("medium")
+
+  Usage:
+  {% render 'article-custom-card'  article: article , size : size %}
+{% endcomment %}
+
+{%- if article and article != empty -%}
+    {% liquid    
+      if size == "medium"
+      assign width = 306
+      assign height = 206
+      assign heading_size = 16
+      else 
+      assign width = 636
+      assign height = 500 
+      assign heading_size = 20   
+      endif 
+    %}
+
+    
+  <div class="article__container flex flex-col justify-between items-stretch gap-3">
+    <div class="article__image">
+      {{ article.image |  image_url: width: width , height: height |  image_tag : width: width , class : "rounded-2xl" }}
+    </div>
+    <div class="article__category">
+        {% if article.tags %}
+            {%  for tag in article.tags %} 
+                <div class="article_tag text-gray-600 font-medium text-[12px]">{{ tag |  upcase }}</div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="article__title text-gray-900 font-semibold text-[{{ heading_size }}px]">
+      {{ article.title }}
+    </div>
+    <div class="article__content flex items-center justify-start gap-3">
+      <div class="article__author text-gray-500 font-normal text-[12px]">
+        {{ article.author }}
+      </div>
+      <div class="article__created-at text-gray-500 font-normal text-[12px]">
+        {{ article.created_at | date: "%B %d, %Y" }}
+      </div>
+    </div>
+  </div>
+{% endif %}
