@@ -1,27 +1,28 @@
 <div class="page-width">
-    <div class="benefits__container flex items-center justify-evenly gap-16 mx-16">
+    <div class="benefits__container flex flex-col md:flex-row items-center justify-evenly gap-16 mx-16">
         {%  for block in section.blocks %}
             {% liquid
-                assign title = block.settings.benefit-title
+                assign title = block.settings.title
                 assign subtitle = block.settings.benefit-subtitle  
             %}
             <div 
-            id="{{ block.id }}" 
-            class="benefit__container flex flex-col justify-center items-center" 
-            {{ block.shopify_attributes }}
-            >
-                {%  if block.settings.benefit-image %}
-                      <div class="benefit__icon w-[64px] h-[64px]">
-                    {{ block.settings.benefit-image | image_url: width: 64, height: 64 | image_tag: alt: title, width: 64, height: 64 }}
-                </div>
-                {% endif %}
-                <div class="benefit__title text-gray-900 font-semibold text-[20px]">
-                    {{ title }}
-                </div>
-                <div class="benefit__subtitle text-gray-600 text-[14px] text-center">
-                    {{ subtitle }}
-                </div>
-            </div>
+  id="{{ block.id }}" 
+  class="benefit__container group flex flex-col justify-center items-center transition-all duration-300 hover:bg-gray-100 p-4 rounded-2xl"
+  {{ block.shopify_attributes }}
+>
+  {% if block.settings.benefit-image %}
+    <div class="benefit__icon w-[64px] h-[64px] overflow-hidden">
+      {{ block.settings.benefit-image | image_url: width: 64, height: 64 | image_tag: alt: title, width: 64, height: 64, class: "transition-all duration-300 group-hover:scale-90 group-hover:shadow-md" }}
+    </div>
+  {% endif %}
+  <div class="benefit__title text-gray-900 font-semibold text-[20px] mt-2">
+    {{ title }}
+  </div>
+  <div class="benefit__subtitle text-gray-600 text-[14px] text-center">
+    {{ subtitle }}
+  </div>
+</div>
+
         {% endfor %}
     </div>
 </div>
@@ -44,7 +45,7 @@
                 "settings": [
                     {
                         "type": "text",
-                        "id": "benefit-title",
+                        "id": "title",
                         "label": "Title",
                         "default": "Benefit Title"
                     },
