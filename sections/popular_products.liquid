@@ -13,7 +13,7 @@
 
 <div class="page-width">
   <div id="{{ section.id }}" class="popular-products">
-    <div class="popular-products__heading flex flex-row justify-between items-center">
+    <div class="popular-products__heading flex flex-row justify-between items-center md:mb-5 mb-8">
       <div class="heading__title text-gray-900 font-semibold text-[28px]">
         {{ section.settings['popular-products__title'] }}
       </div>
@@ -22,7 +22,7 @@
       </div>
     </div>
     <div
-      class="swiper popular-products__slider h-[260px] md:h-[290px]"
+      class="swiper popular-products__slider h-[400px] md:h-[290px] md:pb-20 pb-50!"
       data-desktop="{{ section.settings.products-per-slide-desktop }}"
       data-mobile="{{ section.settings.products-per-slide-mobile }}"
     >
@@ -30,7 +30,7 @@
         {% for product in section.settings['popular-products-list'] limit: 8 %}
           {% assign product_form_id = 'product-form-' | append: product.id %}
           <div class="product_container product-{{ product.id }} swiper-slide !flex flex-col justify-between">
-            <div class="product__image h-[90px] md:h-[150px]">
+            <div class="product__image h-[190px] md:h-[150px]">
               <a href="{{ product.url }}">
                 <img
                   class="product-main-image"
@@ -60,7 +60,7 @@
           </div>
         {% endfor %}
       </div>
-      <div class="swiper-button-prev left-0 bg-gray-100 rounded-full after:text-gray-700"></div>
+      <div class="swiper-button-prev left-0 bg-gray-100 rounded-full after:text-gray-700" ></div>
       <div class="swiper-button-next right-0 bg-gray-100 rounded-full after:text-gray-700"></div>
     </div>
   </div>
@@ -120,7 +120,7 @@
   .swiper-button-prev,
   .swiper-button-next {
     display: flex !important;
-    width: 40px; /* hoặc kích thước bạn muốn */
+    width: 40px; 
     height: 40px;
     align-items: center;
     justify-content: center;
@@ -136,6 +136,16 @@
   .swiper-button-next {
     right: 0;
   }
+   @media (max-width: 768px) {
+    .swiper-button-prev{
+      top: calc(100% - 30px);
+      left: 38% !important;
+    }
+    .swiper-button-next{
+      top: calc(100% - 30px);
+      right: 38% !important;
+    }
+   }
 </style>
 {% schema %}
 {
