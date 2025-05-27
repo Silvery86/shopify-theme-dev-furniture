@@ -1,0 +1,36 @@
+<div class="product_container product-{{ product.id }} swiper-slide !flex flex-col justify-between">
+  <div class="product__image h-[190px] md:h-[150px]">
+    <a href="{{ product.url }}">
+      <img
+        class="product-main-image"
+        id="product-image-{{ product.id }}"
+        src="{{ product.featured_image | image_url: width: 300 }}"
+        width="300"
+        height="300"
+        alt="{{ product.title }}"
+      />
+    </a>
+  </div>
+  <div class="product__title text-[14px] font-medium text-gray-900">{{ product.title }}</div>
+  <div class="product__price text-[16px] font-semibold text-gray-900">{{ product.price | money }}</div>
+  <div class="product__option flex justify-between items-center">
+    <form method="post" action="/cart/add" class="flex-1 mr-2">
+      <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
+      <button type="submit" class="bg-gray-800 text-white rounded-2xl px-5 py-2.5 w-full">
+        Add to cart
+      </button>
+    </form>
+    <a
+      class="bg-gray-100 rounded-full w-[40px] h-[40px] flex justify-center items-center hover:bg-gray-200"
+      href="#"
+      aria-label="Add to wishlist"
+    >
+      <img
+        src="{{ 'icon-heart.svg' | asset_url }}"
+        width="16"
+        height="16"
+        alt="Favorite"
+      />
+    </a>
+  </div>
+</div>

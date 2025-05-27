@@ -25,33 +25,28 @@
   {%- endunless -%}
 {%- endfor -%}
 
-<div class="page-width" id="{{ section.id }}">
-  <div style="text-align: {{ section.settings.text_alignment }};">
-    <h2>{{ section.settings.all_product_header }}</h2>
-    <p>{{ section.settings.all_product_subtitle }}</p>
-  </div>
-  
-  <all-products
+<div class="page-width" id="{{ section.id }}"> 
+  <custom-products-grid
     data-remaining-products="{{ remaining_products }}"
     data-products-per-row="{{ products_per_row }}"
   >
     <div
-      class="grid"
+      class="products-grid"
       style="--item-per-row: {{ products_per_row }}"
     >
       {%- for product in sorted_products limit: products_per_row -%}
-        {% render 'card-product', card_product: product %}
+        {% render "custom-product-card", product: product %}
       {%- endfor -%}
     </div>
 
     {% if remaining_products != '' %}
       <button class="button load-more-button">Load More</button>
     {% endif %}
-  </all-products>
+  </custom-products-grid>
 </div>
 
 <style>
-  all-products {
+  custom-products-grid {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -59,7 +54,7 @@
     padding: 20px 0;
   }
 
-  all-products .grid {
+  custom-products-grid .products-grid {
     width: 100%;
     display: grid;
     grid-template-columns: repeat(var(--item-per-row), 1fr);
@@ -88,94 +83,52 @@
 </style>
 
 <script>
-  class AllProducts extends HTMLElement {
+  class customProductsGrid extends HTMLElement {
+    index = 0;
     constructor() {
-      super();
-      this.loadMoreButton = this.querySelector('button.load-more-button');
-      this.productsPerRow = Number.parseInt(this.dataset.productsPerRow);
-      this.remainingProducts = this.dataset.remainingProducts ? this.dataset.remainingProducts.split(',') : [];
-      this.grid = this.querySelector('.grid');
-      this.index = this.productsPerRow; // Start loading after initially rendered products
-
-      if (!this.remainingProducts.length) {
-        if (this.loadMoreButton) {
-          this.loadMoreButton.style.display = 'none';
-        }
-      }
-
-      if (this.loadMoreButton) {
+        super();
+        this.loadMoreButton = this.querySelector('.load-more-button');
+        this.productsPerRow = Number.parseInt(this.dataset.productsPerRow);
+        this.remainingProducts = this.dataset.remainingProducts.split(',');
+        this.grid = this.querySelector('.products-grid');         
         this.loadMoreButton.addEventListener('click', this.loadMoreProducts.bind(this));
-      }
     }
 
     async loadMoreProducts() {
-      if (!this.loadMoreButton) return;
-
-      this.loadMoreButton.setAttribute('disabled', 'true');
-      const productsToLoad = this.remainingProducts.slice(this.index, this.index + this.productsPerRow);
-
-      if (productsToLoad.length === 0) {
-        this.loadMoreButton.remove();
-        return;
-      }
-
-      try {
-        const productsHTML = await Promise.all(
-          productsToLoad.map(async (productHandle) => {
-            const response = await fetch(`/products/${productHandle}?sections=card-product`);
-            const data = await response.json();
-            return data['card-product'];
-          })
+        this.loadMoreButton.setAttribute('disabled', 'true');
+        const productsToLoad = this.remainingProducts.slice(this.index, this.index + this.productsPerRow);
+       
+        const products = await Promise.all(
+            productsToLoad.map(async (productHandle) => {
+                console.log(productHandle);
+                const response = await fetch(`/products/${productHandle}?sections=custom-product-card`);
+              
+                const data = await response.json();
+                  console.log(response);
+                return data['custom-product-card'];
+            })
         );
 
-        productsHTML.forEach(html => {
-          this.grid.insertAdjacentHTML('beforeend', html);
+        products.forEach((product) => {
+            this.grid.innerHTML += product;
         });
 
         this.index += this.productsPerRow;
 
         if (this.index >= this.remainingProducts.length) {
-          this.loadMoreButton.remove();
+            this.loadMoreButton.remove();
         } else {
-          this.loadMoreButton.removeAttribute('disabled');
+            this.loadMoreButton.removeAttribute('disabled');
         }
-      } catch (error) {
-        console.error('Error loading more products:', error);
-        this.loadMoreButton.removeAttribute('disabled');
-      }
     }
-  }
-
-  customElements.define('all-products', AllProducts);
+}
+customElements.define('custom-products-grid', customProductsGrid);
 </script>
 
 {% schema %}
 {
-  "name": "All Products",
+  "name": "Custom Products Grid",
   "settings": [
-    {
-      "type": "text",
-      "id": "all_product_header",
-      "label": "Heading Text",
-      "default": "All Products"
-    },
-    {
-      "type": "richtext",
-      "id": "all_product_subtitle",
-      "label": "Subtitle Text",
-      "default": "<p>Browse our full collection</p>"
-    },
-    {
-      "type": "select",
-      "id": "text_alignment",
-      "label": "Text Alignment",
-      "default": "center",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
-      ]
-    },
     {
       "type": "range",
       "id": "products_per_row",
@@ -201,7 +154,7 @@
   ],
   "presets": [
     {
-      "name": "All Products"
+      "name": "Custom Products Grid"
     }
   ]
 }

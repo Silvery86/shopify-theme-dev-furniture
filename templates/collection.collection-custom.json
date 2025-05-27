@@ -11,20 +11,20 @@
   "sections": {
     "breadcrumb": {
       "type": "custom-collection-breadcrumb",
-      "settings": {}
-    },
-    "filter": {
-      "type": "custom-collection-filter",
-      "settings": {}
+      "settings": {
+        "toggle-title": true
+      }
     },
     "products-grid": {
       "type": "custom-collection-products-grid",
-      "settings": {}
+      "settings": {
+        "products_per_row": 4,
+        "product_sort_by": "sale_percent"
+      }
     }
   },
   "order": [
     "breadcrumb",
-    "filter",
     "products-grid"
   ]
 }
