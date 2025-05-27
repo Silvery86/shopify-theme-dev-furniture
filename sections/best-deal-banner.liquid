@@ -5,58 +5,58 @@
     {% if product %}
       <div class="swiper best-deal__slider  w-full md:w-1/2 bg-gray-100 rounded-t-2xl md:rounded-l-2xl md:rounded-t-none">
         <div class="best-deal__gallery swiper-wrapper">
-          {% for media in product.media %}
+          {% for media in product.media limit: 5 %}
             {% if media.media_type == 'image' %}
-              <div class="swiper-slide aspect-square overflow-hidden">
+              <div class="swiper-slide aspect-square overflow-hidden group">
                 <img
                   src="{{ media | image_url: width: 600 }}"
                   alt="{{ media.alt | escape }}"
                   width="{{ media.width }}"
                   height="{{ media.height }}"
-                  class="w-full h-full object-cover"
+                  class="w-full h-full rounded-2xl object-cover transition-transform duration-300 group-hover:scale-90"
                   loading="lazy"
                 >
               </div>
             {% endif %}
           {% endfor %}
         </div>
-      
       </div>
 
       <div class="best-deal__content w-full md:w-1/2 flex flex-col justify-center gap-4 bg-gray-800 items-center text-white rounded-b-2xl md:rounded-r-2xl md:rounded-bl-none min-h-[500px]">
-        <div class="best-deal__badge text-gray-300 font-light text-[14px]">BEST DEAL</div>
+        <div class="best-deal__badge text-gray-300 font-light text-[14px]">{{ section.settings.best-deal-title |  default : "Best Deal" |  upcase }}</div>
         <div class="best-deal__title text-gray-100 font-semibold text-[24px]">{{ product.title }}</div>
         <div class="best-deal__feature-image">
-          {{ product.featured_image |  image_url: width: 160, height: 160 |  image_tag: class: "border-gray-200 rounded-lg" }}
+          {{
+            product.featured_image
+            | image_url: width: 160, height: 160
+            | image_tag: class: 'border-gray-200 rounded-lg'
+          }}
         </div>
-        <div class="best-deal__price text-gray-100 font-semibold text-[28px]">{{ product.price | money }}</div>
-        <div class="best-deal__button border border-gray-100 px-6 py-3 rounded-3xl">
-          <a class="text-gray-100 font-medium text-[16px]">Shop now</a>
+        <div class="best-deal__price text-gray-100 font-semibold text-[28px]">
+          {% render 'price-custom', product: product, show_compare_at_price: false %}
         </div>
+        <a
+          href="{{ product.url }}"
+          class="best-deal__button border border-gray-100 bg-transparent text-gray-100 font-medium text-[16px] px-6 py-3 rounded-3xl hover:bg-gray-100 hover:text-gray-900 transition-all duration-300"
+        >
+          {{ section.settings['button-title'] | default: 'Shop now' }}
+        </a>
       </div>
     {% endif %}
   </div>
 </div>
+
 <script src="{{ "swiper-bundle.min.js" |  asset_url }}" async></script>
 <script async>
   document.addEventListener('DOMContentLoaded', function () {
     const sliderEl = document.querySelector('.best-deal__slider');
     if (sliderEl && typeof Swiper !== 'undefined') {
       new Swiper(sliderEl, {
-        slidesPerView: parseInt(sliderEl.dataset.desktop) || 1,
-        spaceBetween: 24,
-         autoplay: {
-            delay: 3000, 
-            disableOnInteraction: false 
+        slidesPerView: 1,
+        autoplay: {
+          delay: 3000,
+          disableOnInteraction: false,
         },       
-        breakpoints: {
-          0: {
-            slidesPerView: parseInt(sliderEl.dataset.mobile) || 1,
-          },
-          768: {
-            slidesPerView: parseInt(sliderEl.dataset.desktop) || 1,
-          },
-        },
         loop: true,
       });
     }
@@ -69,7 +69,7 @@
   .swiper-button-prev,
   .swiper-button-next {
     display: flex !important;
-    width: 40px; /* hoặc kích thước bạn muốn */
+    width: 40px; 
     height: 40px;
     align-items: center;
     justify-content: center;
@@ -91,9 +91,21 @@
   "class": "best-deal-banner",
   "settings": [
     {
+      "type": "text",
+      "id": "best-deal-title",
+      "label": "Change best deal title",
+      "default" : "Best Deal"
+    },
+    {
       "type": "product",
       "id": "best-deal-product",
       "label": "Select best deal product"
+    },
+    {
+      "type": "text",
+      "id": "button-title",
+      "label": "Change shop now button text",
+      "default": "Shop Now"
     }
   ],
   "presets": [
