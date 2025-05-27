@@ -1,5 +1,5 @@
 <div class="page-width">
-  <div class="header-main flex justify-between items-center bg-white/100 rounded-full h-[60px] shadow-md">
+  <div class="header-main flex justify-between items-center bg-white/100 rounded-full h-[60px] shadow-md mb-4">
     <!-- Left: Logo or Shop Name -->
     <div class="w-1/4 flex justify-start font-bold text-2xl text-gray-900 px-6 py-3 ml-4">
       <a href="/" class="flex items-center gap-2">
@@ -35,14 +35,21 @@
     <!-- Right: Icons -->
     <div class="w-1/4 flex justify-end items-center gap-5 px-6 py-3 mr-4">
       <!-- Cart -->
-      <a href="/cart" aria-label="View Cart">
-        <div class="flex justify-center items-center hover:bg-gray-100 w-[40px] h-[40px] rounded-full p-2">
-          <img src="{{ "cart-icon.svg" |  asset_url }}" alt="View Cart" width="16" height="16">
-        </div>
-      </a>
+      <a href="/cart" aria-label="View Cart" class="relative">
+  <div class="flex justify-center items-center hover:bg-gray-100 w-[40px] h-[40px] rounded-full p-2 relative">
+    <img src="{{ 'cart-icon.svg' | asset_url }}" alt="View Cart" width="16" height="16" class="mx-auto">
+    
+    {% if cart.item_count > 0 %}
+      <span class="cart__badge flex items-center justify-center w-[16px] h-[16px] text-[12px] text-white leading-none rounded-full font-semibold">
+        {{ cart.item_count }}
+      </span>
+    {% endif %}
+  </div>
+</a>
+
 
       <!-- Search -->
-      <button aria-label="Search">
+      <button aria-label="Search" onclick="window.location.href='/search'">
         <div class="flex justify-center items-center hover:bg-gray-100 w-[40px] h-[40px] rounded-full p-2">
           <img src="{{ "search-icon.svg" |  asset_url }}" alt="Search..." width="16" height="16">
         </div>
@@ -50,7 +57,14 @@
     </div>
   </div>
 </div>
-
+<style>
+  .cart__badge {
+    position: absolute;
+    top: 0;
+    right : 0;
+    background-color: green;
+  }
+</style>
 {% schema %}
 {
   "name": "Header Main",

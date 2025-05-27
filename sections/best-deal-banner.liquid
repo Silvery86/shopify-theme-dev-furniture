@@ -1,4 +1,3 @@
-{{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
 <div class="page-width">
   <div class="best-deal flex flex-col md:flex-row items-stretch">
     {% assign product = section.settings['best-deal-product'] %}
@@ -45,8 +44,6 @@
     {% endif %}
   </div>
 </div>
-
-<script src="{{ "swiper-bundle.min.js" |  asset_url }}" async></script>
 <script async>
   document.addEventListener('DOMContentLoaded', function () {
     const sliderEl = document.querySelector('.best-deal__slider');
