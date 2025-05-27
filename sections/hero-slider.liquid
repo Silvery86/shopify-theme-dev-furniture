@@ -149,17 +149,14 @@
         const handle = activeSlide.dataset.handle;
 
         if (!handle) return;
-
         fetch(`/products/${handle}.js`)
           .then((res) => res.json())
           .then((product) => {
             const variant = product.variants[0];
             document.querySelector('.product__title').textContent = product.title;
-
             const price = variant.price;
             const priceContent = formatMoney(price);
             document.querySelector('.product__price').textContent = priceContent;
-
             document.querySelector('.product__link-btn').setAttribute('href', product.url);
           })
           .catch((err) => {
@@ -172,7 +169,7 @@
           minimumFractionDigits: 0,
           maximumFractionDigits: 0,
         });
-        return window.currencyFormat?.replace('{{amount}}', amount) || amount;
+        return window.currencyFormat ? window.currencyFormat.replace('{{amount}}', amount) : `${amount} $`;
       }
     }
   });
