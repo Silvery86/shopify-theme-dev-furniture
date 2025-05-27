@@ -1,4 +1,3 @@
-{{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
 <div class="hero-slider h-full flex flex-col justify-center items-center">
   <div class="hero-slider__title h-1/3 w-3/4 flex justify-center items-center text-grey-900 font-bold text-[34px] md:text-[48px] lg:text-[56px]  text-center">
     {{ section.settings['hero-slider-title'] }}
@@ -116,7 +115,6 @@
   }
 </style>
 
-<script src="{{ "swiper-bundle.min.js" |  asset_url }}" async></script>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const sliderEl = document.querySelector('.hero-slider__slider');

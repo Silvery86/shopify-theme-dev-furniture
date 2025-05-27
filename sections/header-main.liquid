@@ -1,7 +1,55 @@
 <div class="page-width">
   <div class="header-main flex justify-between items-center bg-white/100 rounded-full h-[60px] shadow-md mb-4">
+    <div class="mobile-menu__button md:hidden w-1/4 flex ml-4">
+      <button
+        id="mobile-menu-toggle"
+        class="flex justify-center items-center hover:bg-gray-100 w-[40px] h-[40px] rounded-full p-2"
+        aria-label="Open mobile menu"
+      >
+        <img
+          src="{{ 'icon-hamburger.svg' | asset_url }}"
+          alt="Mobile Menu"
+          width="16"
+          height="16"
+        >
+      </button>
+    </div>
+
+    <!-- Mobile menu wrapper with overlay -->
+    <div id="mobile-menu-wrapper" class="fixed inset-0 z-50 hidden md:hidden">
+      <!-- Overlay -->
+      <div
+        id="mobile-menu-overlay"
+        class="absolute !flex inset-0 bg-black opacity-0 pointer-events-none transition-opacity duration-300"
+      ></div>
+
+      <!-- Slide-in menu -->
+      <div
+        id="mobile-menu"
+        class="fixed top-0 left-0 h-full bg-white p-6 transform -translate-x-[250px] w-[250px] transition-transform duration-300 ease-in-out"
+      >
+        <div class="flex justify-between items-center mb-6">
+          <span class="text-lg font-bold text-gray-900">Menu</span>
+          <button id="mobile-menu-close" class="text-gray-700 text-xl" aria-label="Close mobile menu">×</button>
+        </div>
+        <nav class="flex flex-col gap-4">
+          {% if section.settings['header-main-menu'] != blank %}
+            {% assign header_menu = linklists[section.settings['header-main-menu']] %}
+            {% for link in header_menu.links %}
+              <a
+                href="{{ link.url }}"
+                class="text-gray-900 font-medium text-[16px] hover:underline hover:text-gray-700 transition"
+              >
+                {{ link.title }}
+              </a>
+            {% endfor %}
+          {% endif %}
+        </nav>
+      </div>
+    </div>
+
     <!-- Left: Logo or Shop Name -->
-    <div class="w-1/4 flex justify-start font-bold text-2xl text-gray-900 px-6 py-3 ml-4">
+    <div class="w-1/4 flex justify-center md:justify-start font-bold text-2xl text-gray-900 px-6 py-3 ml-4">
       <a href="/" class="flex items-center gap-2">
         {% if section.settings.logo %}
           <img
@@ -18,7 +66,7 @@
     </div>
 
     <!-- Center: Menu from Navigation -->
-    <nav class="w-2/4 flex justify-center items-center gap-6 text-gray-800 font-medium text-sm">
+    <nav class="header-main__navigation hidden md:w-2/4 md:!flex justify-center items-center gap-6 text-gray-800 font-medium text-sm">
       {% if section.settings['header-main-menu'] != blank %}
         {% assign header_menu = linklists[section.settings['header-main-menu']] %}
         {% for link in header_menu.links %}
@@ -36,17 +84,16 @@
     <div class="w-1/4 flex justify-end items-center gap-5 px-6 py-3 mr-4">
       <!-- Cart -->
       <a href="/cart" aria-label="View Cart" class="relative">
-  <div class="flex justify-center items-center hover:bg-gray-100 w-[40px] h-[40px] rounded-full p-2 relative">
-    <img src="{{ 'cart-icon.svg' | asset_url }}" alt="View Cart" width="16" height="16" class="mx-auto">
-    
-    {% if cart.item_count > 0 %}
-      <span class="cart__badge flex items-center justify-center w-[16px] h-[16px] text-[12px] text-white leading-none rounded-full font-semibold">
-        {{ cart.item_count }}
-      </span>
-    {% endif %}
-  </div>
-</a>
+        <div class="flex justify-center items-center hover:bg-gray-100 w-[40px] h-[40px] rounded-full p-2 relative">
+          <img src="{{ 'cart-icon.svg' | asset_url }}" alt="View Cart" width="16" height="16" class="mx-auto">
 
+          {% if cart.item_count > 0 %}
+            <span class="cart__badge absolute bg-green-300 top-0 right-0 flex items-center justify-center w-[16px] h-[16px] text-[12px] text-white leading-none rounded-full font-semibold">
+              {{ cart.item_count }}
+            </span>
+          {% endif %}
+        </div>
+      </a>
 
       <!-- Search -->
       <button aria-label="Search" onclick="window.location.href='/search'">
@@ -57,14 +104,47 @@
     </div>
   </div>
 </div>
-<style>
-  .cart__badge {
-    position: absolute;
-    top: 0;
-    right : 0;
-    background-color: green;
-  }
-</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const wrapper = document.getElementById('mobile-menu-wrapper');
+    const menu = document.getElementById('mobile-menu');
+    const toggleBtn = document.getElementById('mobile-menu-toggle');
+    const closeBtn = document.getElementById('mobile-menu-close');
+    const overlay = document.getElementById('mobile-menu-overlay');
+
+    function openMenu() {
+      wrapper.classList.remove('hidden');
+
+      // Allow a tick for transition start
+      requestAnimationFrame(() => {
+        overlay.classList.remove('opacity-0', 'pointer-events-none');
+        overlay.classList.add('opacity-70', 'pointer-events-auto');
+
+        menu.classList.remove('-translate-x-[250px]');
+        menu.classList.add('translate-x-0');
+      });
+    }
+
+    function closeMenu() {
+      overlay.classList.remove('opacity-70', 'pointer-events-auto');
+      overlay.classList.add('opacity-0', 'pointer-events-none');
+
+      menu.classList.add('-translate-x-[250px]');
+      menu.classList.remove('translate-x-0');
+
+      // Hide wrapper after animation finishes (300ms)
+      setTimeout(() => {
+        wrapper.classList.add('hidden');
+      }, 300);
+    }
+
+    toggleBtn.addEventListener('click', openMenu);
+    closeBtn.addEventListener('click', closeMenu);
+    overlay.addEventListener('click', closeMenu);
+  });
+</script>
+
 {% schema %}
 {
   "name": "Header Main",
