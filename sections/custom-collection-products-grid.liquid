@@ -1,0 +1,208 @@
+{% comment %}
+  Section: All Products with sorting and "Load More" button lazy loading
+{% endcomment %}
+
+{% assign sorted_products = collection.products %}
+
+{%- case section.settings.product_sort_by -%}
+  {%- when 'price_low_to_high' -%}
+    {% assign sorted_products = collection.products | sort: 'price' %}
+  {%- when 'price_high_to_low' -%}
+    {% assign sorted_products = collection.products | sort: 'price' | reverse %}
+  {%- when 'newest' -%}
+    {% assign sorted_products = collection.products | sort: 'created_at' | reverse %}
+  {%- else -%}
+    {%- assign sorted_products = collection.products -%}
+{%- endcase -%}
+
+{% assign products_per_row = section.settings.products_per_row | default: 4 %}
+
+{%- assign remaining_products = '' -%}
+{%- for product in sorted_products offset: products_per_row -%}
+  {%- assign remaining_products = remaining_products | append: product.handle -%}
+  {%- unless forloop.last -%}
+    {%- assign remaining_products = remaining_products | append: ',' -%}
+  {%- endunless -%}
+{%- endfor -%}
+
+<div class="page-width" id="{{ section.id }}">
+  <div style="text-align: {{ section.settings.text_alignment }};">
+    <h2>{{ section.settings.all_product_header }}</h2>
+    <p>{{ section.settings.all_product_subtitle }}</p>
+  </div>
+  
+  <all-products
+    data-remaining-products="{{ remaining_products }}"
+    data-products-per-row="{{ products_per_row }}"
+  >
+    <div
+      class="grid"
+      style="--item-per-row: {{ products_per_row }}"
+    >
+      {%- for product in sorted_products limit: products_per_row -%}
+        {% render 'card-product', card_product: product %}
+      {%- endfor -%}
+    </div>
+
+    {% if remaining_products != '' %}
+      <button class="button load-more-button">Load More</button>
+    {% endif %}
+  </all-products>
+</div>
+
+<style>
+  all-products {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 0;
+  }
+
+  all-products .grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(var(--item-per-row), 1fr);
+    gap: 16px;
+  }
+
+  button.load-more-button {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    padding: 12px 32px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+  }
+
+  button.load-more-button:hover:not(:disabled) {
+    background-color: #222;
+  }
+
+  button.load-more-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+</style>
+
+<script>
+  class AllProducts extends HTMLElement {
+    constructor() {
+      super();
+      this.loadMoreButton = this.querySelector('button.load-more-button');
+      this.productsPerRow = Number.parseInt(this.dataset.productsPerRow);
+      this.remainingProducts = this.dataset.remainingProducts ? this.dataset.remainingProducts.split(',') : [];
+      this.grid = this.querySelector('.grid');
+      this.index = this.productsPerRow; // Start loading after initially rendered products
+
+      if (!this.remainingProducts.length) {
+        if (this.loadMoreButton) {
+          this.loadMoreButton.style.display = 'none';
+        }
+      }
+
+      if (this.loadMoreButton) {
+        this.loadMoreButton.addEventListener('click', this.loadMoreProducts.bind(this));
+      }
+    }
+
+    async loadMoreProducts() {
+      if (!this.loadMoreButton) return;
+
+      this.loadMoreButton.setAttribute('disabled', 'true');
+      const productsToLoad = this.remainingProducts.slice(this.index, this.index + this.productsPerRow);
+
+      if (productsToLoad.length === 0) {
+        this.loadMoreButton.remove();
+        return;
+      }
+
+      try {
+        const productsHTML = await Promise.all(
+          productsToLoad.map(async (productHandle) => {
+            const response = await fetch(`/products/${productHandle}?sections=card-product`);
+            const data = await response.json();
+            return data['card-product'];
+          })
+        );
+
+        productsHTML.forEach(html => {
+          this.grid.insertAdjacentHTML('beforeend', html);
+        });
+
+        this.index += this.productsPerRow;
+
+        if (this.index >= this.remainingProducts.length) {
+          this.loadMoreButton.remove();
+        } else {
+          this.loadMoreButton.removeAttribute('disabled');
+        }
+      } catch (error) {
+        console.error('Error loading more products:', error);
+        this.loadMoreButton.removeAttribute('disabled');
+      }
+    }
+  }
+
+  customElements.define('all-products', AllProducts);
+</script>
+
+{% schema %}
+{
+  "name": "All Products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "all_product_header",
+      "label": "Heading Text",
+      "default": "All Products"
+    },
+    {
+      "type": "richtext",
+      "id": "all_product_subtitle",
+      "label": "Subtitle Text",
+      "default": "<p>Browse our full collection</p>"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text Alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "products_per_row",
+      "label": "Products Per Row",
+      "default": 4,
+      "min": 1,
+      "max": 6
+    },
+    {
+      "type": "select",
+      "id": "product_sort_by",
+      "label": "Sort Products By",
+      "default": "price_low_to_high",
+      "options": [
+        { "value": "best_selling", "label": "Best Selling (default)" },
+        { "value": "newest", "label": "Newest" },
+        { "value": "sale_percent", "label": "Sale Percent" },
+        { "value": "sold_number", "label": "Sold Number" },
+        { "value": "price_low_to_high", "label": "Price, Low to High" },
+        { "value": "price_high_to_low", "label": "Price, High to Low" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "All Products"
+    }
+  ]
+}
+{% endschema %}
