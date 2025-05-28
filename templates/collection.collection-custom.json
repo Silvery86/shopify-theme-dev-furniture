@@ -18,8 +18,22 @@
     "products-grid": {
       "type": "custom-collection-products-grid",
       "settings": {
-        "products_per_row": 4,
-        "product_sort_by": "sale_percent"
+        "products_per_page": 8,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "color_scheme": "",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "enable_filtering": true,
+        "filter_type": "horizontal",
+        "enable_sorting": true,
+        "pagination_type": "view_more",
+        "padding_top": 36,
+        "padding_bottom": 36
       }
     }
   },
