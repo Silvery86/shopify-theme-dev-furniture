@@ -1,0 +1,63 @@
+<!-- Main Description -->
+{% if product.description != blank %}
+  <div class="product-main-description rte mb-6">
+    {{ product.description }}
+  </div>
+{% endif %}
+
+<!-- Collapsible Tabs -->
+<div class="product-description-tabs accordion divide-y divide-gray-300 border-t border-b border-gray-300">
+
+  <!-- Tab 1: Product info -->
+  <details class="group">
+    <summary
+      class="cursor-pointer font-semibold text-gray-900 text-[20px] py-3 outline-none flex flex-row-reverse justify-between items-center select-none"
+    >
+      <span class="mr-2 transition-transform duration-300 ease-in-out group-open:rotate-90">+</span>
+      Product info
+    </summary>
+    <div class="tab-content rte px-6 pb-4 text-gray-700 transition-transform duration-300">
+      {{ product.metafields.custom.product_info | metafield_tag | default: 'No info available.' }}
+    </div>
+  </details>
+
+  <!-- Tab 2: Feature -->
+  <details class="group">
+    <summary
+      class="cursor-pointer font-semibold text-gray-900 text-[20px] py-3 outline-none flex flex-row-reverse justify-between items-center select-none"
+    >
+      <span class="mr-2 transition-transform duration-300 ease-in-out group-open:rotate-90">+</span>
+      Feature
+    </summary>
+    <div class="tab-content rte px-6 pb-4 text-gray-700">
+      {{ product.metafields.custom.feature | metafield_tag | default: 'No feature information.' }}
+    </div>
+  </details>
+
+  <!-- Tab 3: Warranty information -->
+  <details class="group">
+    <summary
+      class="cursor-pointer font-semibold text-gray-900 text-[20px] py-3 outline-none flex flex-row-reverse justify-between items-center select-none"
+    >
+      <span class="mr-2 transition-transform duration-300 ease-in-out group-open:rotate-90">+</span>
+      Warranty information
+    </summary>
+    <div class="tab-content rte px-6 pb-4 text-gray-700">
+      {{ product.metafields.custom.warranty_information | metafield_tag | default: 'No warranty info available.' }}
+    </div>
+  </details>
+
+  <!-- Tab 4: Delivery and shipping -->
+  <details class="group">
+    <summary
+      class="cursor-pointer font-semibold text-gray-900 text-[20px] py-3 outline-none flex flex-row-reverse justify-between items-center select-none"
+    >
+      <span class="mr-2 transition-transform duration-300 ease-in-out group-open:rotate-90">+</span>
+      Delivery and shipping
+    </summary>
+    <div class="tab-content rte px-6 pb-4 text-gray-700">
+      {{ shop.metafields.custom.delivery_and_shipping | metafield_tag | default: 'No delivery information available.' }}
+    </div>
+  </details>
+
+</div>

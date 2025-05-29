@@ -1,44 +1,48 @@
 {% comment %}
   Breadcrumb for product page and collection
 {% endcomment %}
-  <div class="page-width">
-{% if template.name == 'product' %}
-
+<div class="page-width">
+  {% if template.name == 'product' %}
     <nav class="product-page__breadcrumb flex justify-start items-center gap-3 my-6 mx-2">
       <a class="no-underline" href="{{ routes.root_url }}">Home</a>
       <span>&rsaquo;</span>
-      <a class="no-underline" href="/collections/{{ product.collections.first.handle }}">
-        {{ product.collections.first.title }}
-      </a>
+      {% if product.collections != blank %}
+        <a class="no-underline" href="/collections/{{ product.collections.first.handle }}">
+          {{ product.collections.first.title }}
+        </a>
+      {% endif %}
       <span>&rsaquo;</span>
       <span>{{ product.title }}</span>
     </nav>
-
-{% endif %}
-{% if template.name == 'collection' %}
+  {% endif %}
+  {% if template.name == 'collection' %}
     <nav class="product-page__breadcrumb">
       <a class="no-underline" href="{{ routes.root_url }}">Home</a>
       <span>&rsaquo;</span>
       <span>{{ collection.title }}</span>
     </nav>
-{% endif %}
-{% if section.settings.toggle-title %}
-        <div class="mt-6 text-gray-900 font-semibold text-[28px]">{{ collection.title |  upcase }}</div>
+  {% endif %}
+  {% if section.settings['toggle-title'] %}
+    {% if template.name == 'collection' %}
+      <div class="mt-6 text-gray-900 font-semibold text-[28px]">{{ collection.title | upcase }}</div>
+    {% elsif template.name == 'product' %}
+      <div class="mt-6 text-gray-900 font-semibold text-[28px]">{{ product.title | upcase }}</div>
     {% endif %}
-  </div>
+  {% endif %}
+</div>
 {% schema %}
 {
   "name": "Product Breadcrumb",
   "settings": [
     {
-        "type": "checkbox",
-        "id": "toggle-title",
-        "label": "Enable page title",
-        "default": true,
+      "type": "checkbox",
+      "id": "toggle-title",
+      "label": "Enable page title",
+      "default": true
     }
   ],
   "enabled_on": {
-    "templates": ["collection"]
+    "templates": ["collection", "product"]
   },
   "presets": [
     {
