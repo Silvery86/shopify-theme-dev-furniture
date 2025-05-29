@@ -5,28 +5,38 @@
         {{ section.settings['blog-news-title'] }}
       </div>
       <div class="blog-news__link text-gray-800 font-medium text-[14px]">
-        <a href="{{ section.settings.blog-news-link |  default : "/" }}">View all ></a>
+        <a href="{{ section.settings.blog-news-link |  default : "/" }}" class="hover:underline">View all ></a>
       </div>
     </div>
     <div class="blog-new__container flex flex-row justify-between items-start gap-5">
-      <div class="container__left hide-on-mobile md:w-1/2">
-        {% render 'article-custom-card', article: section.settings['article-1'] %}
+      <div class="container__left hide-on-mobile md:w-1/2 transition-transform duration-300 ease-in-out hover:scale-110">
+        <a href="{{ section.settings['article-1'].url }}">
+          {% render 'article-custom-card', article: section.settings['article-1'] %}
+        </a>
       </div>
 
       <div class="container-right w-full flex flex-col items-center justify-center md:justify-between gap-[48px] md:gap-4 md:w-1/2 md:items-start md:flex-row">
-        <div class="article-card-large w-full hide-on-laptop flex justify-center items-start">
-          {% render 'article-custom-card', article: section.settings['article-2'], size: 'large' %}
+        <div class="article-card-large w-full hide-on-laptop flex justify-center items-start transition-transform duration-300 ease-in-out hover:scale-110">
+          <a href="{{ section.settings['article-2'].url }}">
+            {% render 'article-custom-card', article: section.settings['article-2'], size: 'large' %}
+          </a>
         </div>
-        <div class="article-card-medium w-1/2 h-full hide-on-mobile justify-between">
-          {% render 'article-custom-card', article: section.settings['article-2'], size: 'medium' %}
+        <div class="article-card-medium w-1/2 h-full hide-on-mobile justify-between transition-transform duration-300 ease-in-out hover:scale-110">
+          <a href="{{ section.settings['article-2'].url }}">
+            {% render 'article-custom-card', article: section.settings['article-2'], size: 'medium' %}
+          </a>
         </div>
 
         <!-- Article 3 -->
-        <div class="article-card-large w-full hide-on-laptop flex justify-center items-start">
-          {% render 'article-custom-card', article: section.settings['article-3'], size: 'large' %}
+        <div class="article-card-large w-full hide-on-laptop flex justify-center items-start transition-transform duration-300 ease-in-out hover:scale-110">
+          <a href="{{ section.settings['article-3'].url }}">
+            {% render 'article-custom-card', article: section.settings['article-3'], size: 'large' %}
+          </a>
         </div>
-        <div class="article-card-medium w-1/2 h-full hide-on-mobile justify-between">
-          {% render 'article-custom-card', article: section.settings['article-3'], size: 'medium' %}
+        <div class="article-card-medium w-1/2 h-full hide-on-mobile justify-between transition-transform duration-300 ease-in-out hover:scale-110">
+          <a href="{{ section.settings['article-3'].url }}">
+            {% render 'article-custom-card', article: section.settings['article-3'], size: 'medium' %}
+          </a>
         </div>
       </div>
     </div>

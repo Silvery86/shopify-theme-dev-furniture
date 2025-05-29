@@ -10,7 +10,7 @@
         {% for block in section.blocks %}
           {% assign collection = block.settings['select-collection'] %}
           <button
-            class="collection-tab text-gray-900 border border-gray-900 rounded-3xl px-5 py-2.5 font-medium text-[14px]"
+            class="collection-tab text-gray-900 border border-gray-900 rounded-3xl px-5 py-2.5 font-medium text-[14px] cursor-pointer hover:bg-gray-200 transition-colors duration-300 hover:underline"
             data-collection-id="collection-{{ forloop.index }}"
           >
             {{ block.settings['collection-custom-title'] | default: collection.title }}
@@ -54,7 +54,7 @@
                   <img
                     src="{{ image_1 | image_url: width: 800 }}"
                     alt="Gallery image 1"
-                    class="w-full h-full object-cover rounded-lg"
+                    class="w-full h-full object-cover rounded-lg transition-transform duration-300 ease-in-out hover:scale-110"
                     width="{{ image_1.width }}"
                     height="{{ image_1.height }}"
                     loading="lazy"
@@ -67,7 +67,7 @@
                   <img
                     src="{{ image_2 | image_url: width: 800 }}"
                     alt="Gallery image 2"
-                    class="w-full h-full object-cover rounded-lg"
+                    class="w-full h-full object-cover rounded-lg transition-transform duration-300 ease-in-out hover:scale-110"
                     width="{{ image_2.width }}"
                     height="{{ image_2.height }}"
                     loading="lazy"
@@ -84,7 +84,7 @@
                   <img
                     src="{{ image_3 | image_url: width: 800 }}"
                     alt="Gallery image 3"
-                    class="w-full h-full object-cover rounded-lg"
+                    class="w-full h-full object-cover rounded-lg transition-transform duration-300 ease-in-out hover:scale-110"
                     width="{{ image_3.width }}"
                     height="{{ image_3.height }}"
                     loading="lazy"
@@ -97,7 +97,7 @@
                   <img
                     src="{{ image_4 | image_url: width: 800 }}"
                     alt="Gallery image 4"
-                    class="w-full h-full object-cover rounded-lg"
+                    class="w-full h-full object-cover rounded-lg transition-transform duration-300 ease-in-out hover:scale-110"
                     width="{{ image_4.width }}"
                     height="{{ image_4.height }}"
                     loading="lazy"

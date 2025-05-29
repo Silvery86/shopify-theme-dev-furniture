@@ -12,7 +12,7 @@
                   alt="{{ media.alt | escape }}"
                   width="{{ media.width }}"
                   height="{{ media.height }}"
-                  class="w-full h-full rounded-2xl object-cover transition-transform duration-300 group-hover:scale-90"
+                  class="w-full h-full rounded-2xl object-cover transition-transform duration-300 ease-in-out hover:scale-110"
                   loading="lazy"
                 >
               </div>
@@ -22,7 +22,9 @@
       </div>
 
       <div class="best-deal__content w-full md:w-1/2 flex flex-col justify-center gap-4 bg-gray-800 items-center text-white rounded-b-2xl md:rounded-r-2xl md:rounded-bl-none min-h-[500px]">
-        <div class="best-deal__badge text-gray-300 font-light text-[14px]">{{ section.settings.best-deal-title |  default : "Best Deal" |  upcase }}</div>
+        <div class="best-deal__badge text-gray-300 font-light text-[14px]">
+          {{ section.settings['best-deal-title'] | default: 'Best Deal' | upcase }}
+        </div>
         <div class="best-deal__title text-gray-100 font-semibold text-[24px]">{{ product.title }}</div>
         <div class="best-deal__feature-image">
           {{
@@ -53,7 +55,7 @@
         autoplay: {
           delay: 3000,
           disableOnInteraction: false,
-        },       
+        },
         loop: true,
       });
     }
@@ -66,7 +68,7 @@
   .swiper-button-prev,
   .swiper-button-next {
     display: flex !important;
-    width: 40px; 
+    width: 40px;
     height: 40px;
     align-items: center;
     justify-content: center;
@@ -91,7 +93,7 @@
       "type": "text",
       "id": "best-deal-title",
       "label": "Change best deal title",
-      "default" : "Best Deal"
+      "default": "Best Deal"
     },
     {
       "type": "product",
