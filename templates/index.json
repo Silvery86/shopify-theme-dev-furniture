@@ -11,7 +11,6 @@
   "sections": {
     "hero_slider_jQeHJM": {
       "type": "hero-slider",
-      "name": "Hero Slider",
       "settings": {
         "hero-slider-title": "Everything You Need for a Modern Interior",
         "hero-slider-products": [
@@ -80,14 +79,12 @@
         "category_bRBaP7",
         "category_Niwekr"
       ],
-      "name": "Categories List",
       "settings": {
         "categories_per_row": 4
       }
     },
     "popular_products_KcKmJ3": {
       "type": "popular_products",
-      "name": "Popular Product",
       "settings": {
         "popular-products__title": "Popular products",
         "popular-products__url": "shopify://collections",
@@ -147,7 +144,6 @@
         "collection_7XYUA6",
         "collection_tkCwRm"
       ],
-      "name": "Collection Gallery",
       "settings": {
         "gallery-title": "Interior design and inspiration"
       }
@@ -158,6 +154,7 @@
         "benefit_mgHnx4": {
           "type": "benefit",
           "settings": {
+            "title": "Eco-friendly",
             "benefit-subtitle": "<p>Decorate your space with eco-friendly furniture with low VOCs, environmentally friendly materials and safe coatings.</p>",
             "benefit-image": "shopify://shop_images/eco-icon.svg"
           }
@@ -165,6 +162,7 @@
         "benefit_bdUwEK": {
           "type": "benefit",
           "settings": {
+            "title": "Unbeatable quality",
             "benefit-subtitle": "<p>We choose raw materials from the best manufacturers, so our furniture and decor are of the highest quality at the best prices.</p>",
             "benefit-image": "shopify://shop_images/furniture-icon.svg"
           }
@@ -172,6 +170,7 @@
         "benefit_9FyiWe": {
           "type": "benefit",
           "settings": {
+            "title": "Delivery to your door",
             "benefit-subtitle": "<p> We will deliver to your door anywhere in the world. If you're not 100% satisfied, let us know within 30 days and we'll solve the problem.</p>",
             "benefit-image": "shopify://shop_images/open-box.svg"
           }
@@ -182,19 +181,18 @@
         "benefit_bdUwEK",
         "benefit_9FyiWe"
       ],
-      "name": "Benefits",
       "settings": {}
     },
     "best_deal_banner_kRWDVB": {
       "type": "best-deal-banner",
-      "name": "Best Deal Banner",
       "settings": {
-        "best-deal-product": "napa-sofa"
+        "best-deal-title": "Best Deal",
+        "best-deal-product": "napa-sofa",
+        "button-title": "Shop Now"
       }
     },
     "blog_new_rgMVxn": {
       "type": "blog-new",
-      "name": "Blog and news",
       "settings": {
         "blog-news-title": "Blog and news",
         "blog-news-link": "",
