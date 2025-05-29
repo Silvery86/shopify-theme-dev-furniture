@@ -24,7 +24,7 @@
       endfor
 
       if matching_variant != null and matching_variant.featured_image != null
-        assign image_url = matching_variant.featured_image | image_url: width: 50
+        assign image_url = matching_variant.featured_image | image_url: width: 100
         assign swatch_value = 'url(' | append: image_url | append: ')'
         assign swatch_focal_point = matching_variant.featured_image.presentation.focal_point
       else
@@ -56,7 +56,6 @@
       {{- 'products.product.variant_sold_out_or_unavailable' | t -}}
     </span>
   {%- endcapture -%}
-
   {%- if picker_type == 'swatch' -%}
   {%- capture help_text -%}
     <span class="visually-hidden">{{ value | escape }}</span>
@@ -95,9 +94,6 @@
     <label
       for="{{ input_id }}"
       class="swatch-label"
-      {% if swatch_value %}
-        style="background: {{ swatch_value }}; background-size: cover; background-position: center;"
-      {% endif %}
     >
       {{ value }}
       {{ label_unavailable }}

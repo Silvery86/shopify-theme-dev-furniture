@@ -21,7 +21,7 @@
     assign final_swatch_focal_point = null
 
     if swatch.image
-      assign image_url = swatch.image | image_url: width: 50
+      assign image_url = swatch.image | image_url: width: 100
       assign final_swatch_value = 'url(' | append: image_url | append: ')'
       assign final_swatch_focal_point = swatch.image.presentation.focal_point
     elsif swatch.color
@@ -38,4 +38,12 @@
     class="swatch swatch--unavailable{% if shape == 'square' %} swatch--square{% endif %}"
   {% endif %}
 ></span>
+
+<style>
+  .swatch {
+    align-self: 2/1;
+    width: 100px;
+    height: 50px;
+  }
+</style>
 
