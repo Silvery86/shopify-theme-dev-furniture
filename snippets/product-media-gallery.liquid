@@ -329,4 +329,24 @@
       </button>
     </slider-component>
   {%- endif -%}
+  {%- if show_badges -%}
+      <span class="badge price__badge-sale !bg-red-500 !text-gray-100 text-[12px] font-normal">
+        {{ 'products.product.on_sale' | t }}
+      </span>
+    {%- endif -%}
 </media-gallery>
+<style>
+    media-gallery {
+      position: relative;
+    }
+
+    media-gallery .badge {
+      position: absolute;
+    }
+
+    media-gallery .price__badge-sale {
+      top: 10px;
+      left: 10px;
+    }
+
+</style>
