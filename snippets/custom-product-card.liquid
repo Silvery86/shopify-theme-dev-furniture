@@ -2,6 +2,18 @@
 {% assign product_form_id = 'product-form-' | append: card_product.id %}
 <div class="product_container product-{{ card_product.id }} swiper-slide !flex flex-col justify-between min-h-[270px] gap-0">
   <div class="product__image h-[190px] md:h-[150px] relative overflow-hidden group">
+    {% assign compare_price = card_product.compare_at_price %}
+  {% assign current_price = card_product.price %}
+
+  {% if compare_price and compare_price > current_price %}
+    {% assign discount = compare_price | minus: current_price %}
+    {% assign discount_percentage = discount | times: 100 | divided_by: compare_price | round %}
+    <span
+      class="absolute top-4 left-4 z-10 bg-red-500 text-gray-100 text-[14px] font-semibold px-2 py-0.5 rounded-xl"
+    >
+      -{{ discount_percentage }}%
+    </span>
+  {% endif %}
   <a href="{{ card_product.url }}">
     <img
       class="product-main-image w-full h-full object-cover transition-opacity duration-300 ease-in-out group-hover:opacity-0"
@@ -31,7 +43,7 @@
 
   {% render 'product-color-picker', product: card_product, product_form_id: product_form_id %}
   <div class="product__title text-[14px] font-medium text-gray-900">{{ card_product.title }}</div>
-  <div class="product__price text-[16px] font-semibold text-gray-900">{{ card_product.price | money }}</div>
+  <div class="product__price text-[16px] font-semibold text-gray-900">{{ card_product.price | money }} <span class=" line-through text-gray-600 text-[12px] font-normal">{{ card_product.compare_at_price | money }}</span></div>
   <div class="product__option flex justify-between items-center">
     <button class="flex-1 bg-gray-800 text-white rounded-2xl px-5 py-2.5 mr-2 border hover:border-gray-900 hover:text-gray-900 hover:bg-gray-100 transition-colors duration-300 cursor-pointer">Add to cart</button>
     <a
