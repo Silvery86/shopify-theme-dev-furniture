@@ -1,21 +1,3 @@
-{% comment %}
-  Renders product variant options
-
-  Accepts:
-  - product: {Object} product object.
-  - option: {Object} current product_option object.
-  - block: {Object} block object.
-  - picker_type: {String} type of picker to dispay
-
-
-  Usage:
-  {% render 'product-variant-options',
-    product: product,
-    option: option,
-    block: block
-    picker_type: picker_type
-  %}
-{% endcomment %}
 {%- liquid
   assign product_form_id = 'product-form-' | append: section.id
 -%}
@@ -23,19 +5,36 @@
 {%- for value in option.values -%}
   {%- liquid
     assign swatch_focal_point = null
-    if value.swatch.image
-      assign image_url = value.swatch.image | image_url: width: 50
-      assign swatch_value = 'url(' | append: image_url | append: ')'
-      assign swatch_focal_point = value.swatch.image.presentation.focal_point
-    elsif value.swatch.color
+    assign swatch_value = null
+    assign option_disabled = true
+
+    if value.available
+      assign option_disabled = false
+    endif
+
+    if block.settings.swatch_style == 'image'
+      # Find the variant matching this option value
+      assign matching_variant = null
+      for variant in product.variants
+        # Check if this variant's option matches current swatch value
+        if variant.options contains value
+          assign matching_variant = variant
+          break
+        endif
+      endfor
+
+      if matching_variant != null and matching_variant.featured_image != null
+        assign image_url = matching_variant.featured_image | image_url: width: 50
+        assign swatch_value = 'url(' | append: image_url | append: ')'
+        assign swatch_focal_point = matching_variant.featured_image.presentation.focal_point
+      else
+        assign swatch_value = null
+      endif
+
+    elsif block.settings.swatch_style == 'color' and value.swatch.color
       assign swatch_value = 'rgb(' | append: value.swatch.color.rgb | append: ')'
     else
       assign swatch_value = null
-    endif
-
-    assign option_disabled = true
-    if value.available
-      assign option_disabled = false
     endif
   -%}
 
@@ -59,23 +58,25 @@
   {%- endcapture -%}
 
   {%- if picker_type == 'swatch' -%}
-    {%- capture help_text -%}
-      <span class="visually-hidden">{{ value | escape }}</span>
-      {{ label_unavailable }}
-    {%- endcapture -%}
-    {%
-      render 'swatch-input',
-      id: input_id,
-      name: input_name,
-      value: value | escape,
-      swatch: value.swatch,
-      product_form_id: product_form_id,
-      checked: value.selected,
-      visually_disabled: option_disabled,
-      shape: block.settings.swatch_shape,
-      help_text: help_text,
-      additional_props: input_dataset
-    %}
+  {%- capture help_text -%}
+    <span class="visually-hidden">{{ value | escape }}</span>
+    {{ label_unavailable }}
+  {%- endcapture -%}
+  {%
+    render 'swatch-input',
+    id: input_id,
+    name: input_name,
+    value: value | escape,
+    swatch: value.swatch,
+    product_form_id: product_form_id,
+    checked: value.selected,
+    visually_disabled: option_disabled,
+    shape: block.settings.swatch_shape,
+    help_text: help_text,
+    additional_props: input_dataset,
+    swatch_value: swatch_value,      # Pass computed swatch_value here
+    swatch_focal_point: swatch_focal_point
+  %}
   {%- elsif picker_type == 'button' -%}
     <input
       type="radio"
@@ -91,8 +92,14 @@
       {% endif %}
       {{ input_dataset }}
     >
-    <label for="{{ input_id }}">
-      {{ value -}}
+    <label
+      for="{{ input_id }}"
+      class="swatch-label"
+      {% if swatch_value %}
+        style="background: {{ swatch_value }}; background-size: cover; background-position: center;"
+      {% endif %}
+    >
+      {{ value }}
       {{ label_unavailable }}
     </label>
   {%- elsif picker_type == 'dropdown' or picker_type == 'swatch_dropdown' -%}
@@ -110,11 +117,11 @@
       {% endif %}
       {{ input_dataset }}
     >
-      {% if option_disabled -%}
+      {% if option_disabled %}
         {{- 'products.product.value_unavailable' | t: option_value: value -}}
-      {%- else -%}
-        {{- value -}}
-      {%- endif %}
+      {% else %}
+        {{ value }}
+      {% endif %}
     </option>
   {%- endif -%}
 {%- endfor -%}
