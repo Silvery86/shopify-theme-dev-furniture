@@ -36,9 +36,9 @@
         "variant_picker": {
           "type": "variant_picker",
           "settings": {
-            "picker_type": "dropdown",
+            "picker_type": "button",
             "swatch_shape": "circle",
-            "swatch_style": "image"
+            "swatch_style": "color"
           }
         },
         "quantity_selector": {
