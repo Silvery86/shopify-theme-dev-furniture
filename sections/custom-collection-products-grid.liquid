@@ -195,10 +195,10 @@
                 {% if request.query_string != blank %}
                   {% assign next_url = paginate.next.url | append: '?' | append: request.query_string %}
                 {% endif %}
-                <div class="text-center mt-8 space-y-4 view-more-wrapper">
-                  <div class="text-sm text-gray-500 view-more-status">
+                <div class="text-center mt-16 space-y-4 view-more-wrapper">
+                  <div class="text-gray-600 text-[14px] font-normal view-more-status">
                     Showing {{ collection.products.size }} from {{ collection.all_products_count }}
-                    <div class="h-1 w-52 bg-gray-100 rounded-full mx-auto mt-1 overflow-hidden">
+                    <div class="h-2 w-150 bg-gray-100 rounded-full mx-auto mt-1 overflow-hidden">
                       <div
                         class="h-full !flex bg-gray-900 transition-all progress-bar__fill"
                         style="width: {{ collection.products.size | times: 100.0 | divided_by: collection.all_products_count }}%;"
@@ -208,7 +208,7 @@
 
                   <button
                     id="ViewMoreButton"
-                    class="inline-flex items-center gap-2 font-semibold text-base text-gray-900 hover:underline view-more-button"
+                    class="inline-flex items-center gap-2 font-medium text-[16px] text-gray-900 hover:underline view-more-button"
                     data-next-url="{{ next_url }}"
                     data-total="{{ collection.all_products_count }}"
                   >
@@ -219,7 +219,7 @@
                         <path d="M22 12a10 10 0 0 1-10 10" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
                       </svg>
                     </span>
-                    <svg class="w-4 h-4 text-gray-900" fill="none" viewBox="0 0 24 24">
+                    <svg class="w-8 h-8 text-gray-900" fill="none" viewBox="0 0 24 24">
                       <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                   </button>
