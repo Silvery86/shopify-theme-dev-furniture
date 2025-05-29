@@ -38,7 +38,7 @@
     class="swatch swatch--unavailable{% if shape == 'square' %} swatch--square{% endif %}"
   {% endif %}
 ></span>
-
+{% if template.name == "product" %}
 <style>
   .swatch {
     align-self: 2/1;
@@ -46,4 +46,13 @@
     height: 50px;
   }
 </style>
-
+{% endif %}
+{% if template.name == "index" or template.name == "collection" %}
+<style>
+  .swatch {
+    align-self: 1/1;
+    width: 16px;
+    height: 16px;
+  }
+</style>
+{% endif %}

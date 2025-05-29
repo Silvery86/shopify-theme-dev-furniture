@@ -28,36 +28,10 @@
     >
       <div class="popular-products__container swiper-wrapper">
         {% for product in section.settings['popular-products-list'] limit: 8 %}
-          {% assign product_form_id = 'product-form-' | append: product.id %}
-          <div class="product_container product-{{ product.id }} swiper-slide !flex flex-col justify-between">
-            <div class="product__image h-[190px] md:h-[150px]">
-              <a href="{{ product.url }}">
-                <img
-                  class="product-main-image"
-                  id="product-image-{{ product.id }}"
-                  src="{{ product.selected_or_first_available_variant.featured_media | image_url: width: 300 }}"
-                  width="300"
-                  height="300"
-                >
-              </a>
-            </div>
-
-            {% render 'product-color-picker', product: product, product_form_id: product_form_id %}
-            <div class="product__title text-[14px] font-medium text-gray-900">{{ product.title }}</div>
-            <div class="product__price text-[16px] font-semibold text-gray-900">{{ product.price | money }}</div>
-            <div class="product__option flex justify-between items-center">
-              <button class="flex-1 bg-gray-800 text-white rounded-2xl px-5 py-2.5 mr-2 ">Add to cart</button>
-              <a
-                class="bg-gray-100 rounded-full w-[40px] h-[40px] flex justify-center items-center hover:bg-gray-200"
-                href="#"
-                ><img
-                  src="{{ "icon-heart.svg" |  asset_url }}"
-                  width="16px"
-                  height="16px"
-                  alt="Favorite"
-              ></a>
-            </div>
-          </div>
+            {% render 'custom-product-card',
+                    card_product: product,                 
+                    show_secondary_image: section.settings.show_secondary_image,                
+                  %}
         {% endfor %}
       </div>
       <div class="swiper-button-prev left-0 bg-gray-100 rounded-full after:text-gray-700" ></div>
@@ -89,27 +63,6 @@
     }
   });
 </script>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    document.body.addEventListener('change', function (event) {
-      const input = event.target;
-      console.log(input);
-      if (input.matches('input.swatch-input__input:checked') && input.dataset.imageUrl) {
-        // Step 1: Scope to correct product container
-        const productContainer = input.closest('.product_container');
-        if (!productContainer) return;
-
-        // Step 2: Find the image element inside that product
-        const imageEl = productContainer.querySelector('.product-main-image');
-        if (imageEl) {
-          imageEl.src = input.dataset.imageUrl;
-        }
-      }
-    });
-  });
-</script>
-
 <style>
   .popular-products {
     margin: 56px 0;
