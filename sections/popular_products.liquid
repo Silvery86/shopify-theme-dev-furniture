@@ -30,7 +30,7 @@
         {% for product in section.settings['popular-products-list'] limit: 8 %}
             {% render 'custom-product-card',
                     card_product: product,                 
-                    show_secondary_image: section.settings.show_secondary_image,                
+                    show_secondary_image: true,                
                   %}
         {% endfor %}
       </div>

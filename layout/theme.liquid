@@ -292,7 +292,7 @@
     {%- endif -%}
 
     {% comment %} Load swiper  {% endcomment %}
-     {% if template.name == "index" %}
+     {% if template.name == "index" or template.name == "product" %}
     {{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
     <script src="{{ "swiper-bundle.min.js" |  asset_url }}" defer></script>
      {% endif %}
