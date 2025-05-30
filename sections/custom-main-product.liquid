@@ -76,7 +76,7 @@
   <div class="page-width">
     <div class="product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} product--{{ section.settings.gallery_layout }} product--mobile-{{ section.settings.mobile_thumbnails }} grid grid--1-col {% if product.media.size > 0 %}grid--2-col-tablet{% else %}product--no-media{% endif %}">
       <div class="grid__item product__media-wrapper">
-        {% render 'product-media-gallery', variant_images: variant_images, limit: 6 , show_badges: true %}
+        {% render 'product-media-gallery', variant_images: variant_images, limit: 6, show_badges: true %}
         {% if product.description != blank %}
           {% render 'custom-product-description', product: product %}
         {% endif %}
@@ -102,13 +102,28 @@
                 </p>
               {%- when 'title' -%}
                 <div class="product__title" {{ block.shopify_attributes }}>
-                  <h1>{{ product.title | escape }}</h1>
-                  <a href="{{ product.url }}" class="product__title">
-                    <h2 class="h1">
-                      {{ product.title | escape }}
-                    </h2>
-                  </a>
+                  {% assign font_weight = block.settings.font_weight | default: 'regular' %}
+                  {% assign text_size = block.settings.text_size | default: 20 %}
+                  {% assign text_alignment = block.settings.text_alignment | default: 'left' %}
+                  {% case font_weight %}
+                    {% when 'medium' %}
+                      {% assign font_weight_value = 400 %}
+                    {% when 'semi-bold' %}
+                      {% assign font_weight_value = 500 %}
+                    {% when 'bold' %}
+                      {% assign font_weight_value = 600 %}
+
+                    {% else %}
+                      {% assign font_weight_value = 400 %}
+                  {% endcase %}
+                  <h1
+                    class="text-gray-900"
+                    style="font-weight: {{ font_weight_value }}; font-size: {{ text_size }}px; text-align: {{ text_alignment }};"
+                  >
+                    {{ product.title | escape }}
+                  </h1>
                 </div>
+
               {%- when 'price' -%}
                 <div id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
                   {%- render 'price',
@@ -478,6 +493,35 @@
                   section_id: section.id,
                   show_pickup_availability: true
                 -%}
+              {%- when 'payment-content' -%}
+                <div class="flex items-center justify-between w-full" {{ block.shopify_attributes }}>
+                  <div class="text-gray-900 font-normal text-[14px]">
+                    <p>
+                      Pay 4 interest-free payments of
+                      <span class="font-bold">$89.00</span> with
+                    </p>
+                    <p class="mt-1">
+                      We provide a
+                      <span class="font-semibold">3-year warranty</span>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="inline w-10 h-10 text-gray-700 ml-1"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 10-1.414 1.414L9 13.414l4.707-4.707z" clip-rule="evenodd" />
+                      </svg>
+                    </p>
+                  </div>
+                </div>
+              {%- when 'freeship-content' -%}
+                <div class="freeship-content" {{ block.shopify_attributes }}>
+                  {% render 'freeship-content' %}
+                </div>
+              {%- when 'contact-content' -%}
+                <div class="contact-content" {{ block.shopify_attributes }}>
+                  {% render 'contact-content', block : block %}
+                </div>
               {%- when 'rating' -%}
                 {%- if product.metafields.reviews.rating.value != blank -%}
                   <div class="rating-wrapper">
@@ -773,8 +817,78 @@
       ]
     },
     {
+      "type": "payment-content",
+      "name": "Payment Content",
+      "settings": []
+    },
+    {
+      "type": "freeship-content",
+      "name": "Freeship  Content",
+      "settings": []
+    },
+    {
+      "type": "contact-content",
+      "name": "Contact  Content",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Have a question?"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "Contact us if you have questions "
+        },
+        {
+          "type": "text",
+          "id" : "button-text",
+          "label":"Button text",
+          "default":"Contact us"
+        },
+        {
+          "type": "url",
+          "id" : "button-url",
+          "label":"Button link"
+        }
+      ]
+    },
+    {
       "type": "title",
       "name": "t:sections.main-product.blocks.title.name",
+      "settings": [
+        {
+          "type": "select",
+          "label": "Font Weight",
+          "id": "font_weight",
+          "options": [
+            { "value": "regular", "label": "Regular" },
+            { "value": "medium", "label": "Medium" },
+            { "value": "semi-bold", "label": "Semi-Bold" },
+            { "value": "bold", "label": "Bold" }
+          ],
+          "default": "regular"
+        },
+        {
+          "type": "number",
+          "label": "Text Size (px)",
+          "id": "text_size",
+          "default": 16
+        },
+        {
+          "type": "select",
+          "label": "Text Alignment",
+          "id": "text_alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "left"
+        }
+      ],
       "limit": 1
     },
     {
@@ -899,22 +1013,21 @@
           "default": "circle"
         },
         {
-  "type": "select",
-  "id": "swatch_style",
-  "label": "Swatch style",
-  "default": "color",
-  "options": [
-    {
-      "value": "color",
-      "label": "Color picker"
-    },
-    {
-      "value": "image",
-      "label": "Image picker"
-    }
-  ]
-}
-
+          "type": "select",
+          "id": "swatch_style",
+          "label": "Swatch style",
+          "default": "color",
+          "options": [
+            {
+              "value": "color",
+              "label": "Color picker"
+            },
+            {
+              "value": "image",
+              "label": "Image picker"
+            }
+          ]
+        }
       ]
     },
     {

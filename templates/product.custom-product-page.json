@@ -27,10 +27,18 @@
         },
         "title": {
           "type": "title",
-          "settings": {}
+          "settings": {
+            "font_weight": "regular",
+            "text_size": 16,
+            "text_alignment": "left"
+          }
         },
         "price": {
           "type": "price",
+          "settings": {}
+        },
+        "payment_content_YFHAiA": {
+          "type": "payment-content",
           "settings": {}
         },
         "variant_picker": {
@@ -41,21 +49,24 @@
             "swatch_style": "image"
           }
         },
-        "quantity_selector": {
-          "type": "quantity_selector",
-          "settings": {}
-        },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
-            "show_dynamic_checkout": true,
-            "show_gift_card_recipient": true
+            "show_dynamic_checkout": false,
+            "show_gift_card_recipient": false
           }
         },
-        "share": {
-          "type": "share",
+        "freeship_content_EC3A6C": {
+          "type": "freeship-content",
+          "settings": {}
+        },
+        "contact_content_kfFcin": {
+          "type": "contact-content",
           "settings": {
-            "share_label": "Share"
+            "title": "Have a question?",
+            "subtitle": "Contact us if you have questions",
+            "button-text": "Contact us",
+            "button-url": "shopify://pages/contact"
           }
         }
       },
@@ -63,10 +74,11 @@
         "vendor",
         "title",
         "price",
+        "payment_content_YFHAiA",
         "variant_picker",
-        "quantity_selector",
         "buy_buttons",
-        "share"
+        "freeship_content_EC3A6C",
+        "contact_content_kfFcin"
       ],
       "settings": {
         "enable_sticky_info": false,
@@ -83,10 +95,44 @@
         "padding_top": 36,
         "padding_bottom": 12
       }
+    },
+    "popular_products_gFUCJz": {
+      "type": "popular_products",
+      "name": "Popular Product",
+      "settings": {
+        "popular-products__title": "Popular products",
+        "popular-products__url": "",
+        "popular-products-list": [
+          "aledo-nightstand",
+          "altira-lift-top-storage-coffee-table",
+          "acadia-bed",
+          "anzio-sofa",
+          "ares-bed",
+          "atlas-dining-armchair",
+          "badia-counter-stool",
+          "bassano-leather-swivel-counter-stool",
+          "bolton-100-sofa",
+          "boswin-24-fabric-counter-height-stool",
+          "boswin-24-leather-counter-height-stool"
+        ],
+        "products-per-slide-desktop": 4,
+        "products-per-slide-mobile": 2
+      }
+    },
+    "recent_viewed_GWLTEw": {
+      "type": "recent-viewed",
+      "name": "Recent Viewed Products",
+      "settings": {
+        "recent-viewed__title": "Recent Viewed",
+        "products-per-slide-desktop": 4,
+        "products-per-slide-mobile": 2
+      }
     }
   },
   "order": [
     "custom_collection_breadcrumb_ydYX8i",
-    "main"
+    "main",
+    "popular_products_gFUCJz",
+    "recent_viewed_GWLTEw"
   ]
 }
