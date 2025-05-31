@@ -39,9 +39,7 @@
     {% endif %}
   </a>
 </div>
-
-
-  {% render 'product-color-picker', product: card_product, product_form_id: product_form_id %}
+  {% render 'product-color-picker', product: card_product, product_form_id: product_form_id, swatch_color_only : true %}
   <div class="product__title text-[14px] font-medium text-gray-900">{{ card_product.title }}</div>
   <div class="product__price text-[16px] font-semibold text-gray-900">{{ card_product.price | money }} <span class=" line-through text-gray-600 text-[12px] font-normal">{{ card_product.compare_at_price | money }}</span></div>
   <div class="product__option flex justify-between items-center">
