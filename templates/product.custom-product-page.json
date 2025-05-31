@@ -68,6 +68,10 @@
             "button-text": "Contact us",
             "button-url": "shopify://pages/contact"
           }
+        },
+        "description_rhwLgq": {
+          "type": "description",
+          "settings": {}
         }
       },
       "block_order": [
@@ -78,7 +82,8 @@
         "variant_picker",
         "buy_buttons",
         "freeship_content_EC3A6C",
-        "contact_content_kfFcin"
+        "contact_content_kfFcin",
+        "description_rhwLgq"
       ],
       "settings": {
         "enable_sticky_info": false,

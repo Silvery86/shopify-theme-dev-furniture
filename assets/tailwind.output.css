@@ -1107,14 +1107,14 @@
       margin-bottom: calc(var(--spacing) * 5);
     }
   }
+  .md\:\!block {
+    @media (width >= 48rem) {
+      display: block !important;
+    }
+  }
   .md\:\!flex {
     @media (width >= 48rem) {
       display: flex !important;
-    }
-  }
-  .md\:block {
-    @media (width >= 48rem) {
-      display: block;
     }
   }
   .md\:hidden {

@@ -78,7 +78,7 @@
       <div class="grid__item product__media-wrapper">
         {% render 'product-media-gallery', variant_images: variant_images, limit: 6, show_badges: true %}
         {% if product.description != blank %}
-          <div class="hidden md:block">
+          <div class="hidden md:!block">
               {% render 'custom-product-description', product: product %}
           </div>      
         {% endif %}
