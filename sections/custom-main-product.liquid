@@ -78,7 +78,9 @@
       <div class="grid__item product__media-wrapper">
         {% render 'product-media-gallery', variant_images: variant_images, limit: 6, show_badges: true %}
         {% if product.description != blank %}
-          {% render 'custom-product-description', product: product %}
+          <div class="hidden md:block">
+              {% render 'custom-product-description', product: product %}
+          </div>      
         {% endif %}
       </div>
 
@@ -212,8 +214,8 @@
                 </p>
               {%- when 'description' -%}
                 {%- if product.description != blank -%}
-                  <div class="product__description rte quick-add-hidden" {{ block.shopify_attributes }}>
-                    {{ product.description }}
+                  <div class="block md:hidden">
+                  {% render 'custom-product-description', product: product %}
                   </div>
                 {%- endif -%}
               {%- when 'sku' -%}

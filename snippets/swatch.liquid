@@ -29,10 +29,9 @@
     endif
   endif
 -%}
-
 <span
   {% if final_swatch_value %}
-    class="swatch{% if shape == 'square' %} swatch--square{% endif %}"
+    class="swatch{% if shape == 'square' %} swatch--square{% endif %} {% if swatch_style == 'image' %} swatch--image{% endif %}"
     style="--swatch--background: {{ final_swatch_value }};{% if final_swatch_focal_point %} --swatch-focal-point: {{ final_swatch_focal_point }};{% endif %}"
   {% else %}
     class="swatch swatch--unavailable{% if shape == 'square' %} swatch--square{% endif %}"
@@ -40,25 +39,22 @@
 ></span>
 {% if template.name == "product" %}
 <style>
-  .swatch {
-    align-self: 2/1;
-    width: 100px;
-    height: 50px;
+  .swatch--image.swatch {
+    aspect-ratio: 2/1 !important;
+    width: 100px !important;
   }
 
-  .popular-products__container .swatch {
-     align-self: 1/1;
-    width: 16px;
-    height: 16px;
+  .popular-products__container > .swatch {
+     aspect-ratio: 1/1;
+     width: 16px;
   }
 </style>
 {% endif %}
 {% if template.name == "index" or template.name == "collection"%}
 <style>
   .swatch {
-    align-self: 1/1;
+    aspect-ratio: 1/1;
     width: 16px;
-    height: 16px;
   }
 </style>
 {% endif %}

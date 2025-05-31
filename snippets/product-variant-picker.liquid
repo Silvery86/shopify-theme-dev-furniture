@@ -29,9 +29,9 @@
       -%}
       {%- if picker_type == 'swatch' -%}
         <fieldset class="js product-form__input product-form__input--swatch">
-          <legend class="form__label">
+          <legend class="form__label text-gray-900 font-semibold">
             {{ option.name }}:
-            <span data-selected-value>
+            <span class="text-gray-600" data-selected-value>
               {{- option.selected_value -}}
             </span>
           </legend>
