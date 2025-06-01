@@ -41,15 +41,16 @@
   .hero-slider__slider .swiper-slide-prev,
   .hero-slider__slider .swiper-slide-next {
     width: 25% !important;
-    height: 400px !important;
+    height: auto !important;
+    aspect-ratio: 1/1;
     transition: all 0.3s ease-in-out;
     display: flex !important;
     align-items: center;
+  
   }
 
   .hero-slider__slider .swiper-slide-active {
     width: 50% !important;
-    height: 400px !important;
     opacity: 1;
     z-index: 10;
     display: flex;
@@ -59,10 +60,18 @@
 
   .hero-slider__slider .swiper-slide-prev img,
   .hero-slider__slider .swiper-slide-next img {
-    width: 262px;
-    height: 262px;
+    width: auto;
+    height: 120px;
     border-radius: 100%;
     opacity: 0.5 !important;
+    border: 1px solid gray;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+    padding: 36px;
+  }
+
+  .hero-slider__slider .swiper-slide{
+    height: 400px !important;
   }
 
   .hero-slider__slider .swiper-slide-active img {
@@ -71,10 +80,12 @@
   }
 
   .hero-slider__slider .swiper-button-prev {
-    left: 24%;
+    top: 50%;
+    left: 23%;
   }
   .hero-slider__slider .swiper-button-next {
-    right: 24%;
+    top: 50%;
+    right: 23%;
   }
 
   .hero-slider__slider {
@@ -82,11 +93,12 @@
     height: 400px;
     overflow: hidden;
   }
+  
   @media (max-width: 1024px) {
     .hero-slider__slider .swiper-slide-prev img,
     .hero-slider__slider .swiper-slide-next img {
-      width: 162px;
-      height: 162px;
+      width: auto;
+      height: 100px;
     }
 
     .hero-slider__slider .swiper-slide-active img {
@@ -109,12 +121,12 @@
     }
 
     .hero-slider__slider .swiper-button-prev {
-      top: 48px;
-      left: 38%;
+      top: 10%;
+      left: 40%;
     }
     .hero-slider__slider .swiper-button-next {
-      top: 48px;
-      right: 38%;
+      top: 10%;
+      right: 40%;
     }
   }
 </style>
@@ -136,6 +148,7 @@
           0: { slidesPerView: 1 },
           768: { slidesPerView: 3 },
         },
+       speed: 600,
         on: {
           init: function () {
             fetchProductData(this);
