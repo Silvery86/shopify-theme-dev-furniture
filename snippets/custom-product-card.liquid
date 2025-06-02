@@ -1,7 +1,7 @@
 
 {% assign product_form_id = 'product-form-' | append: card_product.id %}
 <div class="product_container product-{{ card_product.id }} swiper-slide !flex flex-col justify-between min-h-[270px] gap-0">
-  <div class="product__image h-[190px] md:h-[150px] relative overflow-hidden group">
+  <div class="product__image  lg:h-[150px] md:h-[200px] h-[150px] relative overflow-hidden group">
     {% assign compare_price = card_product.compare_at_price %}
   {% assign current_price = card_product.price %}
 
@@ -14,24 +14,24 @@
       -{{ discount_percentage }}%
     </span>
   {% endif %}
-  <a href="{{ card_product.url }}">
+  <a href="{{ card_product.url }}" alt="{{ card_product.title }}">
     <img
-      class="product-main-image w-full h-full object-cover transition-opacity duration-300 ease-in-out group-hover:opacity-0"
+      class="product-main-image w-full object-cover transition-opacity duration-300 ease-in-out group-hover:opacity-0 aspect-[2/1]"
       id="product-image-{{ card_product.id }}"
-      src="{{ card_product.selected_or_first_available_variant.featured_media | image_url: width: 300 | default: card_product.featured_image }}"
-      width="300"
-      height="300"
+      src="{{ card_product.selected_or_first_available_variant.featured_media | image_url: width: 300  | default: card_product.featured_image }}"
       alt="{{ card_product.title }}"
+      width="300"
+      height="150"
     >
 
     {% if show_secondary_image %}
       {% assign second_image = card_product.images[1] %}
       {% if second_image %}
         <img
-          class="product-secondary-image absolute top-0 left-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100"
+          class="product-secondary-image absolute top-0 left-0 w-full object-cover opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100 aspect-[2/1]"
           src="{{ second_image | image_url: width: 300 }}"
           width="300"
-          height="300"
+          height="150"
           alt="{{ card_product.title }} secondary image"
           aria-hidden="true"
         >

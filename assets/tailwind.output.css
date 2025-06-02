@@ -344,6 +344,9 @@
   .table {
     display: table;
   }
+  .aspect-\[2\/1\] {
+    aspect-ratio: 2/1;
+  }
   .aspect-square {
     aspect-ratio: 1 / 1;
   }
@@ -380,6 +383,9 @@
   .h-\[64px\] {
     height: 64px;
   }
+  .h-\[150px\] {
+    height: 150px;
+  }
   .h-\[190px\] {
     height: 190px;
   }
@@ -409,6 +415,9 @@
   }
   .min-h-\[500px\] {
     min-height: 500px;
+  }
+  .min-h-max {
+    min-height: max-content;
   }
   .w-1 {
     width: calc(var(--spacing) * 1);
@@ -771,17 +780,9 @@
     font-size: var(--text-base);
     line-height: var(--tw-leading, var(--text-base--line-height));
   }
-  .text-lg {
-    font-size: var(--text-lg);
-    line-height: var(--tw-leading, var(--text-lg--line-height));
-  }
   .text-sm {
     font-size: var(--text-sm);
     line-height: var(--tw-leading, var(--text-sm--line-height));
-  }
-  .text-xl {
-    font-size: var(--text-xl);
-    line-height: var(--tw-leading, var(--text-xl--line-height));
   }
   .text-\[12px\] {
     font-size: 12px;
@@ -1165,9 +1166,19 @@
       height: 150px;
     }
   }
+  .md\:h-\[200px\] {
+    @media (width >= 48rem) {
+      height: 200px;
+    }
+  }
   .md\:h-\[290px\] {
     @media (width >= 48rem) {
       height: 290px;
+    }
+  }
+  .md\:min-h-\[270px\] {
+    @media (width >= 48rem) {
+      min-height: 270px;
     }
   }
   .md\:w-1\/2 {
@@ -1253,9 +1264,19 @@
       font-size: 48px;
     }
   }
+  .lg\:h-\[150px\] {
+    @media (width >= 64rem) {
+      height: 150px;
+    }
+  }
   .lg\:text-\[56px\] {
     @media (width >= 64rem) {
       font-size: 56px;
+    }
+  }
+  .xl\:h-\[150px\] {
+    @media (width >= 80rem) {
+      height: 150px;
     }
   }
 }
