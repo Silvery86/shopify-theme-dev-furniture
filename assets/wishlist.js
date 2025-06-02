@@ -21,10 +21,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Initialize all wishlist toggle buttons
   document.querySelectorAll('.wishlist-toggle').forEach(link => {
-    const productId = link.getAttribute('data-product-id');
+    const productHandle = link.getAttribute('data-product-handle');
     const img = link.querySelector('.heart-icon');
     const wishlist = getWishlist();
-    const isInWishlist = wishlist.includes(productId);
+    const isInWishlist = wishlist.includes(productHandle);
 
     // Set icon on page load
     updateHeartIcon(img, isInWishlist);
@@ -34,13 +34,13 @@ document.addEventListener('DOMContentLoaded', function () {
       e.preventDefault();
       let wishlist = getWishlist();
 
-      if (wishlist.includes(productId)) {
+      if (wishlist.includes(productHandle)) {
         // Remove from wishlist
-        wishlist = wishlist.filter(id => id !== productId);
+        wishlist = wishlist.filter(id => id !== productHandle);
         updateHeartIcon(img, false);
       } else {
         // Add to wishlist
-        wishlist.push(productId);
+        wishlist.push(productHandle);
         updateHeartIcon(img, true);
       }
 
