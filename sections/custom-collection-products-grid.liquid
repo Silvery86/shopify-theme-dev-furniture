@@ -180,8 +180,8 @@
                   {% endif %}
                 >
                   {% render 'custom-product-card',
-                    card_product: product,                 
-                    show_secondary_image: section.settings.show_secondary_image,                
+                    card_product: product,
+                    show_secondary_image: section.settings.show_secondary_image
                   %}
                 </li>
                 {%- assign skip_card_product_styles = true -%}
@@ -264,9 +264,10 @@
           const newItems = doc.querySelectorAll('#product-grid > li');
           const grid = document.getElementById('product-grid');
 
+          // Append new items to the product grid
           newItems.forEach((item) => grid.appendChild(item));
 
-          // Update progress
+          // Update progress bar
           const progressFill = document.querySelector('.progress-bar__fill');
           const currentCount = grid.querySelectorAll('li').length;
           const totalCount = parseInt(button.getAttribute('data-total'));
@@ -282,6 +283,7 @@
             statusText.firstChild.textContent = `Showing ${currentCount} from ${totalCount}`;
           }
 
+          // Handle new button and re-enable original button if necessary
           const newButton = doc.querySelector('#ViewMoreButton');
           if (newButton && newButton.getAttribute('data-next-url')) {
             button.setAttribute('data-next-url', newButton.getAttribute('data-next-url'));
@@ -293,11 +295,73 @@
           } else {
             button.remove();
           }
+
+          // Add event listeners to the newly loaded product items
+          bindProductEvents();
         })
         .catch(() => {
           button.remove();
         });
     });
+
+    function bindProductEvents() {
+      const products = document.querySelectorAll('#product-grid > li');
+
+      products.forEach((product) => {
+        const wishlistButton = product.querySelector('.wishlist-toggle');
+        if (wishlistButton) {
+          wishlistButton.removeEventListener('click', handleWishlistClick); // remove duplicate listeners
+          wishlistButton.addEventListener('click', handleWishlistClick);
+
+          // Also initialize icon state on page load
+          const productId = wishlistButton.getAttribute('data-product-id');
+          const img = wishlistButton.querySelector('img.heart-icon');
+          const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+          if (img) {
+            img.src = wishlist.includes(productId) ? window.wishlistIcons.filled : window.wishlistIcons.empty;
+          }
+        }
+      });
+    }
+
+    // Example event handler for adding/removing from wishlist
+    function handleWishlistClick(event) {
+      event.preventDefault();
+
+      const link = event.currentTarget; // The clicked .wishlist-toggle <a>
+      const productId = link.getAttribute('data-product-id');
+      const img = link.querySelector('img.heart-icon');
+
+      if (!productId || !img) return;
+
+      const wishlistKey = 'wishlist';
+      let wishlist = JSON.parse(localStorage.getItem(wishlistKey) || '[]');
+
+      // Helper function to update heart icon src
+      function updateHeartIcon(imgEl, isAdded) {
+        if (isAdded) {
+          imgEl.src = window.wishlistIcons.filled;
+        } else {
+          imgEl.src = window.wishlistIcons.empty;
+        }
+      }
+
+      if (wishlist.includes(productId)) {
+        // Remove from wishlist
+        wishlist = wishlist.filter((id) => id !== productId);
+        updateHeartIcon(img, false);
+      } else {
+        // Add to wishlist
+        wishlist.push(productId);
+        updateHeartIcon(img, true);
+      }
+
+      // Save updated wishlist
+      localStorage.setItem(wishlistKey, JSON.stringify(wishlist));
+    }
+
+    // Initial binding for existing products
+    bindProductEvents();
   </script>
 {% endif %}
 

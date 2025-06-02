@@ -292,10 +292,10 @@
     {%- endif -%}
 
     {% comment %} Load swiper  {% endcomment %}
-     {% if template.name == "index" or template.name == "product" %}
-    {{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
-    <script src="{{ "swiper-bundle.min.js" |  asset_url }}" defer></script>
-     {% endif %}
+    {% if template.name == 'index' or template.name == 'product' %}
+      {{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
+      <script src="{{ "swiper-bundle.min.js" |  asset_url }}" defer></script>
+    {% endif %}
     <script>
       if (Shopify.designMode) {
         document.documentElement.classList.add('shopify-design-mode');
@@ -303,8 +303,7 @@
     </script>
 
     {% comment %} Load tailwindcss {% endcomment %}
-    {{ 'tailwind.output.css' |  asset_url |  stylesheet_tag}}
-    
+    {{ 'tailwind.output.css' | asset_url | stylesheet_tag }}
   </head>
 
   <body class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}">
@@ -374,6 +373,15 @@
       };
     </script>
 
+    {% if template.name == 'index' or template.name == 'collection' %}
+      <script src="{{ 'wishlist.js' |  asset_url }}" defer="defer"></script>
+    {% endif %}
+    <script>
+      window.wishlistIcons = {
+        empty: "{{ 'icon-heart.svg' | asset_url }}",
+        filled: "{{ 'icon-heart-filled.svg' | asset_url }}",
+      };
+    </script>
     {%- if settings.predictive_search_enabled -%}
       <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}

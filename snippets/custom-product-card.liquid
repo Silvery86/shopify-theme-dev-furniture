@@ -1,58 +1,65 @@
-
 {% assign product_form_id = 'product-form-' | append: card_product.id %}
 <div class="product_container product-{{ card_product.id }} swiper-slide !flex flex-col justify-between min-h-[270px] gap-0">
   <div class="product__image  lg:h-[150px] md:h-[200px] h-[150px] relative overflow-hidden group">
     {% assign compare_price = card_product.compare_at_price %}
-  {% assign current_price = card_product.price %}
+    {% assign current_price = card_product.price %}
 
-  {% if compare_price and compare_price > current_price %}
-    {% assign discount = compare_price | minus: current_price %}
-    {% assign discount_percentage = discount | times: 100 | divided_by: compare_price | round %}
-    <span
-      class="absolute top-4 left-4 z-10 bg-red-500 text-gray-100 text-[14px] font-semibold px-2 py-0.5 rounded-xl"
-    >
-      -{{ discount_percentage }}%
-    </span>
-  {% endif %}
-  <a href="{{ card_product.url }}" alt="{{ card_product.title }}">
-    <img
-      class="product-main-image w-full object-cover transition-opacity duration-300 ease-in-out group-hover:opacity-0 aspect-[2/1]"
-      id="product-image-{{ card_product.id }}"
-      src="{{ card_product.selected_or_first_available_variant.featured_media | image_url: width: 300  | default: card_product.featured_image }}"
-      alt="{{ card_product.title }}"
-      width="300"
-      height="150"
-    >
-
-    {% if show_secondary_image %}
-      {% assign second_image = card_product.images[1] %}
-      {% if second_image %}
-        <img
-          class="product-secondary-image absolute top-0 left-0 w-full object-cover opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100 aspect-[2/1]"
-          src="{{ second_image | image_url: width: 300 }}"
-          width="300"
-          height="150"
-          alt="{{ card_product.title }} secondary image"
-          aria-hidden="true"
-        >
-      {% endif %}
+    {% if compare_price and compare_price > current_price %}
+      {% assign discount = compare_price | minus: current_price %}
+      {% assign discount_percentage = discount | times: 100 | divided_by: compare_price | round %}
+      <span
+        class="absolute top-4 left-4 z-10 bg-red-500 text-gray-100 text-[14px] font-semibold px-2 py-0.5 rounded-xl"
+      >
+        -{{ discount_percentage }}%
+      </span>
     {% endif %}
-  </a>
-</div>
-  {% render 'product-color-picker', product: card_product, product_form_id: product_form_id, swatch_color_only : true %}
+    <a href="{{ card_product.url }}" alt="{{ card_product.title }}">
+      <img
+        class="product-main-image w-full object-cover transition-opacity duration-300 ease-in-out group-hover:opacity-0 aspect-[2/1]"
+        id="product-image-{{ card_product.id }}"
+        src="{{ card_product.selected_or_first_available_variant.featured_media | image_url: width: 300  | default: card_product.featured_image }}"
+        alt="{{ card_product.title }}"
+        width="300"
+        height="150"
+      >
+
+      {% if show_secondary_image %}
+        {% assign second_image = card_product.images[1] %}
+        {% if second_image %}
+          <img
+            class="product-secondary-image absolute top-0 left-0 w-full object-cover opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100 aspect-[2/1]"
+            src="{{ second_image | image_url: width: 300 }}"
+            width="300"
+            height="150"
+            alt="{{ card_product.title }} secondary image"
+            aria-hidden="true"
+          >
+        {% endif %}
+      {% endif %}
+    </a>
+  </div>
+  {% render 'product-color-picker', product: card_product, product_form_id: product_form_id, swatch_color_only: true %}
   <div class="product__title text-[14px] font-medium text-gray-900">{{ card_product.title }}</div>
-  <div class="product__price text-[16px] font-semibold text-gray-900">{{ card_product.price | money }} <span class=" line-through text-gray-600 text-[12px] font-normal">{{ card_product.compare_at_price | money }}</span></div>
+  <div class="product__price text-[16px] font-semibold text-gray-900">
+    {{ card_product.price | money }}
+    <span class=" line-through text-gray-600 text-[12px] font-normal">{{ card_product.compare_at_price | money }}</span>
+  </div>
   <div class="product__option flex justify-between items-center">
-    <button class="flex-1 bg-gray-800 text-white rounded-2xl px-5 py-2.5 mr-2 border hover:border-gray-900 hover:text-gray-900 hover:bg-gray-100 transition-colors duration-300 cursor-pointer">Add to cart</button>
-    <a
-      class="bg-gray-100 rounded-full w-[40px] h-[40px] flex justify-center items-center hover:bg-gray-200 transition-colors duration-300 "
-      href="#"
-      ><img
-        src="{{ "icon-heart.svg" |  asset_url }}"
+    <button class="flex-1 bg-gray-800 text-white rounded-2xl px-5 py-2.5 mr-2 border hover:border-gray-900 hover:text-gray-900 hover:bg-gray-100 transition-colors duration-300 cursor-pointer">
+      Add to cart
+    </button>
+    <div
+      class="wishlist-toggle bg-gray-100 rounded-full w-[40px] h-[40px] flex justify-center items-center hover:bg-gray-200 transition-colors duration-300 cursor-pointer"
+      data-product-id="{{ card_product.id }}"
+    >
+      <img
+        src="{{ 'icon-heart.svg' | asset_url }}"
         width="16px"
         height="16px"
         alt="Favorite"
-    ></a>
+        class="heart-icon"
+      >
+    </div>
   </div>
 </div>
 <script>
