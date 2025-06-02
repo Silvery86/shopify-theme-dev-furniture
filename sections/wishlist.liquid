@@ -1,0 +1,111 @@
+
+
+{%- assign has_variants = false -%}
+{% for product in collection.products %}
+  {% unless product.has_only_default_variant %}
+    {% assign has_variants = true %}
+  {% endunless %}
+{% endfor %}
+
+{% if has_variants %}
+  {{ 'component-product-variant-picker.css' | asset_url | stylesheet_tag }}
+  {{ 'component-swatch-input.css' | asset_url | stylesheet_tag }}
+  {{ 'component-swatch.css' | asset_url | stylesheet_tag }}
+{% endif %}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="collection{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}">
+  <div class="loading-overlay gradient"></div>
+  <ul
+    id="product-grid"
+    data-id="{{ section.id }}"
+    class="
+      grid product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down
+      grid--{{ section.settings.columns_desktop }}-col-desktop
+      {% if section.settings.quick_add == 'bulk' %} collection-quick-add-bulk{% endif %}
+      gap-4 md:gap-2 items-end
+    "
+  >
+    <!-- Product cards will be injected here by JS -->
+  </ul>
+</div>
+
+<script>
+  const wishlistKey = 'wishlist';
+  const productGrid = document.getElementById('product-grid');
+
+  // Get wishlist product handles from localStorage
+  function getWishlist() {
+    const list = localStorage.getItem(wishlistKey);
+    return list ? JSON.parse(list) : [];
+  }
+
+  // Fetch product data by handle using Shopify's product JSON endpoint
+  async function fetchProductByHandle(handle) {
+    try {
+      const response = await fetch(`/products/${handle}.js`);
+      if (!response.ok) throw new Error('Product not found');
+      return await response.json();
+    } catch (error) {
+      console.error('Failed to fetch product:', handle, error);
+      return null;
+    }
+  }
+
+  // Render product card HTML (simplified)
+  function renderProductCard(product) {
+    // Customize as needed or render a snippet via AJAX
+    return `
+      <li class="grid__item">
+        <a href="${product.url}" class="product-card">
+          <img src="${product.images[0]}" alt="${product.title}" loading="lazy" />
+          <h3>${product.title}</h3>
+          <p>${Shopify.formatMoney(product.price)}</p>
+        </a>
+      </li>
+    `;
+  }
+
+  async function loadWishlistProducts() {
+    const wishlist = getWishlist();
+    if (!wishlist.length) {
+      productGrid.innerHTML = '<li>No products in your wishlist.</li>';
+      return;
+    }
+
+    const productPromises = wishlist.map(fetchProductByHandle);
+    const products = await Promise.all(productPromises);
+
+    const html = products
+      .filter(product => product) // Filter out null or undefined products
+      .map(renderProductCard)
+      .join('');
+
+    productGrid.innerHTML = html;
+  }
+
+  document.addEventListener('DOMContentLoaded', loadWishlistProducts);
+</script>
+
+
+{% schema %}
+{
+  "name": "Wishlist Products Grid",
+  "class": "section",
+  "settings": [
+  ]
+}
+{% endschema %}
