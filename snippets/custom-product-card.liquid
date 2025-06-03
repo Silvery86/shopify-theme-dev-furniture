@@ -45,7 +45,10 @@
     <span class=" line-through text-gray-600 text-[12px] font-normal">{{ card_product.compare_at_price | money }}</span>
   </div>
   <div class="product__option flex justify-between items-center">
-    <button class="flex-1 bg-gray-800 text-white rounded-2xl px-5 py-2.5 mr-2 border hover:border-gray-900 hover:text-gray-900 hover:bg-gray-100 transition-colors duration-300 cursor-pointer">
+    <button
+      data-product-handle="{{ card_product.handle }}"
+      class="add-to-cart-btn flex-1 bg-gray-800 text-white rounded-2xl px-5 py-2.5 mr-2 border hover:border-gray-900 hover:text-gray-900 hover:bg-gray-100 transition-colors duration-300 cursor-pointer"
+    >
       Add to cart
     </button>
     <div
@@ -62,22 +65,3 @@
     </div>
   </div>
 </div>
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    document.body.addEventListener('change', function (event) {
-      const input = event.target;
-      console.log(input);
-      if (input.matches('input.swatch-input__input:checked') && input.dataset.imageUrl) {
-        // Step 1: Scope to correct product container
-        const productContainer = input.closest('.product_container');
-        if (!productContainer) return;
-
-        // Step 2: Find the image element inside that product
-        const imageEl = productContainer.querySelector('.product-main-image');
-        if (imageEl) {
-          imageEl.src = input.dataset.imageUrl;
-        }
-      }
-    });
-  });
-</script>

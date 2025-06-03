@@ -389,5 +389,26 @@
     {%- if settings.cart_type == 'drawer' -%}
       <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
+
+    {% section 'quick-view-modal' %}
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        document.body.addEventListener('change', function (event) {
+          const input = event.target;
+          if (input.matches('input.swatch-input__input:checked') && input.dataset.imageUrl) {
+            // Find the closest product container to the changed swatch input
+            const productContainer = input.closest('.product_container');
+            if (!productContainer) return;
+
+            // Find main product image inside this product container
+            const imageEl = productContainer.querySelector('.product-main-image');
+            if (imageEl) {
+              imageEl.src = input.dataset.imageUrl;
+            }
+          }
+        });
+      });
+    </script>
   </body>
 </html>

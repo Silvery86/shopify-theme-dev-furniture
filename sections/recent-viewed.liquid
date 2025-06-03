@@ -85,14 +85,13 @@
   }
 </style>
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-
-  if (window.Shopify && window.Shopify.designMode) {
-    // In theme editor - skip or show placeholder
-    const container = document.querySelector('.recent-viewed__container');
-    container.innerHTML = '<p class="p-4">Recently viewed products are not available in theme editor preview.</p>';
-    return;
-  }
+  document.addEventListener('DOMContentLoaded', async function () {
+    if (window.Shopify && window.Shopify.designMode) {
+      // In theme editor - skip or show placeholder
+      const container = document.querySelector('.recent-viewed__container');
+      container.innerHTML = '<p class="p-4">Recently viewed products are not available in theme editor preview.</p>';
+      return;
+    }
     const container = document.querySelector('.recent-viewed__container');
     const sliderEl = document.querySelector('.recent-viewed__slider');
     let viewed = JSON.parse(localStorage.getItem('viewed_products') || '[]');
@@ -102,90 +101,58 @@
       container.innerHTML = '<p class="p-4">No recently viewed products.</p>';
       return;
     }
-    const formatter = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-    });
 
-    Promise.all(viewed.map((handle) => fetch(`/products/${handle}.js`).then((res) => res.json())))
-      .then((products) => {
-        container.innerHTML = '';
-        products.forEach((product) => {
-          console.log(product)
-          const slide = document.createElement('div');
-          slide.classList.add('swiper-slide');
-          const price = formatter.format(product.price);
-          const compare_at_price = formatter.format(product.compare_at_price);
-          // Build minimal product card HTML (you can customize or use your snippet)
-          slide.innerHTML = `
-          <div class="product_container product-${product.id} swiper-slide !flex flex-col justify-between min-h-[270px] gap-0">
-          <div class="product__image h-[190px] md:h-[150px] relative overflow-hidden group">            
-            <a href="${product.url}">
-                <img
-                class="product-main-image w-full h-full object-cover transition-opacity duration-300 ease-in-out group-hover:opacity-0"
-                id="product-image-${product.id}"
-                src="${product.images[0]}"
-                width="300"
-                height="300"
-                alt="${product.title}"
-                >
-                  <img
-              class="product-secondary-image absolute top-0 left-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100"
-              src="${product.images[1]}"
-              width="300"
-              height="300"
-              alt="${product.title} secondary image"
-              aria-hidden="true"
-                >
-            </a>
-            </div>
-            <div class="product__title text-[14px] font-medium text-gray-900">${product.title}</div>
-            <div class="product__price text-[16px] font-semibold text-gray-900">${price} 
-            <span class=" line-through text-gray-600 text-[12px] font-normal">${compare_at_price}</span>
-            </div>
-            <div class="product__option flex justify-between items-center">
-            <button class="flex-1 bg-gray-800 text-white rounded-2xl px-5 py-2.5 mr-2 border hover:border-gray-900 hover:text-gray-900 hover:bg-gray-100 transition-colors duration-300 cursor-pointer">Add to cart</button>
-            <a
-            class="bg-gray-100 rounded-full w-[40px] h-[40px] flex justify-center items-center hover:bg-gray-200 transition-colors duration-300 "
-            href="#"
-            ><img
-                src="{{ "icon-heart.svg" |  asset_url }}"
-                width="16px"
-                height="16px"
-                alt="Favorite"
-            ></a>
-        </div>
-        </div>
-         `;
-          container.appendChild(slide);
-        });
-        // Initialize Swiper slider once products are rendered
-        if (sliderEl && typeof Swiper !== 'undefined') {
-          new Swiper(sliderEl, {
-            slidesPerView: parseInt(sliderEl.dataset.desktop) || 4,
-            spaceBetween: 24,
-            navigation: {
-              nextEl: '.swiper-button-next',
-              prevEl: '.swiper-button-prev',
-            },
-            breakpoints: {
-              0: {
-                slidesPerView: parseInt(sliderEl.dataset.mobile) || 2,
-              },
-              768: {
-                slidesPerView: parseInt(sliderEl.dataset.desktop) || 4,
-              },
-            },
-            loop: true,
-          });
+    async function fetchProductHTML(card_product) {
+      try {
+        const response = await fetch(`/products/${card_product}?sections=custom-product-card`);
+        if (!response.ok) throw new Error(`Failed to load product: ${card_product}`);
+        const data = await response.json();
+        const htmlString = data['custom-product-card'] || '';
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = htmlString;
+
+        const wrapper = tempDiv.querySelector('#shopify-section-custom-product-card');
+        if (wrapper) {
+          // Replace the tempDiv's innerHTML with just the inner content of the wrapper
+          return wrapper.innerHTML;
         }
-      })
-      .catch((err) => {
-        container.innerHTML = '<p class="p-4">Error loading recently viewed products.</p>';
-        console.error(err);
+        // If no wrapper found, return the original HTML string
+        return htmlString;
+      } catch (error) {
+        console.error(error);
+        return '';
+      }
+    }
+
+    container.innerHTML = ''; // Clear container before appending
+
+    for (const handle of viewed) {
+      const productHTML = await fetchProductHTML(handle);
+      if (productHTML) {
+        container.insertAdjacentHTML('beforeend', productHTML);
+      }
+    }
+
+    // Initialize Swiper slider once products are rendered
+    if (sliderEl && typeof Swiper !== 'undefined') {
+      new Swiper(sliderEl, {
+        slidesPerView: parseInt(sliderEl.dataset.desktop) || 4,
+        spaceBetween: 24,
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+        breakpoints: {
+          0: {
+            slidesPerView: parseInt(sliderEl.dataset.mobile) || 2,
+          },
+          768: {
+            slidesPerView: parseInt(sliderEl.dataset.desktop) || 4,
+          },
+        },
+        loop: true,
       });
+    }
   });
 </script>
 <script>
