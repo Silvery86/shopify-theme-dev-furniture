@@ -102,57 +102,59 @@
       return;
     }
 
-    async function fetchProductHTML(card_product) {
-      try {
-        const response = await fetch(`/products/${card_product}?sections=custom-product-card`);
-        if (!response.ok) throw new Error(`Failed to load product: ${card_product}`);
-        const data = await response.json();
-        const htmlString = data['custom-product-card'] || '';
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = htmlString;
+    function fetchProductHTML(card_product) {
+      return fetch(`/products/${card_product}?sections=custom-product-card`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Failed to load product: ${card_product}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          const htmlString = data['custom-product-card'] || '';
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = htmlString;
 
-        const wrapper = tempDiv.querySelector('#shopify-section-custom-product-card');
-        if (wrapper) {
-          // Replace the tempDiv's innerHTML with just the inner content of the wrapper
-          return wrapper.innerHTML;
-        }
-        // If no wrapper found, return the original HTML string
-        return htmlString;
-      } catch (error) {
-        console.error(error);
-        return '';
-      }
+          const wrapper = tempDiv.querySelector('#shopify-section-custom-product-card');
+          if (wrapper) {
+            return wrapper.innerHTML;
+          }
+          return htmlString;
+        })
+        .catch((error) => {
+          console.error(error);
+          return '';
+        });
     }
 
     container.innerHTML = ''; // Clear container before appending
 
-    for (const handle of viewed) {
-      const productHTML = await fetchProductHTML(handle);
-      if (productHTML) {
-        container.insertAdjacentHTML('beforeend', productHTML);
-      }
-    }
-
-    // Initialize Swiper slider once products are rendered
-    if (sliderEl && typeof Swiper !== 'undefined') {
-      new Swiper(sliderEl, {
-        slidesPerView: parseInt(sliderEl.dataset.desktop) || 4,
-        spaceBetween: 24,
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        },
-        breakpoints: {
-          0: {
-            slidesPerView: parseInt(sliderEl.dataset.mobile) || 2,
-          },
-          768: {
-            slidesPerView: parseInt(sliderEl.dataset.desktop) || 4,
-          },
-        },
-        loop: true,
+    Promise.all(viewed.map((handle) => fetchProductHTML(handle))).then((productsHTML) => {
+      productsHTML.forEach((html) => {
+        if (html) {
+          container.insertAdjacentHTML('beforeend', html);
+        }
       });
-    }
+      if (sliderEl && typeof Swiper !== 'undefined') {
+        new Swiper(sliderEl, {
+          slidesPerView: parseInt(sliderEl.dataset.desktop) || 4,
+          spaceBetween: 24,
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+          breakpoints: {
+            0: {
+              slidesPerView: parseInt(sliderEl.dataset.mobile) || 2,
+            },
+            768: {
+              slidesPerView: parseInt(sliderEl.dataset.desktop) || 4,
+            },
+          },
+          loop: true,
+        });
+      }
+    });
   });
 </script>
 <script>
