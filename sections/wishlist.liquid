@@ -57,7 +57,6 @@
     // Load and render wishlist products using Promise.all for parallel fetching
     function loadWishlistProducts() {
       let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
-      wishlist = wishlist.slice(0, 12);
 
       if (wishlist.length === 0) {
         productGrid.innerHTML = '<li class="p-4 col-span-full">No products in your wishlist.</li>';
