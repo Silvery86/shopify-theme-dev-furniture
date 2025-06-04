@@ -382,8 +382,6 @@
     {%- if settings.cart_type == 'drawer' -%}
       <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
-
-    {% section 'quick-view-modal' %}
     <script>
       document.addEventListener('DOMContentLoaded', function () {
         document.body.addEventListener('change', function (event) {
@@ -413,5 +411,8 @@
         filled: "{{ 'icon-heart-filled.svg' | asset_url }}",
       };
     </script>
+
+    {% section 'quick-add-to-cart-modal' %}
+     <script src="{{ 'quick-add-to-cart.js' |  asset_url }}" defer="defer"></script>
   </body>
 </html>

@@ -11,8 +11,6 @@
       data-mobile="{{ section.settings.products-per-slide-mobile }}"
     >
       <div class="recent-viewed__container swiper-wrapper"></div>
-      <div class="swiper-button-prev left-0 bg-gray-100 rounded-full after:text-gray-700"></div>
-      <div class="swiper-button-next right-0 bg-gray-100 rounded-full after:text-gray-700"></div>
     </div>
   </div>
 </div>
@@ -154,6 +152,8 @@
           loop: true,
         });
       }
+       initializeWishlistToggle();
+       initializeQuickAddToCart();
     });
   });
 </script>
