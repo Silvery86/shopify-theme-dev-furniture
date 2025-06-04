@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+function initializeWishlistToggle() {
   const wishlistKey = 'wishlist';
 
   function getWishlist() {
@@ -12,12 +12,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Toggle heart icon src
   function updateHeartIcon(imgEl, isAdded) {
-      if (isAdded) {
-        imgEl.src = window.wishlistIcons.filled;
-      } else {
-        imgEl.src = window.wishlistIcons.empty;
-      }
+    if (isAdded) {
+      imgEl.src = window.wishlistIcons.filled;
+    } else {
+      imgEl.src = window.wishlistIcons.empty;
     }
+  }
 
   // Initialize all wishlist toggle buttons
   document.querySelectorAll('.wishlist-toggle').forEach(link => {
@@ -47,5 +47,9 @@ document.addEventListener('DOMContentLoaded', function () {
       saveWishlist(wishlist);
     });
   });
-});
+}
 
+// Call the function when needed:
+document.addEventListener('DOMContentLoaded', function () {
+  initializeWishlistToggle();
+});

@@ -291,8 +291,9 @@
       >
     {%- endif -%}
 
-    {% comment %} Load swiper  {% endcomment %}
-    {% if template.name == 'index' or template.name == 'product' %}
+    {% comment %} Load swiper in specific page  {% endcomment %}
+    {% assign valid_templates = 'index,collection,product' | split: ',' %}
+    {% if valid_templates contains template.name %}
       {{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
       <script src="{{ "swiper-bundle.min.js" |  asset_url }}" defer></script>
     {% endif %}
@@ -373,15 +374,7 @@
       };
     </script>
 
-    {% if template.name == 'index' or template.name == 'collection' %}
-      <script src="{{ 'wishlist.js' |  asset_url }}" defer="defer"></script>
-    {% endif %}
-    <script>
-      window.wishlistIcons = {
-        empty: "{{ 'icon-heart.svg' | asset_url }}",
-        filled: "{{ 'icon-heart-filled.svg' | asset_url }}",
-      };
-    </script>
+    
     {%- if settings.predictive_search_enabled -%}
       <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
@@ -391,7 +384,6 @@
     {%- endif -%}
 
     {% section 'quick-view-modal' %}
-
     <script>
       document.addEventListener('DOMContentLoaded', function () {
         document.body.addEventListener('change', function (event) {
@@ -409,6 +401,17 @@
           }
         });
       });
+    </script>
+    {% assign valid_templates = 'index,collection,product' | split: ',' %}
+    {% if valid_templates contains template.name %}
+      <script src="{{ 'wishlist.js' |  asset_url }}" defer="defer"></script>
+    {% endif %}
+    <script>
+      // Favorite icon declare
+      window.wishlistIcons = {
+        empty: "{{ 'icon-heart.svg' | asset_url }}",
+        filled: "{{ 'icon-heart-filled.svg' | asset_url }}",
+      };
     </script>
   </body>
 </html>

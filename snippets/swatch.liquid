@@ -50,7 +50,8 @@
   }
 </style>
 {% endif %}
-{% if template.name == "index" or template.name == "collection"%}
+{% assign valid_templates = 'index,collection,page' | split: ',' %}
+{% if valid_templates contains template.name %}
 <style>
   .swatch {
     aspect-ratio: 1/1;
