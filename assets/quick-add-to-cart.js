@@ -34,6 +34,16 @@ function initializeQuickAddToCart() {
     modal.classList.add('hidden');
     modal.classList.remove('flex');
   });
+
+  const overlay = document.getElementById('quick-add-to-cart__overlay');
+  console.log("overlay")
+  if (overlay) {
+    overlay.addEventListener('click', function () {
+      const modal = document.getElementById('quick-add-to-cart');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    });
+  }
 }
 
 function initQuickViewVariantSync(modal) {
