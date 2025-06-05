@@ -6,7 +6,7 @@
   - product_form_id: {String} Id of the product form to which the variant picker is associated.
   - swatch_color_only: Render only color swatch
   Usage:
-  {% render 'product-variant-picker', product: product, product_form_id: product_form_id %}
+  {% render 'product-color-picker', product: product, product_form_id: product_form_id %}
 {% endcomment %}
 {%- unless product.has_only_default_variant -%}
   <variant-selects
@@ -20,10 +20,9 @@
         if swatch_count > 0
           assign picker_type = 'swatch'
         else
-          assign picker_type = 'default'
+          assign picker_type = 'button'
         endif
       -%}
-
       {%- if swatch_color_only and picker_type == 'swatch' -%}
         <fieldset class="js product-form__input product-form__input--swatch">
           {%- for value in option.values -%}
@@ -146,6 +145,48 @@
             %}
           {% endfor %}
         </fieldset>
+      {%- elsif swatch_color_only == false and picker_type == 'button' -%}
+        <fieldset class="js product-form__input product-form__input--pill">
+          <legend class="form__label">{{ option.name }}</legend>
+          {% render 'product-variant-options',
+            product: product,
+            option: option,
+            block: block,
+            picker_type: picker_type
+          %}
+        </fieldset>
+      {%- elsif swatch_color_only == false -%}
+        <div class="product-form__input product-form__input--dropdown">
+          <label class="form__label" for="Option-{{ section.id }}-{{ forloop.index0 }}">
+            {{ option.name }}
+          </label>
+          <div class="select">
+            {%- if picker_type == 'swatch_dropdown' -%}
+              <span
+                data-selected-value
+                class="dropdown-swatch"
+              >
+                {% render 'swatch', swatch: option.selected_value.swatch, shape: block.settings.swatch_shape %}
+              </span>
+            {%- endif -%}
+            <select
+              id="Option-{{ section.id }}-{{ forloop.index0 }}"
+              class="select__select"
+              name="options[{{ option.name | escape }}]"
+              form="{{ product_form_id }}"
+            >
+              {% render 'product-variant-options',
+                product: product,
+                option: option,
+                block: block,
+                picker_type: picker_type
+              %}
+            </select>
+            <span class="svg-wrapper">
+              {{- 'icon-caret.svg' | inline_asset_content -}}
+            </span>
+          </div>
+        </div>
       {%- endif -%}
     {%- endfor -%}
 
