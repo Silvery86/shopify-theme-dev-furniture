@@ -51,6 +51,7 @@
   {%- capture input_dataset -%}
     data-product-url="{{ value.product_url }}"
     data-option-value-id="{{ value.id }}"
+    data-image-url="{{ value.variant.featured_image | image_url: width: 500 }}"
   {%- endcapture -%}
 
   {%- capture label_unavailable -%}

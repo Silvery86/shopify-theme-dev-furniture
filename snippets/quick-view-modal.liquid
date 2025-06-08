@@ -1,43 +1,35 @@
-<div class="product grid grid-cols-2">
-  <div class="grid__item product__media-wrapper">
+<div class="product_container flex md:flex-row flex-col gap-4">
+  <div class="product__media-wrapper w-full md:w-1/2">
     <img
       class="product-main-image w-full object-cover transition-opacity duration-300 ease-in-out group-hover:opacity-0 aspect-[2/1]"
       id="product-image-{{ product.id }}"
-      src="{{ product.selected_or_first_available_variant.featured_media | image_url: width: 300  | default: product.featured_image }}"
+      src="{{ product.selected_or_first_available_variant.featured_media | image_url: width: 500  | default: product.featured_image }}"
       alt="{{ product.title }}"
       width="300"
       height="150"
     >
   </div>
-
-  <div class="product__info-wrapper grid__item">
+  <div class="product__info-wrapper w-full md:w-1/2">
     <section
       id="ProductInfo-{{ section.id }}"
-      class="product__info-container"
+      class="product__info-container flex flex-col gap-4 items-stretch"
     >
       {%- assign product_form_id = 'product-form-' | append: section.id -%}
-      <div class="product__title" {{ block.shopify_attributes }}>
-        <h1
-          class="text-gray-900"
-        >
-          {{ product.title | escape }}
-        </h1>
-      </div>
-      <div id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
+      <a href="{{ product.url }}">
+        <div class="product__title hover:underline">
+          <h1
+            class="text-gray-900"
+          >
+            {{ product.title | escape }}
+          </h1>
+        </div>
+      </a>
+
+      <div id="price-{{ section.id }}" role="status">
         {%- render 'price', product: product, use_variant: true, show_badges: false, price_class: 'price--large' -%}
       </div>
       {% render 'product-variant-picker', product: product, product_form_id: product_form_id %}
-      {%- render 'buy-buttons',
-        block: block,
-        product: product,
-        product_form_id: product_form_id,
-        section_id: section.id,
-        show_pickup_availability: true
-      -%}
-      <a href="{{ product.url }}" class="link product__view-details animate-arrow">
-        {{ 'products.product.view_full_details' | t }}
-        {{- 'icon-arrow.svg' | inline_asset_content -}}
-      </a>
+      {%  render 'add-to-cart-button', product: product, product_form_id: product_form_id %} 
     </section>
   </div>
 </div>
@@ -69,3 +61,5 @@
 <script type="application/ld+json">
   {{ product | structured_data }}
 </script>
+
+<script src="{{ 'add-to-cart-form.js' | asset_url }}" defer="defer"></script>
