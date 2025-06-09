@@ -21,6 +21,9 @@
         alt="{{ card_product.title }}"
         width="300"
         height="150"
+        {% if lazy_load == true %}
+          loading="lazy"
+        {% endif %}
       >
 
       {% if show_secondary_image %}
@@ -33,6 +36,9 @@
             height="150"
             alt="{{ card_product.title }} secondary image"
             aria-hidden="true"
+            {% if lazy_load == true %}
+              loading="lazy"
+            {% endif %}
           >
         {% endif %}
       {% endif %}

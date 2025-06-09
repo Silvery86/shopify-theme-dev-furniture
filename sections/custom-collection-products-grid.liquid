@@ -37,15 +37,15 @@
 
 {%- style -%}
   .section-{{ section.id }}-padding {
-    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+  padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
   }
 
   @media screen and (min-width: 750px) {
-    .section-{{ section.id }}-padding {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
-    }
+  .section-{{ section.id }}-padding {
+  padding-top: {{ section.settings.padding_top }}px;
+  padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
   }
 {%- endstyle -%}
 
@@ -152,9 +152,7 @@
             </div>
           </div>
         {%- else -%}
-          <div
-            class="collection{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}"
-          >
+          <div class="collection{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}">
             <div class="loading-overlay gradient"></div>
             <ul
               id="product-grid"
@@ -166,7 +164,6 @@
                 gap-4 md:gap-2 items-end
               "
             >
-              {% assign skip_card_product_styles = false %}
               {%- for product in collection.products -%}
                 {% assign lazy_load = false %}
                 {%- if forloop.index > 2 -%}
@@ -175,16 +172,15 @@
                 <li
                   class="grid__item{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
                   {% if settings.animations_reveal_on_scroll %}
-                    data-cascade
-                    style="--animation-order: {{ forloop.index }};"
+                    data-cascade style="--animation-order: {{ forloop.index }};"
                   {% endif %}
                 >
                   {% render 'custom-product-card',
                     card_product: product,
-                    show_secondary_image: section.settings.show_secondary_image
+                    show_secondary_image: section.settings.show_secondary_image,
+                    lazy_load: lazy_load
                   %}
                 </li>
-                {%- assign skip_card_product_styles = true -%}
               {%- endfor -%}
             </ul>
 
@@ -216,12 +212,13 @@
                     <span class="text">Show more</span>
                     <span class="spinner hidden" aria-hidden="true">
                       <svg class="animate-spin w-5 h-5 text-gray-900" viewBox="0 0 24 24" fill="none">
-                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" opacity="0.25"/>
-                        <path d="M22 12a10 10 0 0 1-10 10" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" opacity="0.25" />
+                        <path d="M22 12a10 10 0 0 1-10 10" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
                       </svg>
                     </span>
                     <svg class="w-8 h-8 text-gray-900" fill="none" viewBox="0 0 24 24">
-                      <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
                     </svg>
                   </button>
                 </div>
@@ -237,7 +234,7 @@
   {%- endif -%}
 </div>
 {% if section.settings.pagination_type == 'view_more' %}
-  <script>
+  <script defer="defer">
     document.addEventListener('click', function (e) {
       const button = e.target.closest('#ViewMoreButton');
       if (!button) return;
