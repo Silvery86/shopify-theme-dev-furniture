@@ -21,6 +21,7 @@ function initializeQuickAddToCart() {
           modal.classList.remove('hidden');
           modal.classList.add('flex');
 
+          initializeAddToCartForm(modal);
           initQuickViewVariantSync(modal);
         })
         .catch(error => {

@@ -374,7 +374,6 @@
       };
     </script>
 
-    
     {%- if settings.predictive_search_enabled -%}
       <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
@@ -398,13 +397,10 @@
             }
           }
         });
-      });
-    </script>
-    {% assign valid_templates = 'index,collection,product' | split: ',' %}
-    {% if valid_templates contains template.name %}
+      });  
+      </script>
       <script src="{{ 'wishlist.js' |  asset_url }}" defer="defer"></script>
-    {% endif %}
-    <script>
+      <script>
       // Favorite icon declare
       window.wishlistIcons = {
         empty: "{{ 'icon-heart.svg' | asset_url }}",
@@ -413,6 +409,7 @@
     </script>
 
     {% section 'quick-add-to-cart-modal' %}
-     <script src="{{ 'quick-add-to-cart.js' |  asset_url }}" defer="defer"></script>
+    <script src="{{ 'quick-add-to-cart.js' |  asset_url }}" defer="defer"></script>
+    <script src="{{ 'add-to-cart-form.js' | asset_url }}" defer="defer"></script>
   </body>
 </html>
