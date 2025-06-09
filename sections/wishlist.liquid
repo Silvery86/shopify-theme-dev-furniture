@@ -1,3 +1,6 @@
+{{ 'component-product-variant-picker.css' | asset_url | stylesheet_tag }}
+{{ 'component-swatch-input.css' | asset_url | stylesheet_tag }}
+{{ 'component-swatch.css' | asset_url | stylesheet_tag }}
 <div class="page-width">
   <div class="wishlist-container">
     <h1>Wishlist</h1>
@@ -15,6 +18,10 @@
 <style>
   .wishlist-container {
     margin: 36px 0;
+  }
+  .swatch {
+    aspect-ratio: 1/1;
+    width: 16px !important;
   }
 </style>
 <script defer>
