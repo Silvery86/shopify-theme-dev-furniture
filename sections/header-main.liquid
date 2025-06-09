@@ -30,7 +30,13 @@
       >
         <div class="flex justify-between items-center mb-6">
           <span class="text-[14px] font-bold text-gray-900">Menu</span>
-          <button id="mobile-menu-close" class="text-gray-700 text-[14px] font-semibold transition-transform duration-300 ease-in-out hover:rotate-90 cursor-pointer" aria-label="Close mobile menu">×</button>
+          <button
+            id="mobile-menu-close"
+            class="text-gray-700 text-[14px] font-semibold transition-transform duration-300 ease-in-out hover:rotate-90 cursor-pointer"
+            aria-label="Close mobile menu"
+          >
+            ×
+          </button>
         </div>
         <nav class="flex flex-col gap-4">
           {% if section.settings['header-main-menu'] != blank %}
@@ -83,7 +89,11 @@
     <!-- Right: Icons -->
     <div class="w-1/4 flex justify-end items-center gap-5 px-6 py-3 mr-4">
       <!-- Cart -->
-      <a href="/cart" aria-label="View Cart" class="relative">
+      <a
+        href="{% if settings.cart_type == 'drawer' %}#{% else %}/cart{% endif %}"
+        aria-label="View Cart"
+        class="relative open-cart-drawer"
+      >
         <div class="flex justify-center items-center hover:bg-gray-100 w-[40px] h-[40px] rounded-full p-2 relative">
           <img src="{{ 'cart-icon.svg' | asset_url }}" alt="View Cart" width="16" height="16" class="mx-auto">
 
@@ -144,7 +154,23 @@
     overlay.addEventListener('click', closeMenu);
   });
 </script>
+{% if settings.cart_type == 'drawer' %}
+  <script>
+    document.querySelectorAll('.open-cart-drawer').forEach(function (button) {
+      button.addEventListener('click', function (event) {
+        // Check if cart type is set to 'drawer'
+        console.log('cart drawer');
+        event.preventDefault(); // Prevent default link action
 
+        // Find the closest cart-drawer element and open it
+        const cartDrawer = document.querySelector('cart-drawer');
+        if (cartDrawer) {
+          cartDrawer.open(button); // Call the open method from CartDrawer class
+        }
+      });
+    });
+  </script>
+{% endif %}
 {% schema %}
 {
   "name": "Header Main",
