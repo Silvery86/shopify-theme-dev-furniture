@@ -98,7 +98,7 @@
           <img src="{{ 'cart-icon.svg' | asset_url }}" alt="View Cart" width="16" height="16" class="mx-auto">
 
           {% if cart.item_count > 0 %}
-            <span class="cart__badge absolute bg-green-300 top-0 right-0 flex items-center justify-center w-[16px] h-[16px] text-[12px] text-white leading-none rounded-full font-semibold">
+            <span id="cart-icon-bubble" class="cart__badge absolute bg-green-300 top-0 right-0 flex items-center justify-center w-[16px] h-[16px] text-[12px] text-white leading-none rounded-full font-semibold">
               {{ cart.item_count }}
             </span>
           {% endif %}

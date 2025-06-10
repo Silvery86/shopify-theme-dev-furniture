@@ -160,9 +160,11 @@ class CartItems extends HTMLElement {
         return response.text();
       })
       .then((state) => {
+
         const parsedState = JSON.parse(state);
 
         CartPerformance.measure(`${eventTarget}:paint-updated-sections"`, () => {
+
           const quantityElement =
             document.getElementById(`Quantity-${line}`) || document.getElementById(`Drawer-quantity-${line}`);
           const items = document.querySelectorAll('.cart-item');
@@ -181,13 +183,23 @@ class CartItems extends HTMLElement {
           if (cartDrawerWrapper) cartDrawerWrapper.classList.toggle('is-empty', parsedState.item_count === 0);
 
           this.getSectionsToRender().forEach((section) => {
-            const elementToReplace =
-              document.getElementById(section.id).querySelector(section.selector) || document.getElementById(section.id);
-            elementToReplace.innerHTML = this.getSectionInnerHTML(
-              parsedState.sections[section.section],
-              section.selector
-            );
+            if (section.id === 'cart-icon-bubble') {
+              const cartIconBubble = document.getElementById('cart-icon-bubble');
+              if (cartIconBubble) {
+                const cartCount = parsedState.item_count;
+                cartIconBubble.textContent = cartCount > 0 ? cartCount : '';
+              }
+            } else {
+              const elementToReplace =
+                document.getElementById(section.id).querySelector(section.selector) || document.getElementById(section.id);
+              elementToReplace.innerHTML = this.getSectionInnerHTML(
+                parsedState.sections[section.section],
+                section.selector
+              );
+            }
           });
+
+
           const updatedValue = parsedState.items[line - 1] ? parsedState.items[line - 1].quantity : undefined;
           let message = '';
           if (items.length === parsedState.items.length && updatedValue !== parseInt(quantityElement.value)) {
@@ -219,7 +231,13 @@ class CartItems extends HTMLElement {
       .catch(() => {
         this.querySelectorAll('.loading__spinner').forEach((overlay) => overlay.classList.add('hidden'));
         const errors = document.getElementById('cart-errors') || document.getElementById('CartDrawer-CartErrors');
-        errors.textContent = window.cartStrings.error;
+        console.log(parsedState.items)
+        console.log(window.cartStrings.error)
+        if (errors) {
+          errors.textContent = window.cartStrings.error;
+        } else {
+          console.log("Error element not found");
+        }
       })
       .finally(() => {
         this.disableLoading(line);
