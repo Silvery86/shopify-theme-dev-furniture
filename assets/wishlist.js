@@ -40,7 +40,7 @@ function initializeWishlistToggle() {
         updateHeartIcon(img, false);
       } else {
         // Add to wishlist
-        wishlist.push(productHandle);
+        wishlist.unshift(productHandle);
         updateHeartIcon(img, true);
       }
 

@@ -29,7 +29,7 @@
     if (window.Shopify && window.Shopify.designMode) {
       const container = document.getElementById('product-grid');
       container.innerHTML =
-        '<li class="p-4 col-span-full">Wishlist products preview is not available in theme editor.</li>';
+        '<li class="p-4 col-span-full">Wishlist products preview is not available in theme editor</li>';
       return;
     }
 
@@ -66,7 +66,14 @@
       let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
 
       if (wishlist.length === 0) {
-        productGrid.innerHTML = '<li class="p-4 col-span-full">No products in your wishlist.</li>';
+        productGrid.innerHTML = `
+        <li class="p-4 col-span-full font-semibold">
+          No products in your wishlist.
+          <span>
+            <a href="/collections/all-products" class="text-blue-600 hover:underline ml-2">Let's shop now</a>
+          </span>
+        </li>
+        `;
         return;
       }
 
