@@ -46,23 +46,23 @@
     "card_text_alignment": "right",
     "card_color_scheme": "scheme-2",
     "card_border_thickness": 0,
-    "card_border_opacity": 10,
+    "card_border_opacity": 0,
     "card_corner_radius": 0,
-    "card_shadow_opacity": 80,
-    "card_shadow_horizontal_offset": 26,
-    "card_shadow_vertical_offset": 4,
-    "card_shadow_blur": 5,
+    "card_shadow_opacity": 90,
+    "card_shadow_horizontal_offset": 0,
+    "card_shadow_vertical_offset": 0,
+    "card_shadow_blur": 0,
     "collection_card_style": "standard",
     "collection_card_image_padding": 0,
     "collection_card_text_alignment": "left",
     "collection_card_color_scheme": "scheme-2",
     "collection_card_border_thickness": 0,
-    "collection_card_border_opacity": 10,
+    "collection_card_border_opacity": 0,
     "collection_card_corner_radius": 0,
-    "collection_card_shadow_opacity": 80,
+    "collection_card_shadow_opacity": 50,
     "collection_card_shadow_horizontal_offset": 0,
-    "collection_card_shadow_vertical_offset": 4,
-    "collection_card_shadow_blur": 5,
+    "collection_card_shadow_vertical_offset": 0,
+    "collection_card_shadow_blur": 0,
     "blog_card_style": "standard",
     "blog_card_image_padding": 0,
     "blog_card_text_alignment": "left",
@@ -124,7 +124,7 @@
     "cart_type": "drawer",
     "show_vendor": false,
     "show_cart_note": false,
-    "cart_drawer_collection": "",
+    "cart_drawer_collection": "office",
     "cart_color_scheme": "scheme-1",
     "sections": {
       "main-password-header": {
@@ -138,6 +138,10 @@
         "settings": {
           "color_scheme": "scheme-1"
         }
+      },
+      "quick-add-to-cart-modal": {
+        "type": "quick-add-to-cart-modal",
+        "settings": {}
       }
     },
     "content_for_index": [],
