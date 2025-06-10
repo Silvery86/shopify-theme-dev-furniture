@@ -75,12 +75,21 @@ class CartDrawer extends HTMLElement {
       this.querySelector('.drawer__inner').classList.remove('is-empty');
     this.productId = parsedState.id;
     this.getSectionsToRender().forEach((section) => {
-      const sectionElement = section.selector
-        ? document.querySelector(section.selector)
-        : document.getElementById(section.id);
+      if (section.id === 'cart-icon-bubble') {
+        const cartIconBubble = document.getElementById('cart-icon-bubble');
+        if (cartIconBubble) {
+          const cartCount = parsedState.quantity;
+          cartIconBubble.textContent = cartCount > 0 ? cartCount : '';
+        }
+      } else {
+        const sectionElement = section.selector
+          ? document.querySelector(section.selector)
+          : document.getElementById(section.id);
 
-      if (!sectionElement) return;
-      sectionElement.innerHTML = this.getSectionInnerHTML(parsedState.sections[section.id], section.selector);
+        if (!sectionElement) return;
+        sectionElement.innerHTML = this.getSectionInnerHTML(parsedState.sections[section.id], section.selector);
+      }
+
     });
 
     setTimeout(() => {
