@@ -17,7 +17,7 @@
   }
 </style>
 
-<cart-drawer class="drawer{% if cart == empty %} is-empty{% endif %}">
+<cart-drawer class="drawer{% if cart == empty %} is-empty{% endif %} {% if cart != empty %} flex-row-reverse {% endif %}">
   <div id="CartDrawer" class="cart-drawer">
     <div id="CartDrawer-Overlay" class="cart-drawer__overlay"></div>
     <div
@@ -55,23 +55,25 @@
             </div>
           </div>
           {%- if settings.cart_drawer_product_list != blank -%}
-            <div class="w-full text-center text-gray-900 font-semibold text-[24px]">{{ settings.cart_drawer_product_list_title }}</div>
+            <div class="w-full text-center text-gray-900 font-semibold text-[24px]">
+              {{ settings.cart_drawer_product_list_title }}
+            </div>
             <div class="cart-drawer__product-list mb-10">
-                        <div
+              <div
                 class="swiper cart-drawer__slider h-[400px] md:h-[300px] !p-[6px] md:!p-[24px] md:pb-20 pb-40!"
               >
                 <div class="cart-drawer__container swiper-wrapper">
                   {% for product in settings.cart_drawer_product_list %}
-                      {% render 'custom-product-card',
-                              card_product: product,                 
-                              show_secondary_image: true,
-                              lazy_load: true,
-                              show_add_to_cart: false,
-                              show_variant_picker: false                
-                            %}
+                    {% render 'custom-product-card',
+                      card_product: product,
+                      show_secondary_image: true,
+                      lazy_load: true,
+                      show_add_to_cart: false,
+                      show_variant_picker: false
+                    %}
                   {% endfor %}
                 </div>
-                <div class="swiper-button-prev left-0 bg-gray-100 rounded-full after:text-gray-700" ></div>
+                <div class="swiper-button-prev left-0 bg-gray-100 rounded-full after:text-gray-700"></div>
                 <div class="swiper-button-next right-0 bg-gray-100 rounded-full after:text-gray-700"></div>
               </div>
             </div>
@@ -575,7 +577,26 @@
       </div>
     </div>
   </div>
+  {% if cart != empty %}
+    <!-- Tailwind CSS: Apply classes for transitions and transform -->
+    <div class="hidden lg:!flex cart-drawer__product-list-slider transition-all duration-300 ease-in-out opacity-0 translate-y-0">
+      <div class="swiper bg-white cart-drawer__slider h-[400px] md:h-[300px] !p-[6px] md:!p-[24px] md:pb-20 pb-40!">
+        <div class="cart-drawer__container swiper-wrapper">
+          {% for product in settings.cart_drawer_product_list %}
+            {% render 'custom-product-card',
+              card_product: product,
+              show_secondary_image: true,
+              lazy_load: true,
+              show_add_to_cart: true,
+              show_variant_picker: true
+            %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
 </cart-drawer>
+
 {% if show_add_to_cart == false and show_variant_picker == false %}
   <style>
     .product_container {
@@ -583,23 +604,58 @@
     }
   </style>
 {% endif %}
-<script async>
-  document.addEventListener('DOMContentLoaded', function () {
-    const sliderEl = document.querySelector('.cart-drawer__slider');
-    if (sliderEl && typeof Swiper !== 'undefined') {
-      new Swiper(sliderEl, {
-        slidesPerView: 1,
-        spaceBetween: 24,
-        autoplay: {
-          delay: 3000,
-          disableOnInteraction: false,
-        },
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        },
-        loop: true,
-      });
+{% if cart == empty %}
+  <script async>
+    document.addEventListener('DOMContentLoaded', function () {
+      const sliderEl = document.querySelector('.cart-drawer__slider');
+      if (sliderEl && typeof Swiper !== 'undefined') {
+        new Swiper(sliderEl, {
+          slidesPerView: 1,
+          spaceBetween: 24,
+          autoplay: {
+            delay: 3000,
+            disableOnInteraction: false,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+          loop: true,
+        });
+      }
+    });
+  </script>
+{% else %}
+  <style>
+    .drawer {
+      justify-content: flex-start;
     }
-  });
-</script>
+    .cart-drawer__slider .swatch {
+      width: 16px !important;
+      height: 16px !important;
+    }
+    .cart-drawer__slider {
+      height: 100% !important;
+    }
+    .cart-drawer__slider .product_container {
+      min-height: fit-content;
+    }
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const sliderEl = document.querySelector('.cart-drawer__slider');
+      if (sliderEl && typeof Swiper !== 'undefined') {
+        new Swiper(sliderEl, {
+          direction: 'vertical',
+          slidesPerView: 3,
+          loop: true,
+          spaceBetween: 24,
+          autoplay: {
+            delay: 3000,
+            disableOnInteraction: false,
+          },
+        });
+      }
+    });
+  </script>
+{% endif %}

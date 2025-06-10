@@ -26,12 +26,18 @@ class CartDrawer extends HTMLElement {
   }
 
   open(triggeredBy) {
+    const sliderEl = this.querySelector('.cart-drawer__product-list-slider');
     if (triggeredBy) this.setActiveElement(triggeredBy);
     const cartDrawerNote = this.querySelector('[id^="Details-"] summary');
     if (cartDrawerNote && !cartDrawerNote.hasAttribute('role')) this.setSummaryAccessibility(cartDrawerNote);
     // here the animation doesn't seem to always get triggered. A timeout seem to help
     setTimeout(() => {
       this.classList.add('animate', 'active');
+      console.log("open")
+      if (sliderEl) {
+        sliderEl.classList.remove('opacity-0', 'translate-x-full');
+        sliderEl.classList.add('opacity-100', 'translate-x-0');
+      }
     });
 
     this.addEventListener(
@@ -50,9 +56,14 @@ class CartDrawer extends HTMLElement {
   }
 
   close() {
+    const sliderEl = this.querySelector('.cart-drawer__product-list-slider');
     this.classList.remove('active');
     removeTrapFocus(this.activeElement);
     document.body.classList.remove('overflow-hidden');
+    if (sliderEl) {
+      sliderEl.classList.remove('opacity-100', 'translate-x-0');
+      sliderEl.classList.add('opacity-0', 'translate-x-full');
+    }
   }
 
   setSummaryAccessibility(cartDrawerNote) {

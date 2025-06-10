@@ -3,7 +3,10 @@ function initializeQuickAddToCart() {
     button.addEventListener('click', function (e) {
       e.preventDefault();
       const productHandle = button.getAttribute('data-product-handle');
-
+      const cartDrawer = document.querySelector('cart-drawer');
+      if (cartDrawer) {
+        this.closest('cart-drawer').close()
+      }
       fetch(`/products/${productHandle}?sections=quick-view-modal`)
         .then(response => {
           if (!response.ok) {
