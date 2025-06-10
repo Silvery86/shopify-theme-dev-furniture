@@ -37,7 +37,6 @@ function initializeQuickAddToCart() {
   });
 
   const overlay = document.getElementById('quick-add-to-cart__overlay');
-  console.log("overlay")
   if (overlay) {
     overlay.addEventListener('click', function () {
       const modal = document.getElementById('quick-add-to-cart');

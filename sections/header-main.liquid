@@ -94,14 +94,23 @@
         aria-label="View Cart"
         class="relative open-cart-drawer"
       >
-        <div class="flex justify-center items-center hover:bg-gray-100 w-[40px] h-[40px] rounded-full p-2 relative">
-          <img src="{{ 'cart-icon.svg' | asset_url }}" alt="View Cart" width="16" height="16" class="mx-auto">
+        <div  id="cart-icon-bubble" class="flex justify-center items-center hover:bg-gray-100 w-[40px] h-[40px] rounded-full p-2 relative">
 
-          {% if cart.item_count > 0 %}
-            <span id="cart-icon-bubble" class="cart__badge absolute bg-green-300 top-0 right-0 flex items-center justify-center w-[16px] h-[16px] text-[12px] text-white leading-none rounded-full font-semibold">
-              {{ cart.item_count }}
-            </span>
-          {% endif %}
+ {% if cart == empty %}
+          <span class="svg-wrapper">{{ 'icon-cart-empty.svg' | inline_asset_content }}</span>
+        {% else %}
+          <span class="svg-wrapper">{{ 'icon-cart.svg' | inline_asset_content }}</span>
+        {% endif %}
+        <span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
+        {%- if cart != empty -%}
+          <div class="cart-count-bubble">
+            {%- if cart.item_count < 100 -%}
+              <span aria-hidden="true">{{ cart.item_count }}</span>
+            {%- endif -%}
+            <span class="visually-hidden">{{ 'sections.header.cart_count' | t: count: cart.item_count }}</span>
+          </div>
+        {%- endif -%}
+        
         </div>
       </a>
 
@@ -114,7 +123,12 @@
     </div>
   </div>
 </div>
-
+<style>
+  #cart-icon-bubble .svg-wrapper {
+    width: 29px;
+    height: 29px;
+  }
+</style>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const wrapper = document.getElementById('mobile-menu-wrapper');

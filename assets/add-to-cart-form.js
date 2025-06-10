@@ -66,7 +66,6 @@ function initializeAddToCartForm(modalElement) {
                 return;
               }
 
-              // Cart updated successfully, render cart drawer
               const startMarker = CartPerformance.createStartingMarker('add:wait-for-subscribers');
               if (!this.error)
                 publish(PUB_SUB_EVENTS.cartUpdate, {
@@ -97,6 +96,7 @@ function initializeAddToCartForm(modalElement) {
                   this.cart.renderContents(response);
                 });
               }
+              modalElement.classList.add('hidden');
             })
             .catch((e) => {
               console.error(e);
