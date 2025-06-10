@@ -124,8 +124,17 @@
     "cart_type": "drawer",
     "show_vendor": false,
     "show_cart_note": false,
-    "cart_drawer_collection": "office",
+    "cart_drawer_product_list": [
+      "acadia-bed",
+      "aledo-nightstand",
+      "altira-lift-top-storage-coffee-table",
+      "anzio-sofa",
+      "ares-bed",
+      "bruges-89-sofa",
+      "bolton-100-sofa"
+    ],
     "cart_color_scheme": "scheme-1",
+    "cart_drawer_collection": "office",
     "sections": {
       "main-password-header": {
         "type": "main-password-header",
