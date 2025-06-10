@@ -42,7 +42,7 @@
                   {{- 'icon-close.svg' | inline_asset_content -}}
                 </span>
               </button>
-              <a href="{{ routes.all_products_collection_url }}" class="button">
+              <a href="/collections/all-products" class="button">
                 {{ 'general.continue_shopping' | t }}
               </a>
 
@@ -54,9 +54,26 @@
               {%- endif -%}
             </div>
           </div>
-          {%- if settings.cart_drawer_collection != blank -%}
-            <div class="cart-drawer__collection">
-              {% render 'card-collection', card_collection: settings.cart_drawer_collection, columns: 1 %}
+          {%- if settings.cart_drawer_product_list != blank -%}
+            <div class="w-full text-center text-gray-900 font-semibold text-[24px]">{{ settings.cart_drawer_product_list_title }}</div>
+            <div class="cart-drawer__product-list mb-10">
+                        <div
+                class="swiper cart-drawer__slider h-[400px] md:h-[300px] !p-[6px] md:!p-[24px] md:pb-20 pb-40!"
+              >
+                <div class="cart-drawer__container swiper-wrapper">
+                  {% for product in settings.cart_drawer_product_list %}
+                      {% render 'custom-product-card',
+                              card_product: product,                 
+                              show_secondary_image: true,
+                              lazy_load: true,
+                              show_add_to_cart: false,
+                              show_variant_picker: false                
+                            %}
+                  {% endfor %}
+                </div>
+                <div class="swiper-button-prev left-0 bg-gray-100 rounded-full after:text-gray-700" ></div>
+                <div class="swiper-button-next right-0 bg-gray-100 rounded-full after:text-gray-700"></div>
+              </div>
             </div>
           {%- endif -%}
         </div>
@@ -559,3 +576,30 @@
     </div>
   </div>
 </cart-drawer>
+{% if show_add_to_cart == false and show_variant_picker == false %}
+  <style>
+    .product_container {
+      min-height: 120px !important;
+    }
+  </style>
+{% endif %}
+<script async>
+  document.addEventListener('DOMContentLoaded', function () {
+    const sliderEl = document.querySelector('.cart-drawer__slider');
+    if (sliderEl && typeof Swiper !== 'undefined') {
+      new Swiper(sliderEl, {
+        slidesPerView: 1,
+        spaceBetween: 24,
+        autoplay: {
+          delay: 3000,
+          disableOnInteraction: false,
+        },
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+        loop: true,
+      });
+    }
+  });
+</script>

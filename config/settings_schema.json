@@ -1439,10 +1439,17 @@
         "content": "t:settings_schema.cart.settings.cart_drawer.header"
       },
       {
-        "type": "collection",
-        "id": "cart_drawer_collection",
-        "label": "t:settings_schema.cart.settings.cart_drawer.collection.label",
-        "info": "t:settings_schema.cart.settings.cart_drawer.collection.info"
+        "type": "product_list",
+        "id": "cart_drawer_product_list",
+        "label": "Product list slider display in cart drawer",
+        "info": "Add product to list"
+      },
+      {
+        "type": "text",
+        "id": "cart_drawer_product_list_title",
+        "label": "Product list title",
+        "info": "Product list title",
+        "default": "Our Best Seller"
       },
       {
         "type": "color_scheme",

@@ -28,9 +28,12 @@
     >
       <div class="popular-products__container swiper-wrapper">
         {% for product in section.settings['popular-products-list'] limit: 8 %}
-            {% render 'custom-product-card',
-                    card_product: product,                 
-                    show_secondary_image: true,                
+             {% render 'custom-product-card',
+                    card_product: product,
+                    show_secondary_image: section.settings.show_secondary_image,
+                    lazy_load: lazy_load,
+                    show_add_to_cart: true,
+                    show_variant_picker: true
                   %}
         {% endfor %}
       </div>

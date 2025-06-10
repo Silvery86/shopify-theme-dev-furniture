@@ -178,7 +178,9 @@
                   {% render 'custom-product-card',
                     card_product: product,
                     show_secondary_image: section.settings.show_secondary_image,
-                    lazy_load: lazy_load
+                    lazy_load: lazy_load,
+                    show_add_to_cart: true,
+                    show_variant_picker: true
                   %}
                 </li>
               {%- endfor -%}
