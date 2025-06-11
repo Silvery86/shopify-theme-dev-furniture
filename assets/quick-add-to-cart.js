@@ -4,8 +4,9 @@ function initializeQuickAddToCart() {
       e.preventDefault();
       const productHandle = button.getAttribute('data-product-handle');
       const cartDrawer = document.querySelector('cart-drawer');
+      console.log(cartDrawer)
       if (cartDrawer) {
-        this.closest('cart-drawer').close()
+        cartDrawer.close();
       }
       fetch(`/products/${productHandle}?sections=quick-view-modal`)
         .then(response => {

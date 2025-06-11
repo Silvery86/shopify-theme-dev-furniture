@@ -1,1 +1,7 @@
-{% render "custom-product-card", card_product: product, show_secondary_image : true %}
+{% render 'custom-product-card',
+  card_product: product,
+  show_secondary_image: true,
+  lazy_load: true,
+  show_add_to_cart: true,
+  show_variant_picker: true
+%}
