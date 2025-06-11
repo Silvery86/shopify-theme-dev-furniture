@@ -1,7 +1,6 @@
 class CartDrawer extends HTMLElement {
   constructor() {
     super();
-
     this.addEventListener('keyup', (evt) => evt.code === 'Escape' && this.close());
     this.querySelector('#CartDrawer-Overlay').addEventListener('click', this.close.bind(this));
     this.setHeaderCartIconAccessibility();
@@ -33,7 +32,7 @@ class CartDrawer extends HTMLElement {
     // here the animation doesn't seem to always get triggered. A timeout seem to help
     setTimeout(() => {
       this.classList.add('animate', 'active');
-      console.log("open")
+      initializeWishlistToggle();
       if (sliderEl) {
         sliderEl.classList.remove('opacity-0', 'translate-x-full');
         sliderEl.classList.add('opacity-100', 'translate-x-0');
