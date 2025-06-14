@@ -4,7 +4,6 @@ function initializeQuickAddToCart() {
       e.preventDefault();
       const productHandle = button.getAttribute('data-product-handle');
       const cartDrawer = document.querySelector('cart-drawer');
-      console.log(cartDrawer)
       if (cartDrawer) {
         cartDrawer.close();
       }
@@ -19,11 +18,15 @@ function initializeQuickAddToCart() {
           const htmlString = data['quick-view-modal'] || '';
           const modal = document.getElementById('quick-add-to-cart');
           const modalBody = modal.querySelector('.modal-body');
+          const modalContent = modal.querySelector('.modal-content');
 
           modalBody.innerHTML = htmlString;
 
           modal.classList.remove('hidden');
           modal.classList.add('flex');
+
+          modalContent.classList.remove('translate-y-[100%]', 'opacity-0');
+          modalContent.classList.add('translate-y-0', 'opacity-100'); 
 
           initializeAddToCartForm(modal);
           initQuickViewVariantSync(modal);
@@ -36,22 +39,35 @@ function initializeQuickAddToCart() {
 
   document.querySelector('.close-modal').addEventListener('click', function () {
     const modal = document.getElementById('quick-add-to-cart');
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
+    const modalContent = modal.querySelector('.modal-content');
+    
+    modalContent.classList.remove('translate-y-0', 'opacity-100');
+    modalContent.classList.add('translate-y-[100%]', 'opacity-0');
+    
+    setTimeout(() => {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }, 300);  
   });
 
   const overlay = document.getElementById('quick-add-to-cart__overlay');
   if (overlay) {
     overlay.addEventListener('click', function () {
       const modal = document.getElementById('quick-add-to-cart');
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
+      const modalContent = modal.querySelector('.modal-content');
+
+      modalContent.classList.remove('translate-y-0', 'opacity-100');
+      modalContent.classList.add('translate-y-[100%]', 'opacity-0');
+      
+      setTimeout(() => {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+      }, 300); 
     });
   }
 }
 
 function initQuickViewVariantSync(modal) {
-
   const form = modal.querySelector('form[id^="product-form"]');
   if (!form) {
     return;
@@ -111,7 +127,6 @@ function initQuickViewVariantSync(modal) {
     });
   });
 }
-
 
 document.addEventListener('DOMContentLoaded', function () {
   initializeQuickAddToCart();
