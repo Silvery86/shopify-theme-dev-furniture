@@ -1,0 +1,17 @@
+<div id="emailPopupForm" class="hidden">
+  {% form 'customer', id: 'email-subscribe-form', class: 'w-full flex flex-row items-center gap-4' %}
+    <input
+      type="email"
+      name="contact[email]"
+      placeholder="Enter your email"
+      required
+      class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+    >
+    <button type="submit" class="bg-gray-600 text-gray-100 px-6 py-2 rounded hover:bg-gray-700 transition">
+      Subscribe
+    </button>
+  {% endform %}
+</div>
+
+<div id="emailPopup"></div>
+<script src="{{ 'vite-email-popup.js' | asset_url }}" defer></script>
