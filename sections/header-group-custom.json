@@ -13,10 +13,47 @@
   "sections": {
     "header-top": {
       "type": "header-top",
+      "blocks": {
+        "announcement_bj77am": {
+          "type": "announcement",
+          "settings": {
+            "title": "<p></p><p></p><p></p><p>🚚 <strong>Free Shipping on All Orders Over $50 – No Code Needed!</strong></p>",
+            "link": ""
+          }
+        },
+        "announcement_C3gwRB": {
+          "type": "announcement",
+          "settings": {
+            "title": "<p>🔥 <strong>Flash Sale: Up to 50% Off Our Summer Collection – Today Only!</strong></p>",
+            "link": ""
+          }
+        },
+        "announcement_d7RCjA": {
+          "type": "announcement",
+          "settings": {
+            "title": "<p>✨ <strong>New Arrivals Just Landed – Shop the Hottest Picks Now!</strong></p>",
+            "link": ""
+          }
+        },
+        "announcement_if4tca": {
+          "type": "announcement",
+          "settings": {
+            "title": "<p>🎉 <strong>Buy One, Get One 50% Off – Today Only!</strong></p>",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "announcement_bj77am",
+        "announcement_C3gwRB",
+        "announcement_d7RCjA",
+        "announcement_if4tca"
+      ],
       "settings": {
         "contact_text": "Contact us 24/7",
         "contact_phone": "+1 50 537 53 082",
-        "announcement": "🔥 The Biggest Sale Ever 50% Off"
+        "block_limit": 3,
+        "speed": 3
       }
     },
     "header-main": {

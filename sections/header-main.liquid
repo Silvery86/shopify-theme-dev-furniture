@@ -172,14 +172,12 @@
   <script>
     document.querySelectorAll('.open-cart-drawer').forEach(function (button) {
       button.addEventListener('click', function (event) {
-        // Check if cart type is set to 'drawer'
-        console.log('cart drawer');
-        event.preventDefault(); // Prevent default link action
 
-        // Find the closest cart-drawer element and open it
+        event.preventDefault(); 
+
         const cartDrawer = document.querySelector('cart-drawer');
         if (cartDrawer) {
-          cartDrawer.open(button); // Call the open method from CartDrawer class
+          cartDrawer.open(button);
         }
       });
     });
