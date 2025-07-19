@@ -1,128 +1,134 @@
-<div class="page-width">
-  <div class="header-main flex justify-between items-center bg-white/100 rounded-full h-[60px] shadow-md mb-4">
-    <div class="mobile-menu__button md:hidden w-1/4 flex ml-4">
-      <button
-        id="mobile-menu-toggle"
-        class="flex justify-center items-center hover:bg-gray-100 w-[40px] h-[40px] rounded-full p-2"
-        aria-label="Open mobile menu"
-      >
-        <img
-          src="{{ 'icon-hamburger.svg' | asset_url }}"
-          alt="Mobile Menu"
-          width="16"
-          height="16"
+<div
+  id="headerMain"
+  class="w-full h-full transform -translate-y-4 opacity-0 transition-all duration-300 ease-in-out z-20"
+>
+  <div class="page-width">
+    <div
+      class="header-main w-full flex  justify-between items-center bg-white/100 rounded-full h-[60px] shadow-md mb-4"
+    >
+      <div class="mobile-menu__button md:hidden w-1/4 flex ml-4">
+        <button
+          id="mobile-menu-toggle"
+          class="flex justify-center items-center hover:bg-gray-100 w-[40px] h-[40px] rounded-full p-2"
+          aria-label="Open mobile menu"
         >
-      </button>
-    </div>
+          <img src="{{ 'icon-hamburger.svg' | asset_url }}" alt="Mobile Menu" width="16" height="16">
+        </button>
+      </div>
 
-    <!-- Mobile menu wrapper with overlay -->
-    <div id="mobile-menu-wrapper" class="fixed inset-0 z-50 hidden md:hidden">
-      <!-- Overlay -->
-      <div
-        id="mobile-menu-overlay"
-        class="absolute !flex inset-0 bg-black opacity-0 pointer-events-none transition-opacity duration-300"
-      ></div>
-
-      <!-- Slide-in menu -->
-      <div
-        id="mobile-menu"
-        class="fixed top-0 left-0 h-full bg-white p-6 transform -translate-x-[250px] w-[250px] transition-transform duration-300 ease-in-out"
-      >
-        <div class="flex justify-between items-center mb-6">
-          <span class="text-[14px] font-bold text-gray-900">Menu</span>
-          <button
-            id="mobile-menu-close"
-            class="text-gray-700 text-[14px] font-semibold transition-transform duration-300 ease-in-out hover:rotate-90 cursor-pointer"
-            aria-label="Close mobile menu"
-          >
-            ×
-          </button>
-        </div>
-        <nav class="flex flex-col gap-4">
-          {% if section.settings['header-main-menu'] != blank %}
-            {% assign header_menu = linklists[section.settings['header-main-menu']] %}
-            {% for link in header_menu.links %}
-              <a
-                href="{{ link.url }}"
-                class="text-gray-900 font-medium text-[16px] hover:underline hover:text-gray-700 hover:bg-gray-300 transition-all duration-300 p-2 rounded-2xl"
-              >
-                {{ link.title }}
-              </a>
-            {% endfor %}
+      <!-- Left: Logo or Shop Name -->
+      <div class="w-1/4 flex justify-center md:justify-start font-bold text-2xl text-gray-900 px-6 py-3 ml-4">
+        <a href="/" class="flex items-center gap-2">
+          {% if section.settings.logo %}
+            <img
+              src="{{ section.settings.logo | image_url: width: 120 }}"
+              alt="{{ shop.name }}"
+              class="h-8 w-auto"
+              width="120"
+              height="32"
+            >
+          {% else %}
+            {{ shop.name }}
           {% endif %}
-        </nav>
+        </a>
+      </div>
+
+      <!-- Center: Menu from Navigation -->
+      <nav
+        class="header-main__navigation hidden md:w-2/4 md:!flex justify-center items-center gap-6 text-gray-800 font-medium text-sm"
+      >
+        {% if section.settings['header-main-menu'] != blank %}
+          {% assign header_menu = linklists[section.settings['header-main-menu']] %}
+          {% for link in header_menu.links %}
+            <a
+              href="{{ link.url }}"
+              class="text-gray-900 font-medium text-[14px] hover:underline hover:text-gray-950 transition"
+            >
+              {{ link.title }}
+            </a>
+          {% endfor %}
+        {% endif %}
+      </nav>
+
+      <!-- Right: Icons -->
+      <div class="w-1/4 flex justify-end items-center gap-5 px-6 py-3 mr-4">
+        <!-- Cart -->
+        <a
+          href="{% if settings.cart_type == 'drawer' %}#{% else %}/cart{% endif %}"
+          aria-label="View Cart"
+          class="relative open-cart-drawer"
+        >
+          <div
+            id="cart-icon-bubble"
+            class="flex justify-center items-center hover:bg-gray-100 w-[40px] h-[40px] rounded-full p-2 relative"
+          >
+            {% if cart == empty %}
+              <span class="svg-wrapper">{{ 'icon-cart-empty.svg' | inline_asset_content }}</span>
+            {% else %}
+              <span class="svg-wrapper">{{ 'icon-cart.svg' | inline_asset_content }}</span>
+            {% endif %}
+            <span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
+            {%- if cart != empty -%}
+              <div class="cart-count-bubble">
+                {%- if cart.item_count < 100 -%}
+                  <span aria-hidden="true">{{ cart.item_count }}</span>
+                {%- endif -%}
+                <span class="visually-hidden">{{ 'sections.header.cart_count' | t: count: cart.item_count }}</span>
+              </div>
+            {%- endif -%}
+          </div>
+        </a>
+
+        <!-- Search -->
+        <button aria-label="Search" onclick="window.location.href='/search'">
+          <div class="flex justify-center items-center hover:bg-gray-100 w-[40px] h-[40px] rounded-full p-2">
+            <img src="{{ " search-icon.svg" | asset_url }}" alt="Search..." width="16" height="16">
+          </div>
+        </button>
       </div>
     </div>
+  </div>
+</div>
 
-    <!-- Left: Logo or Shop Name -->
-    <div class="w-1/4 flex justify-center md:justify-start font-bold text-2xl text-gray-900 px-6 py-3 ml-4">
-      <a href="/" class="flex items-center gap-2">
-        {% if section.settings.logo %}
-          <img
-            src="{{ section.settings.logo | image_url: width: 120 }}"
-            alt="{{ shop.name }}"
-            class="h-8 w-auto"
-            width="120"
-            height="32"
-          >
-        {% else %}
-          {{ shop.name }}
-        {% endif %}
-      </a>
+<!-- Mobile menu wrapper with overlay -->
+<div id="mobile-menu-wrapper" class="fixed inset-0 hidden md:hidden z-50">
+  <!-- Overlay -->
+  <div
+    id="mobile-menu-overlay"
+    class="absolute !flex inset-0 bg-black opacity-0 pointer-events-none transition-opacity duration-300"
+  ></div>
+
+  <!-- Slide-in menu -->
+  <div
+    id="mobile-menu"
+    class="fixed top-0 left-0 h-full bg-white p-6 transform -translate-x-[45vw] w-[45vw] transition-transform duration-300 ease-in-out"
+  >
+    <div class="flex justify-between items-center mb-6">
+      <span class="text-[14px] font-bold text-gray-900">Menu</span>
+      <button
+        id="mobile-menu-close"
+        class="text-gray-700 text-[14px] font-semibold transition-transform duration-300 ease-in-out hover:rotate-90 cursor-pointer"
+        aria-label="Close mobile menu"
+      >
+        ×
+      </button>
     </div>
-
-    <!-- Center: Menu from Navigation -->
-    <nav class="header-main__navigation hidden md:w-2/4 md:!flex justify-center items-center gap-6 text-gray-800 font-medium text-sm">
+    <nav class="flex flex-col gap-4">
       {% if section.settings['header-main-menu'] != blank %}
         {% assign header_menu = linklists[section.settings['header-main-menu']] %}
         {% for link in header_menu.links %}
           <a
             href="{{ link.url }}"
-            class="text-gray-900 font-medium text-[14px] hover:underline hover:text-gray-950 transition"
+            class="text-gray-900 font-medium text-[16px] hover:underline hover:text-gray-700 hover:bg-gray-300 transition-all duration-300 p-2 rounded-2xl"
           >
             {{ link.title }}
           </a>
         {% endfor %}
       {% endif %}
     </nav>
-
-    <!-- Right: Icons -->
-    <div class="w-1/4 flex justify-end items-center gap-5 px-6 py-3 mr-4">
-      <!-- Cart -->
-      <a
-        href="{% if settings.cart_type == 'drawer' %}#{% else %}/cart{% endif %}"
-        aria-label="View Cart"
-        class="relative open-cart-drawer"
-      >
-        <div  id="cart-icon-bubble" class="flex justify-center items-center hover:bg-gray-100 w-[40px] h-[40px] rounded-full p-2 relative">
-
- {% if cart == empty %}
-          <span class="svg-wrapper">{{ 'icon-cart-empty.svg' | inline_asset_content }}</span>
-        {% else %}
-          <span class="svg-wrapper">{{ 'icon-cart.svg' | inline_asset_content }}</span>
-        {% endif %}
-        <span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
-        {%- if cart != empty -%}
-          <div class="cart-count-bubble">
-            {%- if cart.item_count < 100 -%}
-              <span aria-hidden="true">{{ cart.item_count }}</span>
-            {%- endif -%}
-            <span class="visually-hidden">{{ 'sections.header.cart_count' | t: count: cart.item_count }}</span>
-          </div>
-        {%- endif -%}
-        
-        </div>
-      </a>
-
-      <!-- Search -->
-      <button aria-label="Search" onclick="window.location.href='/search'">
-        <div class="flex justify-center items-center hover:bg-gray-100 w-[40px] h-[40px] rounded-full p-2">
-          <img src="{{ "search-icon.svg" |  asset_url }}" alt="Search..." width="16" height="16">
-        </div>
-      </button>
-    </div>
   </div>
 </div>
+
 <style>
   #cart-icon-bubble .svg-wrapper {
     width: 29px;
@@ -140,12 +146,11 @@
     function openMenu() {
       wrapper.classList.remove('hidden');
 
-      // Allow a tick for transition start
       requestAnimationFrame(() => {
         overlay.classList.remove('opacity-0', 'pointer-events-none');
         overlay.classList.add('opacity-70', 'pointer-events-auto');
 
-        menu.classList.remove('-translate-x-[250px]');
+        menu.classList.remove('-translate-x-[45vw]');
         menu.classList.add('translate-x-0');
       });
     }
@@ -154,10 +159,9 @@
       overlay.classList.remove('opacity-70', 'pointer-events-auto');
       overlay.classList.add('opacity-0', 'pointer-events-none');
 
-      menu.classList.add('-translate-x-[250px]');
+      menu.classList.add('-translate-x-[45vw]');
       menu.classList.remove('translate-x-0');
 
-      // Hide wrapper after animation finishes (300ms)
       setTimeout(() => {
         wrapper.classList.add('hidden');
       }, 300);
@@ -168,12 +172,35 @@
     overlay.addEventListener('click', closeMenu);
   });
 </script>
+<script>
+   document.addEventListener('DOMContentLoaded', () => {
+     const header = document.getElementById('headerMain');
+
+  requestAnimationFrame(() => {
+       header.classList.remove('-translate-y-4', 'opacity-0');
+       header.classList.add('translate-y-0', 'opacity-100');
+     });
+
+   const enabled = {{ section.settings.header_float_checkbox | json }};
+   if (enabled) {
+     const onScroll = () => {
+       if (window.scrollY > 20) {
+         header.classList.add('fixed', 'top-0');
+       } else {
+         header.classList.remove('fixed', 'top-0');
+       }
+     };
+     window.addEventListener('scroll', onScroll);
+     onScroll();
+   }
+   });
+</script>
+
 {% if settings.cart_type == 'drawer' %}
   <script>
     document.querySelectorAll('.open-cart-drawer').forEach(function (button) {
       button.addEventListener('click', function (event) {
-
-        event.preventDefault(); 
+        event.preventDefault();
 
         const cartDrawer = document.querySelector('cart-drawer');
         if (cartDrawer) {
@@ -198,6 +225,12 @@
       "type": "link_list",
       "id": "header-main-menu",
       "label": "Main navigation menu"
+    },
+    {
+      "type": "checkbox",
+      "label": "Enable Float header",
+      "id": "header_float_checkbox",
+      "default": false
     }
   ],
   "presets": [
