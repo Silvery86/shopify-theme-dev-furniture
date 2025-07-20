@@ -1,56 +1,53 @@
-<div class="hero-slider h-full flex flex-col justify-center items-center">
-  <div class="hero-slider__title h-1/3 w-3/4 flex justify-center items-center text-grey-900 font-bold text-[34px] md:text-[48px] lg:text-[56px]  text-center">
+<section class="hero-slider flex flex-col justify-center items-center">
+  <div class="hero-slider__title max-h-[20%] w-3/4 flex justify-center items-start text-grey-900 font-bold text-[34px] md:text-[48px] lg:text-[56px] text-center">
     {{ section.settings['hero-slider-title'] }}
   </div>
-  <div class="hero-slider__products swiper hero-slider__slider h-1/3 overflow-hidden">
-    <div class="swiper-wrapper">
-      {% for product in section.settings['hero-slider-products'] %}
-        <div
-          class="swiper-slide product__image"
-          data-handle="{{ product.handle }}"
-        >
-          <img
-            class="product-main-image mx-auto"
-            id="product-image-{{ product.id }}"
-            src="{{ product.featured_media | image_url: width: 600 }}"
-            width="300"
-            height="300"
-          >
-        </div>
-      {% endfor %}
-    </div>
+  <div class="hero-slider__products swiper max-h-[60%] hero-slider__slider h-1/3 overflow-hidden">
     <div
       class="swiper-button-prev left-0 bg-gray-100 rounded-full after:text-gray-700 hover:bg-gray-200 transition-colors duration-300"
     ></div>
     <div
       class="swiper-button-next right-0 bg-gray-100 rounded-full after:text-gray-700 hover:bg-gray-200 transition-colors duration-300"
     ></div>
+    <div class="swiper-wrapper">
+      {% for product in section.settings['hero-slider-products'] limit: 10 %}
+        <div
+          class="swiper-slide product__image"
+          data-handle="{{ product.handle }}"
+        >
+          <img
+            class="product-main-image"
+            id="product-image-{{ product.id }}"
+            src="{{ product.featured_media | image_url: width: 500 }}"
+            width="auto"
+            height="auto"
+          >
+        </div>
+      {% endfor %}
+    </div>
   </div>
-  <div class="hero-slider__content h-1/3 flex flex-col justify-start items-center gap-4">
+  <div class="hero-slider__content max-h-[20%] h-1/3 flex flex-col justify-start items-center gap-4 mt-4">
     <div class="product__title text-gray-700 font-medium text-[16px]"></div>
     <div class="product__price text-gray-900 font-semibold text-[24px]"></div>
     <div class="product__link bg-gray-800 text-gray-100 px-6 py-3.5 rounded-2xl font-medium text-[16px] hover:bg-gray-100 hover:text-gray-900 hover:border hover:border-gray-900 transition-colors duration-300 cursor-pointer">
       <a href="#" class="product__link-btn">Shop now</a>
     </div>
   </div>
-</div>
+</section>
 <style>
   .hero-slider {
     margin: 56px 0;
   }
   .hero-slider__slider .swiper-slide-prev,
   .hero-slider__slider .swiper-slide-next {
-    width: 25% !important;
-    height: auto !important;
-    aspect-ratio: 1/1;
+    width: 25vw !important;
     transition: all 0.3s ease-in-out;
     display: flex !important;
     align-items: center;
-  
   }
 
   .hero-slider__slider .swiper-slide-active {
-    width: 50% !important;
+    width: 50vw !important;
     opacity: 1;
     z-index: 10;
     display: flex;
@@ -58,51 +55,49 @@
     align-items: center;
   }
 
-  .hero-slider__slider .swiper-slide-prev img,
-  .hero-slider__slider .swiper-slide-next img {
+  .hero-slider__slider .swiper-slide img{
     width: auto;
-    height: 120px;
-    border-radius: 100%;
+    transform: scale(0.6);
+    transition: all 0.3s ease-in-out;
     opacity: 0.5 !important;
-    border: 1px solid gray;
-    border-radius: 50%;
-    aspect-ratio: 1/1;
     padding: 36px;
   }
 
   .hero-slider__slider .swiper-slide{
-    height: 400px !important;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .hero-slider__slider .swiper-slide-active img {
-    width: 636px;
-    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: scale(1);
+    height: auto !important;
+    opacity: 1 !important;
   }
 
   .hero-slider__slider .swiper-button-prev {
     top: 50%;
-    left: 23%;
+    left: 25%;
   }
   .hero-slider__slider .swiper-button-next {
     top: 50%;
-    right: 23%;
+    right: 25%;
   }
 
   .hero-slider__slider {
     max-width: 100%;
-    height: 400px;
     overflow: hidden;
   }
-  
+
   @media (max-width: 1024px) {
     .hero-slider__slider .swiper-slide-prev img,
     .hero-slider__slider .swiper-slide-next img {
       width: auto;
-      height: 100px;
-    }
-
-    .hero-slider__slider .swiper-slide-active img {
-      width: 536px;
+      height: 50%;
     }
   }
 
@@ -110,7 +105,6 @@
     .hero-slider__slider {
       margin-top: 24px !important;
       padding-top: 88px !important;
-      height: 500px;
     }
 
     .hero-slider__slider .swiper-wrapper .swiper-slide,
@@ -132,61 +126,112 @@
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', () => {
     const sliderEl = document.querySelector('.hero-slider__slider');
+    if (!sliderEl || typeof Swiper === 'undefined') return;
 
-    if (sliderEl && typeof Swiper !== 'undefined') {
-      const swiper = new Swiper(sliderEl, {
-        slidesPerView: 3,
-        centeredSlides: true,
-        loop: true,
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        },
-        breakpoints: {
-          0: { slidesPerView: 1 },
-          768: { slidesPerView: 3 },
-        },
-       speed: 600,
-        on: {
-          init: function () {
-            fetchProductData(this);
-          },
-          slideChange: function () {
-            fetchProductData(this);
-          },
-        },
-      });
+    const productCache = {};
+    const LS_KEY = 'heroSliderProducts';
+    const CACHE_TTL = 1000 * 60 * 60; // 1 hour
 
-      function fetchProductData(swiperInstance) {
-        const activeSlide = swiperInstance.slides[swiperInstance.activeIndex];
-        const handle = activeSlide.dataset.handle;
-
-        if (!handle) return;
-        fetch(`/products/${handle}.js`)
-          .then((res) => res.json())
-          .then((product) => {
-            const variant = product.variants[0];
-            document.querySelector('.product__title').textContent = product.title;
-            const price = variant.price;
-            const priceContent = formatMoney(price);
-            document.querySelector('.product__price').textContent = priceContent;
-            document.querySelector('.product__link-btn').setAttribute('href', product.url);
-          })
-          .catch((err) => {
-            console.error('Error fetching product data:', err);
-          });
-      }
-
-      function formatMoney(cents) {
-        const amount = (cents / 100).toLocaleString(undefined, {
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 0,
-        });
-        return window.currencyFormat ? window.currencyFormat.replace('{{amount}}', amount) : `${amount} $`;
+    function loadCacheFromStorage() {
+      try {
+        const raw = localStorage.getItem(LS_KEY);
+        if (!raw) return false;
+        const { timestamp, data } = JSON.parse(raw);
+        if (Date.now() - timestamp > CACHE_TTL) {
+          localStorage.removeItem(LS_KEY);
+          return false;
+        }
+        Object.assign(productCache, data);
+        return true;
+      } catch {
+        return false;
       }
     }
+
+    function saveCacheToStorage() {
+      try {
+        localStorage.setItem(LS_KEY, JSON.stringify({ timestamp: Date.now(), data: productCache }));
+      } catch {}
+    }
+
+    function getAllHandles() {
+      return Array.from(sliderEl.querySelectorAll('.swiper-slide'))
+        .map((s) => s.dataset.handle)
+        .filter(Boolean)
+        .filter((h, i, arr) => arr.indexOf(h) === i);
+    }
+
+    function prefetchProducts() {
+      const handles = getAllHandles();
+      return Promise.all(
+        handles.map((handle) => {
+          if (productCache[handle]) return Promise.resolve();
+          return fetch(`/products/${handle}.js`)
+            .then((r) => r.json())
+            .then((product) => {
+              const variant = product.variants[0];
+              productCache[handle] = {
+                title: product.title,
+                price: variant.price,
+                url: product.url,
+              };
+            })
+            .catch((err) => console.error('Prefetch error:', handle, err));
+        })
+      ).then(saveCacheToStorage);
+    }
+
+    function updateSlideInfo(handle) {
+      const info = productCache[handle];
+      const heroSliderContent = document.querySelector('.hero-slider__content');
+      if (!info) return;
+      const titleEl = heroSliderContent.querySelector('.product__title');
+      const priceEl = heroSliderContent.querySelector('.product__price');
+      const linkEl = heroSliderContent.querySelector('.product__link-btn');
+      console.log(titleEl);
+      if (titleEl) titleEl.textContent = info.title;
+      if (priceEl) priceEl.textContent = formatMoney(info.price);
+      if (linkEl) linkEl.href = info.url;
+    }
+
+    function formatMoney(cents) {
+      const amount = (cents / 100).toLocaleString(undefined, {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      });
+      return window.currencyFormat ? window.currencyFormat.replace('{{amount}}', amount) : `${amount} $`;
+    }
+
+    const swiper = new Swiper(sliderEl, {
+      slidesPerView: 3,
+      centeredSlides: true,
+      loop: true,
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      breakpoints: { 0: { slidesPerView: 1 }, 768: { slidesPerView: 3 } },
+      speed: 600,
+      on: {
+        init() {
+          const activeHandle = this.slides[this.activeIndex].dataset.handle;
+
+          if (loadCacheFromStorage() && productCache[activeHandle]) {
+            updateSlideInfo(activeHandle);
+          }
+
+          prefetchProducts().then(() => {
+            updateSlideInfo(this.slides[this.activeIndex].dataset.handle);
+          });
+        },
+        slideChange() {
+          const handle = this.slides[this.activeIndex].dataset.handle;
+          updateSlideInfo(handle);
+        },
+      },
+    });
   });
 </script>
 
