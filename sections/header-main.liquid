@@ -1,10 +1,10 @@
 <div
   id="headerMain"
-  class="w-full h-full transform -translate-y-4 opacity-0 transition-all duration-300 ease-in-out z-20"
+  class="w-full transform -translate-y-4 opacity-0 transition-all duration-300 ease-in-out z-20"
 >
   <div class="page-width">
     <div
-      class="header-main w-full flex  justify-between items-center bg-white/100 rounded-full h-[60px] shadow-md mb-4"
+      class="header-main w-full max-h-[10vh] flex  justify-between items-center bg-white/100 rounded-full h-[60px] shadow-md mb-4"
     >
       <div class="mobile-menu__button md:hidden w-1/4 flex ml-4">
         <button
@@ -137,6 +137,7 @@
 </style>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
+     const header = document.getElementById('headerMain');
     const wrapper = document.getElementById('mobile-menu-wrapper');
     const menu = document.getElementById('mobile-menu');
     const toggleBtn = document.getElementById('mobile-menu-toggle');
@@ -145,7 +146,7 @@
 
     function openMenu() {
       wrapper.classList.remove('hidden');
-
+      header.classList.add('h-full')
       requestAnimationFrame(() => {
         overlay.classList.remove('opacity-0', 'pointer-events-none');
         overlay.classList.add('opacity-70', 'pointer-events-auto');
@@ -161,7 +162,7 @@
 
       menu.classList.add('-translate-x-[45vw]');
       menu.classList.remove('translate-x-0');
-
+      header.classList.remove('h-full')
       setTimeout(() => {
         wrapper.classList.add('hidden');
       }, 300);
