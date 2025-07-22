@@ -11,7 +11,7 @@
       data-mobile="{{ section.settings.products-per-slide-mobile }}"
     >
       <div class="recent-viewed__container swiper-wrapper"></div>
-       <div class="swiper-button-prev left-0 bg-gray-100 rounded-full after:text-gray-700" ></div>
+      <div class="swiper-button-prev left-0 bg-gray-100 rounded-full after:text-gray-700"></div>
       <div class="swiper-button-next right-0 bg-gray-100 rounded-full after:text-gray-700"></div>
     </div>
   </div>
@@ -73,14 +73,16 @@
   }
 
   @media (max-width: 768px) {
-    .swiper-button-prev {
-      top: calc(100% - 30px);
-      left: 38% !important;
-    }
+    .recent-viewed__slider {
+      & .swiper-button-prev {
+        top: calc(100% - 30px);
+        left: calc(50% - 50px);
+      }
 
-    .swiper-button-next {
-      top: calc(100% - 30px);
-      right: 38% !important;
+      & .swiper-button-next {
+        top: calc(100% - 30px);
+        right: calc(50% - 50px);
+      }
     }
   }
 </style>
@@ -154,8 +156,8 @@
           loop: true,
         });
       }
-       initializeWishlistToggle();
-       initializeQuickAddToCart();
+      initializeWishlistToggle();
+      initializeQuickAddToCart();
     });
   });
 </script>

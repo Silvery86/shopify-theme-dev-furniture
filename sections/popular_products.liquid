@@ -86,21 +86,24 @@
   .swiper-button-next::after {
     font-size: 16px;
   }
-  .swiper-button-prev {
+  .popular-products__slider .swiper-button-prev {
     left: 0;
   }
-  .swiper-button-next {
+  .popular-products__slider .swiper-button-next {
     right: 0;
   }
    @media (max-width: 768px) {
-    .swiper-button-prev{
-      top: calc(100% - 20px);
-      left: 35% !important;
+    .popular-products__slider {
+      & .swiper-button-prev{
+        top: calc(100% - 20px);
+        left: calc(50% - 50px);
+      }
+      & .swiper-button-next{
+        top: calc(100% - 20px);
+        right: calc(50% - 50px);
+      }
     }
-    .swiper-button-next{
-      top: calc(100% - 20px);
-      right: 35% !important;
-    }
+   
    }
 </style>
 {% schema %}
