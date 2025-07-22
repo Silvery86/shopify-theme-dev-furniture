@@ -25,7 +25,7 @@
 
         <div
           id="collection-{{ forloop.index }}"
-          class="collection-gallery__grid h-[80vh] opacity-0 transition-all duration-700 ease-in-out flex flex-col md:flex-row gap-4"
+          class="collection-gallery__grid h-[80vh] opacity-0 transition-all duration-700 ease-out flex hidden flex-col md:flex-row gap-8"
           {{ block.shopify_attributes }}
         >
           {% if gallery_images %}
@@ -127,6 +127,7 @@
 
     function showGallery(targetId) {
       galleries.forEach((gallery) => {
+        gallery.classList.remove('opacity-100');
         gallery.classList.add('opacity-0');
         setTimeout(() => {
           gallery.classList.add('hidden');
@@ -139,8 +140,12 @@
           target.classList.remove('hidden');
           setTimeout(() => {
             target.classList.remove('opacity-0');
+            target.classList.add('opacity-100');
           }, 10);
         }, 300);
+      } else {
+        gallery.classList.remove('opacity-100');
+        gallery.classList.add('opacity-0');
       }
     }
 
@@ -155,7 +160,7 @@
       const first = galleries[0];
       first.classList.remove('hidden');
       setTimeout(() => {
-        first.classList.remove('opacity-0');
+        first.classList.remove('opacity-0', 'opacity-100');
       }, 10);
     }
   });
