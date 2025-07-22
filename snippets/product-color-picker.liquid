@@ -12,6 +12,7 @@
   <variant-selects
     id="variant-selects-{{ section.id }}-{{ product.id }}"
     data-section="{{ section.id }}"
+    class="ml-2"
     {{ block.shopify_attributes }}
   >
     {%- for option in product.options_with_values -%}

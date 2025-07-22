@@ -1,6 +1,6 @@
 {% assign product_form_id = 'product-form-' | append: card_product.id %}
-<div class="product_container product-{{ card_product.id }} swiper-slide !flex flex-col justify-between min-h-[270px] gap-0">
-  <div class="product__image  lg:h-[150px] md:h-[200px] h-[150px] relative overflow-hidden group">
+<div class="product_container h-full product-{{ card_product.id }} swiper-slide !flex flex-col justify-between gap-0">
+  <div class="product__image  relative overflow-hidden group">
     {% assign compare_price = card_product.compare_at_price %}
     {% assign current_price = card_product.price %}
 
