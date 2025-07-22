@@ -1,5 +1,5 @@
 <div class="page-width">
-  <div class="collection-gallery">
+  <div class="collection-gallery h-[100vh]">
     <div class="colllection-gallery__heading flex justify-between items-center text-gray-900 font-semibold text-[28px] mb-6">
       {{ section.settings['gallery-title'] }}
     </div>
@@ -25,7 +25,7 @@
 
         <div
           id="collection-{{ forloop.index }}"
-          class="collection-gallery__grid hidden opacity-0 transition-opacity duration-500 ease-in-out flex flex-col md:flex-row gap-4"
+          class="collection-gallery__grid h-[80vh] opacity-0 transition-all duration-700 ease-in-out flex flex-col md:flex-row gap-4"
           {{ block.shopify_attributes }}
         >
           {% if gallery_images %}
@@ -50,11 +50,11 @@
             <div class="flex flex-col md:w-1/2 gap-4 w-full">
               <!-- Top Large Image -->
               {% if image_1 != null %}
-                <div class="h-[300px]">
+                <div class="h-[50%]">
                   <img
                     src="{{ image_1 | image_url: width: 800 }}"
                     alt="Gallery image 1"
-                    class="w-full h-full object-cover rounded-lg transition-transform duration-300 ease-in-out hover:scale-110"
+                    class="w-full h-full object-cover rounded-lg transform transition duration-500 ease-in-out hover:scale-105 hover:shadow-2xl"
                     width="{{ image_1.width }}"
                     height="{{ image_1.height }}"
                     loading="lazy"
@@ -63,11 +63,11 @@
               {% endif %}
               <!-- Bottom Short Image -->
               {% if image_2 != null %}
-                <div class="h-[300px]">
+                <div class="h-[50%]">
                   <img
                     src="{{ image_2 | image_url: width: 800 }}"
                     alt="Gallery image 2"
-                    class="w-full h-full object-cover rounded-lg transition-transform duration-300 ease-in-out hover:scale-110"
+                    class="w-full h-full object-cover rounded-lg transform transition duration-500 ease-in-out hover:scale-105 hover:shadow-2xl"
                     width="{{ image_2.width }}"
                     height="{{ image_2.height }}"
                     loading="lazy"
@@ -80,11 +80,11 @@
             <div class="flex flex-col md:w-1/2 gap-4 w-full">
               <!-- Top Tall Image -->
               {% if image_3 != null %}
-                <div class="h-[400px]">
+                <div class="h-[60%]">
                   <img
                     src="{{ image_3 | image_url: width: 800 }}"
                     alt="Gallery image 3"
-                    class="w-full h-full object-cover rounded-lg transition-transform duration-300 ease-in-out hover:scale-110"
+                    class="w-full h-full object-cover rounded-lg transform transition duration-500 ease-in-out hover:scale-105 hover:shadow-2xl"
                     width="{{ image_3.width }}"
                     height="{{ image_3.height }}"
                     loading="lazy"
@@ -93,11 +93,11 @@
               {% endif %}
               <!-- Bottom Short Image -->
               {% if image_4 != null %}
-                <div class="h-[200px]">
+                <div class="h-[40%]">
                   <img
                     src="{{ image_4 | image_url: width: 800 }}"
                     alt="Gallery image 4"
-                    class="w-full h-full object-cover rounded-lg transition-transform duration-300 ease-in-out hover:scale-110"
+                    class="w-full h-full object-cover rounded-lg transform transition duration-500 ease-in-out hover:scale-105 hover:shadow-2xl"
                     width="{{ image_4.width }}"
                     height="{{ image_4.height }}"
                     loading="lazy"
@@ -127,7 +127,6 @@
 
     function showGallery(targetId) {
       galleries.forEach((gallery) => {
-        // Hide with fade-out
         gallery.classList.add('opacity-0');
         setTimeout(() => {
           gallery.classList.add('hidden');
@@ -136,12 +135,11 @@
 
       const target = document.getElementById(targetId);
       if (target) {
-        // Show with fade-in
         setTimeout(() => {
           target.classList.remove('hidden');
           setTimeout(() => {
             target.classList.remove('opacity-0');
-          }, 10); // slight delay to trigger transition
+          }, 10);
         }, 300);
       }
     }
@@ -153,7 +151,6 @@
       });
     });
 
-    // Show first gallery by default with fade-in
     if (galleries.length > 0) {
       const first = galleries[0];
       first.classList.remove('hidden');
