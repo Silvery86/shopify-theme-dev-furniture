@@ -12,8 +12,8 @@
 {% endif %}
 
 <div class="page-width">
-  <div id="{{ section.id }}" class="popular-products">
-    <div class="popular-products__heading flex flex-row justify-between items-center md:mb-5 mb-8">
+  <div id="{{ section.id }}" class="popular-products h-[60vh] md:h-[40vh]">
+    <div class="popular-products__heading h-[10%] flex flex-row justify-between items-center md:mb-5 mb-8">
       <div class="heading__title text-gray-900 font-semibold text-[28px]">
         {{ section.settings['popular-products__title'] }}
       </div>
@@ -22,11 +22,11 @@
       </div>
     </div>
     <div
-      class="swiper popular-products__slider h-[400px] md:h-[300px] !p-[6px] md:!p-[24px] md:pb-20 pb-40!"
+      class="swiper popular-products__slider h-[90%] !pb-[50px] md:!pb-[20px] md:!px-[20px]"
       data-desktop="{{ section.settings.products-per-slide-desktop }}"
-      data-mobile="{{ section.settings.products-per-slide-mobile }}"
+      data-mobile="1"
     >
-      <div class="popular-products__container swiper-wrapper">
+      <div class="popular-products__container h-full swiper-wrapper">
         {% for product in section.settings['popular-products-list'] limit: 8 %}
              {% render 'custom-product-card',
                     card_product: product,
@@ -55,7 +55,7 @@
         },
         breakpoints: {
           0: {
-            slidesPerView: parseInt(sliderEl.dataset.mobile) || 2,
+            slidesPerView: parseInt(sliderEl.dataset.mobile) || 1,
           },
           768: {
             slidesPerView: parseInt(sliderEl.dataset.desktop) || 4,
@@ -94,12 +94,12 @@
   }
    @media (max-width: 768px) {
     .swiper-button-prev{
-      top: calc(100% - 30px);
-      left: 38% !important;
+      top: calc(100% - 20px);
+      left: 35% !important;
     }
     .swiper-button-next{
-      top: calc(100% - 30px);
-      right: 38% !important;
+      top: calc(100% - 20px);
+      right: 35% !important;
     }
    }
 </style>
@@ -138,16 +138,7 @@
       "step": 1,
       "label": "Products per slide (desktop)",
       "default": 4
-    },
-    {
-      "type": "range",
-      "id": "products-per-slide-mobile",
-      "min": 1,
-      "max": 3,
-      "step": 1,
-      "label": "Products per slide (mobile)",
-      "default": 2
-    }
+    }    
   ],
   "presets": [
     {
