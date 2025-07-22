@@ -79,7 +79,11 @@
         "category_bRBaP7",
         "category_Niwekr"
       ],
-      "settings": {}
+      "settings": {
+        "categories_per_row_desktop": 4,
+        "categories_per_row_mobile": 2,
+        "collection_button_text": "View Now"
+      }
     },
     "popular_products_KcKmJ3": {
       "type": "popular_products",
@@ -133,13 +137,29 @@
             "collection-custom-title": "",
             "select-collection": "office"
           }
+        },
+        "collection_wzit7x": {
+          "type": "collection",
+          "settings": {
+            "collection-custom-title": "",
+            "select-collection": "decoration"
+          }
+        },
+        "collection_QkCy4R": {
+          "type": "collection",
+          "settings": {
+            "collection-custom-title": "",
+            "select-collection": "bathroom"
+          }
         }
       },
       "block_order": [
         "collection_tcUnpL",
         "collection_WPjyBc",
         "collection_7XYUA6",
-        "collection_tkCwRm"
+        "collection_tkCwRm",
+        "collection_wzit7x",
+        "collection_QkCy4R"
       ],
       "settings": {
         "gallery-title": "Interior design and inspiration"
