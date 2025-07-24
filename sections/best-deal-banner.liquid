@@ -4,7 +4,7 @@
     {% if product %}
       <div class="swiper best-deal__slider  w-full md:w-1/2 bg-gray-100 rounded-t-2xl md:rounded-l-2xl md:rounded-t-none">
         <div class="best-deal__gallery swiper-wrapper">
-          {% for media in product.media limit: 5 %}
+          {% for media in product.media limit: 10 %}
             {% if media.media_type == 'image' %}
               <div class="swiper-slide aspect-square overflow-hidden group">
                 <img
@@ -12,7 +12,7 @@
                   alt="{{ media.alt | escape }}"
                   width="{{ media.width }}"
                   height="{{ media.height }}"
-                  class="w-full h-full rounded-2xl object-cover transition-transform duration-300 ease-in-out hover:scale-110"
+                  class="w-full h-full rounded-2xl object-cover transition-transform duration-300 ease-in-out hover:scale-90"
                   loading="lazy"
                 >
               </div>
@@ -25,6 +25,18 @@
         <div class="best-deal__badge text-gray-300 font-light text-[14px]">
           {{ section.settings['best-deal-title'] | default: 'Best Deal' | upcase }}
         </div>
+        {% assign compare_price = product.compare_at_price %}
+        {% assign current_price = product.price %}
+
+        {% if compare_price and compare_price > current_price %}
+          {% assign discount = compare_price | minus: current_price %}
+          {% assign discount_percentage = discount | times: 100 | divided_by: compare_price | round %}
+          <span
+            class="bg-red-500 text-gray-100 text-[24px] font-semibold px-2 py-0.5 rounded-xl"
+          >
+            OFF {{ discount_percentage }}%
+          </span>
+        {% endif %}
         <div class="best-deal__title text-gray-100 font-semibold text-[24px]">{{ product.title }}</div>
         <div class="best-deal__feature-image">
           {{
@@ -35,6 +47,12 @@
         </div>
         <div class="best-deal__price text-gray-100 font-semibold text-[28px]">
           {% render 'price-custom', product: product, show_compare_at_price: false %}
+        </div>
+        <div class="product__price text-[24px] font-semibold text-gray-100">
+          {{ product.price | money }}
+          <span class=" line-through text-gray-200 text-[12px] font-normal">
+            {{- product.compare_at_price | money -}}
+          </span>
         </div>
         <a
           href="{{ product.url }}"
