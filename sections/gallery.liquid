@@ -1,5 +1,5 @@
 <div class="page-width">
-  <div class="collection-gallery h-[100vh]">
+  <div class="collection-gallery md:h-[100vh]">
     <div class="colllection-gallery__heading flex justify-between items-center text-gray-900 font-semibold text-[28px] mb-6">
       {{ section.settings['gallery-title'] }}
     </div>
@@ -25,7 +25,7 @@
 
         <div
           id="collection-{{ forloop.index }}"
-          class="collection-gallery__grid h-[80vh] opacity-0 transition-all duration-700 ease-out flex hidden flex-col md:flex-row gap-8"
+          class="collection-gallery__grid md:h-[80vh] opacity-0 transition-all duration-700 ease-out flex hidden flex-col md:flex-row gap-8"
           {{ block.shopify_attributes }}
         >
           {% if gallery_images %}
