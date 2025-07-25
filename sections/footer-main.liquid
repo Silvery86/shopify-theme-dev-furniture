@@ -1,8 +1,8 @@
-<footer class="bg-gray-800 text-gray-300 pt-[80px] pb-[48px] h-[75vh]">
+<footer class="bg-gray-800 text-gray-300 pt-[80px] pb-[48px]">
   <div class="page-width">
-    <div class="flex justify-between items-center gap-8">
+    <div class="w-full flex flex-row flex-wrap md:flex-nowrap justify-between items-center gap-0 md:gap-8">
       <!-- Left Column Menu -->
-      <div class="w-1/4 flex flex-col justify-center items-center gap-2">
+      <div class="w-1/2 md:w-1/4 order-2 md:order-1 flex flex-col justify-center items-center gap-2">
         {% assign left_menu = linklists[section.settings.left_menu] %}
         {% if left_menu.links.size > 0 %}
           {% for link in left_menu.links %}
@@ -14,7 +14,7 @@
       </div>
 
       <!-- Center Newsletter -->
-      <div class="w-2/4 flex flex-col justify-center items-center gap-6">
+      <div class="w-full md:w-2/4 order-1 md:order-2 flex flex-col justify-center items-center gap-6 mb-8">
         <div class="text-gray-100 text-[28px] font-semibold mb-2">{{ section.settings.newsletter_heading }}</div>
         <p class="text-gray-300 font-normal text-[14px] mb-4 text-center">{{ section.settings.newsletter_subtext }}</p>
         {% form 'customer', id: 'footer-email-subscribe-form', class: 'w-full flex justify-center md:justify-start' %}
@@ -53,8 +53,10 @@
                 >
                   {{
                     block.settings['social-icon']
-                    | image_url: width: 16, height: 16
-                    | image_tag: alt: block.settings['social-title']
+                    | image_url: width: 24, height: 24
+                    | image_tag:
+                      alt: block.settings['social-title'],
+                      class: 'cursor-pointer transform transition duration-500 ease-in-out hover:scale-120 hover:shadow-2xl'
                   }}
                 </a>
               {% endif %}
@@ -64,7 +66,7 @@
       </div>
 
       <!-- Right Column Menu -->
-      <div class="w-1/4 flex flex-col justify-center items-center gap-2">
+      <div class="w-1/2 md:w-1/4 order-3 md:order-3 flex flex-col justify-center items-center gap-2">
         {% assign right_menu = linklists[section.settings.right_menu] %}
         {% if right_menu.links.size > 0 %}
           {% for link in right_menu.links %}

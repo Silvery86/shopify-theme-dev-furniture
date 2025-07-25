@@ -15,11 +15,7 @@
             {{
               block.settings['benefit-image']
               | image_url: width: 64, height: 64
-              | image_tag:
-                alt: title,
-                width: 64,
-                height: 64,
-                class: 'transition-all duration-500 group-hover:scale-120'
+              | image_tag: alt: title, width: 64, height: 64, class: 'transition-all duration-500 group-hover:scale-120'
             }}
           </div>
         {% endif %}
