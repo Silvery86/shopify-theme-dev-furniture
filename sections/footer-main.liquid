@@ -87,6 +87,22 @@
         </span>
       </p>
     </div>
+    <div class="text-center flex justify-center gap-6 items-end text-gray-400 text-[12px] font-normal mt-10">
+      {% for block in section.blocks %}
+        {% if block.type == 'payment-method' %}
+          {% if block.settings['payment-icon'] != blank %}
+            {{
+              block.settings['payment-icon']
+              | image_url: width: 50, height: 25
+              | image_tag:
+              width: 50,
+                alt: block.settings['payment-title'],
+                class: 'cursor-pointer transform transition duration-500 ease-in-out hover:scale-120 hover:shadow-2xl'
+            }}
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+    </div>
   </div>
 </footer>
 
@@ -150,6 +166,22 @@
           "type": "image_picker",
           "id": "social-icon",
           "label": "Social Icon"
+        }
+      ]
+    },
+    {
+      "type": "payment-method",
+      "name": "Payment Method",
+      "settings": [
+        {
+          "type": "text",
+          "label": "Payment Name",
+          "id": "title"
+        },
+        {
+          "type": "image_picker",
+          "id": "payment-icon",
+          "label": "Payment Icon"
         }
       ]
     }
