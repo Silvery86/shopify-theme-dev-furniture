@@ -53,3 +53,4 @@ export default tseslint.config({
 })
 ```
 "# shopify-theme-candle" 
+"# shopify-theme-candle" 
