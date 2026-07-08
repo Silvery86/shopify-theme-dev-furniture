@@ -1,4 +1,18 @@
 {% assign product_form_id = 'product-form-' | append: card_product.id %}
+{%- liquid
+  case image_ratio
+    when 'square'
+      assign ratio_class = 'aspect-square'
+    when 'portrait'
+      assign ratio_class = 'aspect-[3/4]'
+    when 'adapt'
+      assign ratio_class = ''
+    else
+      assign ratio_class = 'aspect-[2/1]'
+  endcase
+  assign card_media = card_product.selected_or_first_available_variant.featured_media | default: card_product.featured_media
+  assign second_image = card_product.images[1]
+-%}
 <div class="product_container h-full product-{{ card_product.id }} swiper-slide !flex flex-col justify-between gap-0">
   <div class="product__image  relative overflow-hidden group">
     {% assign compare_price = card_product.compare_at_price %}
@@ -14,45 +28,52 @@
       </span>
     {% endif %}
     <a href="{{ card_product.url }}" alt="{{ card_product.title }}">
-      <img
-        class="product-main-image w-full object-cover transition-opacity duration-300 ease-in-out group-hover:opacity-0 aspect-[2/1]"
-        id="product-image-{{ card_product.id }}"
-        src="{{ card_product.selected_or_first_available_variant.featured_media | image_url: width: 300  | default: card_product.featured_image }}"
-        alt="{{ card_product.title }}"
-        width="300"
-        height="150"
-        {% if lazy_load == true %}
-          loading="lazy"
-        {% endif %}
-      >
+      {% if card_media %}
+        <img
+          class="product-main-image w-full object-cover transition-opacity duration-300 ease-in-out group-hover:opacity-0 {{ ratio_class }}"
+          id="product-image-{{ card_product.id }}"
+          src="{{ card_media | image_url: width: 400 }}"
+          srcset="{{ card_media | image_url: width: 200 }} 200w, {{ card_media | image_url: width: 400 }} 400w, {{ card_media | image_url: width: 600 }} 600w"
+          sizes="(min-width: 750px) 25vw, 50vw"
+          width="{{ card_media.width }}"
+          height="{{ card_media.height }}"
+          alt="{{ card_product.title | escape }}"
+          {% if lazy_load == true %}
+            loading="lazy"
+          {% endif %}
+        >
+      {% else %}
+        <div class="product-main-image w-full {{ ratio_class }}">
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg w-full h-full object-cover' }}
+        </div>
+      {% endif %}
 
-      {% if show_secondary_image %}
-        {% assign second_image = card_product.images[1] %}
-        {% if second_image %}
-          <img
-            class="product-secondary-image absolute top-0 left-0 w-full object-cover opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100 aspect-[2/1]"
-            src="{{ second_image | image_url: width: 300 }}"
-            width="300"
-            height="150"
-            alt="{{ card_product.title }} secondary image"
-            aria-hidden="true"
-            {% if lazy_load == true %}
-              loading="lazy"
-            {% endif %}
-          >
-        {% endif %}
+      {% if show_secondary_image and second_image %}
+        <img
+          class="product-secondary-image absolute top-0 left-0 w-full object-cover opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100 {{ ratio_class }}"
+          src="{{ second_image | image_url: width: 400 }}"
+          srcset="{{ second_image | image_url: width: 200 }} 200w, {{ second_image | image_url: width: 400 }} 400w, {{ second_image | image_url: width: 600 }} 600w"
+          sizes="(min-width: 750px) 25vw, 50vw"
+          width="{{ second_image.width }}"
+          height="{{ second_image.height }}"
+          alt="{{ card_product.title | escape }} secondary image"
+          aria-hidden="true"
+          loading="lazy"
+        >
       {% endif %}
     </a>
   </div>
   {% if show_variant_picker %}
-  {% render 'product-color-picker', product: card_product, product_form_id: product_form_id, swatch_color_only: true %}
+  {% render 'product-color-picker', product: card_product, product_form_id: product_form_id, swatch_color_only: true, swatch_shape: 'circle' %}
   {% endif %}
   <a href="{{ card_product.url }}">
   <div class="product__title text-[14px] font-medium text-gray-900 hover:underline cursor-pointer">{{ card_product.title }}</div>
   </a>
   <div class="product__price text-[16px] font-semibold text-gray-900">
     {{ card_product.price | money }}
-    <span class=" line-through text-gray-600 text-[12px] font-normal">{{ card_product.compare_at_price | money }}</span>
+    {%- if compare_price and compare_price > current_price -%}
+      <span class="line-through text-gray-600 text-[12px] font-normal">{{ compare_price | money }}</span>
+    {%- endif -%}
   </div>
   {% if show_add_to_cart %}
   <div class="product__option flex justify-between items-center">

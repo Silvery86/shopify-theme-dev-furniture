@@ -23,11 +23,13 @@
 {%- endif -%}
 
 {%- assign has_variants = false -%}
-{% for product in collection.products %}
-  {% unless product.has_only_default_variant %}
-    {% assign has_variants = true %}
-  {% endunless %}
-{% endfor %}
+{%- comment -%} Cap + break: one multi-variant product in the first page is enough signal to load the small swatch CSS. Avoids scanning the whole collection. {%- endcomment -%}
+{%- for product in collection.products limit: 50 -%}
+  {%- unless product.has_only_default_variant -%}
+    {%- assign has_variants = true -%}
+    {%- break -%}
+  {%- endunless -%}
+{%- endfor -%}
 
 {% if has_variants %}
   {{ 'component-product-variant-picker.css' | asset_url | stylesheet_tag }}
@@ -164,9 +166,11 @@
                 gap-4 md:gap-2 items-end
               "
             >
+              {%- comment -%} Eager-load the first row (above the fold); lazy-load the rest. {%- endcomment -%}
+              {%- assign eager_count = section.settings.columns_desktop | default: 4 -%}
               {%- for product in collection.products -%}
-                {% assign lazy_load = false %}
-                {%- if forloop.index > 2 -%}
+                {%- assign lazy_load = false -%}
+                {%- if forloop.index > eager_count -%}
                   {%- assign lazy_load = true -%}
                 {%- endif -%}
                 <li
@@ -177,6 +181,7 @@
                 >
                   {% render 'custom-product-card',
                     card_product: product,
+                    image_ratio: section.settings.image_ratio,
                     show_secondary_image: section.settings.show_secondary_image,
                     lazy_load: lazy_load,
                     show_add_to_cart: true,
@@ -190,13 +195,15 @@
               {%- if section.settings.pagination_type == 'pagination' -%}
                 {% render 'pagination', paginate: paginate, anchor: '' %}
               {%- elsif section.settings.pagination_type == 'view_more' -%}
+                {%- comment -%}
+                  paginate.next.url already preserves active filters/sort. Do NOT
+                  manually append request.query_string — paginate.next.url ends in
+                  "?page=N", so appending would create a malformed double-"?" URL.
+                {%- endcomment -%}
                 {% assign next_url = paginate.next.url %}
-                {% if request.query_string != blank %}
-                  {% assign next_url = paginate.next.url | append: '?' | append: request.query_string %}
-                {% endif %}
                 <div class="text-center mt-16 space-y-4 view-more-wrapper">
                   <div class="text-gray-600 text-[14px] font-normal view-more-status">
-                    Showing {{ collection.products.size }} from {{ collection.all_products_count }}
+                    <span class="view-more-status__label">Showing {{ collection.products.size }} from {{ collection.all_products_count }}</span>
                     <div class="h-2 w-150 bg-gray-100 rounded-full mx-auto mt-1 overflow-hidden">
                       <div
                         class="h-full !flex bg-gray-900 transition-all progress-bar__fill"
@@ -255,8 +262,25 @@
 
       button.setAttribute('disabled', true);
 
-      fetch(nextUrl)
-        .then((response) => response.text())
+      // Restore the button to an idle, clickable state (used on both success-with-more and error).
+      function resetButton() {
+        button.removeAttribute('disabled');
+        if (text && spinner) {
+          text.classList.remove('hidden');
+          spinner.classList.add('hidden');
+        }
+      }
+
+      // Fetch ONLY this section's markup via the Section Rendering API instead of
+      // the whole page (header/footer/scripts). ~5-10x smaller responses.
+      const requestUrl = new URL(nextUrl, window.location.origin);
+      requestUrl.searchParams.set('section_id', '{{ section.id }}');
+
+      fetch(requestUrl)
+        .then((response) => {
+          if (!response.ok) throw new Error('Request failed: ' + response.status);
+          return response.text();
+        })
         .then((html) => {
           const parser = new DOMParser();
           const doc = parser.parseFromString(html, 'text/html');
@@ -270,40 +294,37 @@
           const progressFill = document.querySelector('.progress-bar__fill');
           const currentCount = grid.querySelectorAll('li').length;
           const totalCount = parseInt(button.getAttribute('data-total'));
-          const statusText = document.querySelector('.view-more-status');
+          const statusLabel = document.querySelector('.view-more-status__label');
 
           if (progressFill && totalCount && currentCount) {
             const percent = (currentCount / totalCount) * 100;
             progressFill.style.width = percent + '%';
           }
 
-          if (statusText) {
-            statusText.querySelector('span')?.remove?.(); // remove old span if needed
-            statusText.firstChild.textContent = `Showing ${currentCount} from ${totalCount}`;
+          if (statusLabel && totalCount) {
+            statusLabel.textContent = `Showing ${currentCount} from ${totalCount}`;
           }
 
           // Handle new button and re-enable original button if necessary
           const newButton = doc.querySelector('#ViewMoreButton');
           if (newButton && newButton.getAttribute('data-next-url')) {
             button.setAttribute('data-next-url', newButton.getAttribute('data-next-url'));
-            button.removeAttribute('disabled');
-            if (text && spinner) {
-              text.classList.remove('hidden');
-              spinner.classList.add('hidden');
-            }
+            resetButton();
           } else {
             button.remove();
           }
-          initializeWishlistToggle();
-          initializeQuickAddToCart();
+
+          // Repaint wishlist icons for the newly injected cards. Quick-add and
+          // wishlist clicks are handled by document-level delegation, so no
+          // per-element re-binding is needed here.
+          if (window.paintWishlistIcons) window.paintWishlistIcons(grid);
         })
-        .catch(() => {
-          button.remove();
+        .catch((error) => {
+          console.error(error);
+          // Keep pagination usable after a transient failure instead of removing it.
+          resetButton();
         });
     });
-    // Initial binding for existing products
-    initializeWishlistToggle();
-    initializeQuickAddToCart();
   </script>
 {% endif %}
 
@@ -422,19 +443,6 @@
       "id": "show_secondary_image",
       "default": false,
       "label": "t:sections.main-collection-product-grid.settings.show_secondary_image.label"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_vendor",
-      "default": false,
-      "label": "t:sections.main-collection-product-grid.settings.show_vendor.label"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_rating",
-      "default": false,
-      "label": "t:sections.main-collection-product-grid.settings.show_rating.label",
-      "info": "t:sections.main-collection-product-grid.settings.show_rating.info"
     },
     {
       "type": "select",

@@ -5,9 +5,12 @@
   - product: {Object} product object.
   - product_form_id: {String} Id of the product form to which the variant picker is associated.
   - swatch_color_only: Render only color swatch
+  - swatch_shape: {String} Swatch shape (circle|square|none). Optional, defaults to 'circle'.
+    Prefer passing this explicitly — in a product-card context there is no `block`.
   Usage:
   {% render 'product-color-picker', product: product, product_form_id: product_form_id %}
 {% endcomment %}
+{%- assign resolved_swatch_shape = swatch_shape | default: block.settings.swatch_shape | default: 'circle' -%}
 {%- unless product.has_only_default_variant -%}
   <variant-selects
     id="variant-selects-{{ section.id }}-{{ product.id }}"
@@ -79,7 +82,7 @@
                 product_form_id: product_form_id,
                 checked: value.selected,
                 visually_disabled: option_disabled,
-                shape: block.settings.swatch_shape,
+                shape: resolved_swatch_shape,
                 help_text: help_text,
                 additional_props: input_dataset
               %}
@@ -140,7 +143,7 @@
               product_form_id: product_form_id,
               checked: value.selected,
               visually_disabled: option_disabled,
-              shape: block.settings.swatch_shape,
+              shape: resolved_swatch_shape,
               help_text: help_text,
               additional_props: input_dataset
             %}
@@ -167,7 +170,7 @@
                 data-selected-value
                 class="dropdown-swatch"
               >
-                {% render 'swatch', swatch: option.selected_value.swatch, shape: block.settings.swatch_shape %}
+                {% render 'swatch', swatch: option.selected_value.swatch, shape: resolved_swatch_shape %}
               </span>
             {%- endif -%}
             <select

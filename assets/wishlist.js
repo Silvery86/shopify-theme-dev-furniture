@@ -1,55 +1,76 @@
-function initializeWishlistToggle() {
+(function () {
   const wishlistKey = 'wishlist';
 
   function getWishlist() {
-    const list = localStorage.getItem(wishlistKey);
-    return list ? JSON.parse(list) : [];
+    try {
+      return JSON.parse(localStorage.getItem(wishlistKey) || '[]');
+    } catch (e) {
+      return [];
+    }
   }
 
   function saveWishlist(list) {
     localStorage.setItem(wishlistKey, JSON.stringify(list));
   }
 
-  // Toggle heart icon src
-  function updateHeartIcon(imgEl, isAdded) {
-    if (isAdded) {
-      imgEl.src = window.wishlistIcons.filled;
-    } else {
-      imgEl.src = window.wishlistIcons.empty;
-    }
+  // Repaint heart icons to match stored state. Safe to call repeatedly (e.g.
+  // after AJAX appends) because it only sets `img.src` — it never binds listeners.
+  function paintWishlistIcons(root) {
+    if (!window.wishlistIcons) return;
+    root = root || document;
+    const list = getWishlist();
+    root.querySelectorAll('.wishlist-toggle').forEach((toggle) => {
+      const img = toggle.querySelector('.heart-icon');
+      if (!img) return;
+      const handle = toggle.getAttribute('data-product-handle');
+      img.src = list.includes(handle) ? window.wishlistIcons.filled : window.wishlistIcons.empty;
+    });
   }
 
-  // Initialize all wishlist toggle buttons
-  document.querySelectorAll('.wishlist-toggle').forEach(link => {
-    const productHandle = link.getAttribute('data-product-handle');
-    const img = link.querySelector('.heart-icon');
-    const wishlist = getWishlist();
-    const isInWishlist = wishlist.includes(productHandle);
-
-    // Set icon on page load
-    updateHeartIcon(img, isInWishlist);
-
-    // Click event
-    link.addEventListener('click', function (e) {
-      e.preventDefault();
-      let wishlist = getWishlist();
-
-      if (wishlist.includes(productHandle)) {
-        // Remove from wishlist
-        wishlist = wishlist.filter(id => id !== productHandle);
-        updateHeartIcon(img, false);
-      } else {
-        // Add to wishlist
-        wishlist.unshift(productHandle);
-        updateHeartIcon(img, true);
-      }
-
-      saveWishlist(wishlist);
+  function renderWishlistCount(count) {
+    document.querySelectorAll('[data-wishlist-count]').forEach((badge) => {
+      badge.textContent = count;
+      badge.hidden = count === 0;
     });
-  });
-}
+  }
 
-// Call the function when needed:
-document.addEventListener('DOMContentLoaded', function () {
-  initializeWishlistToggle();
-});
+  // One delegated click listener, bound a single time. Covers dynamically
+  // appended cards (view-more, recent-viewed) without re-binding.
+  document.addEventListener('click', function (e) {
+    const toggle = e.target.closest('.wishlist-toggle');
+    if (!toggle) return;
+    e.preventDefault();
+
+    const handle = toggle.getAttribute('data-product-handle');
+    let list = getWishlist();
+    const isInWishlist = list.includes(handle);
+    list = isInWishlist ? list.filter((h) => h !== handle) : [handle, ...list];
+    saveWishlist(list);
+
+    const img = toggle.querySelector('.heart-icon');
+    if (img && window.wishlistIcons) {
+      img.src = isInWishlist ? window.wishlistIcons.empty : window.wishlistIcons.filled;
+    }
+
+    renderWishlistCount(list.length);
+    document.dispatchEvent(new CustomEvent('wishlist:change', { detail: { count: list.length } }));
+  });
+
+  // Cross-tab sync: another tab changed the wishlist.
+  window.addEventListener('storage', function (e) {
+    if (e.key !== wishlistKey) return;
+    paintWishlistIcons();
+    renderWishlistCount(getWishlist().length);
+  });
+
+  document.addEventListener('DOMContentLoaded', function () {
+    paintWishlistIcons();
+    renderWishlistCount(getWishlist().length);
+  });
+
+  // Public API. `initializeWishlistToggle` is kept as a backward-compatible
+  // alias (called from cart-drawer.js, wishlist.liquid, etc.) but now only
+  // repaints icon state — it no longer stacks listeners.
+  window.paintWishlistIcons = paintWishlistIcons;
+  window.initializeWishlistToggle = paintWishlistIcons;
+})();
