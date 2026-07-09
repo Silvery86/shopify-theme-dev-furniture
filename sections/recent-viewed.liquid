@@ -1,3 +1,6 @@
+{{ 'component-row-slider.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'component-row-slider.js' | asset_url }}" defer="defer"></script>
+
 <div class="page-width">
   <div id="{{ section.id }}" class="recent-viewed">
     <div class="recent-viewed__heading flex flex-row justify-between items-center md:mb-5 mb-8">
@@ -5,21 +8,31 @@
         {{ section.settings['recent-viewed__title'] }}
       </div>
     </div>
-    <div
-      class="swiper recent-viewed__slider h-[400px] md:h-[300px] !p-[6px] md:!p-[24px] md:pb-20 pb-40!"
-      data-desktop="{{ section.settings.products-per-slide-desktop }}"
-      data-mobile="{{ section.settings.products-per-slide-mobile }}"
+    <row-slider-component
+      class="recent-viewed__slider h-[400px] md:h-[300px] !p-[6px] md:!p-[24px] md:pb-20 pb-40!"
+      style="--row-slider-slides-desktop: {{ section.settings.products-per-slide-desktop }}; --row-slider-slides-mobile: {{ section.settings.products-per-slide-mobile }}; --row-slider-gap: 24px;"
+      data-loop="true"
     >
-      <div class="recent-viewed__container swiper-wrapper"></div>
-      <div class="swiper-button-prev left-0 bg-gray-100 rounded-full after:text-gray-700"></div>
-      <div class="swiper-button-next right-0 bg-gray-100 rounded-full after:text-gray-700"></div>
-    </div>
+      <button type="button" class="row-slider__prev" aria-label="{{ 'general.slider.previous_slide' | t }}">
+        <span class="icon svg-wrapper">{{- 'icon-caret.svg' | inline_asset_content -}}</span>
+      </button>
+      <button type="button" class="row-slider__next" aria-label="{{ 'general.slider.next_slide' | t }}">
+        <span class="icon svg-wrapper">{{- 'icon-caret.svg' | inline_asset_content -}}</span>
+      </button>
+      <div class="row-slider__viewport h-full">
+        <div class="recent-viewed__container row-slider__track h-full"></div>
+      </div>
+    </row-slider-component>
   </div>
 </div>
 {%- comment -%}
-  Swiper is initialized once, after the product cards have been fetched and
-  injected (see the loader script below). Initializing here on an empty
-  container created a second, orphaned Swiper instance.
+  The row-slider-component is initialized exactly once, from inside the
+  fetch().then() below, after the product cards have been injected into
+  .recent-viewed__container. This is deliberate: initializing it earlier,
+  while the container is still empty, previously caused a double-init bug
+  with Swiper (see .docs/BE.md). RowSliderComponent's connectedCallback
+  already no-ops on an empty container, so the async .refresh() call here
+  is the only place setup() ever runs for this instance.
 {%- endcomment -%}
 <style>
   .recent-viewed {
@@ -28,43 +41,6 @@
 
   .recent-viewed__container .swatch {
     width: 16px;
-  }
-
-  .swiper-button-prev,
-  .swiper-button-next {
-    display: flex !important;
-    width: 40px;
-    height: 40px;
-    align-items: center;
-    justify-content: center;
-    top: 38%;
-  }
-
-  .swiper-button-prev::after,
-  .swiper-button-next::after {
-    font-size: 16px;
-  }
-
-  .swiper-button-prev {
-    left: 0;
-  }
-
-  .swiper-button-next {
-    right: 0;
-  }
-
-  @media (max-width: 768px) {
-    .recent-viewed__slider {
-      & .swiper-button-prev {
-        top: calc(100% - 30px);
-        left: calc(50% - 50px);
-      }
-
-      & .swiper-button-next {
-        top: calc(100% - 30px);
-        right: calc(50% - 50px);
-      }
-    }
   }
 </style>
 <script>
@@ -126,24 +102,8 @@
           container.insertAdjacentHTML('beforeend', html);
         }
       });
-      if (sliderEl && typeof Swiper !== 'undefined') {
-        new Swiper(sliderEl, {
-          slidesPerView: parseInt(sliderEl.dataset.desktop) || 4,
-          spaceBetween: 24,
-          navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-          },
-          breakpoints: {
-            0: {
-              slidesPerView: parseInt(sliderEl.dataset.mobile) || 2,
-            },
-            768: {
-              slidesPerView: parseInt(sliderEl.dataset.desktop) || 4,
-            },
-          },
-          loop: true,
-        });
+      if (sliderEl && typeof sliderEl.refresh === 'function') {
+        sliderEl.refresh();
       }
       // Quick-add and wishlist clicks are handled by document-level delegation;
       // only repaint wishlist icon state for the freshly injected cards.

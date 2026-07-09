@@ -1,92 +1,231 @@
 .hero-slider {
-    margin: 56px 0;
-}
-
-.hero-slider__slider .swiper-slide-prev,
-.hero-slider__slider .swiper-slide-next {
-    width: 25vw !important;
-    transition: all 0.3s ease-in-out;
-    display: flex !important;
-    align-items: center;
-}
-
-.hero-slider__slider .swiper-slide-active {
-    width: 50vw !important;
-    opacity: 1;
-    z-index: 10;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.hero-slider__slider .swiper-slide img {
-    width: auto;
-    transform: scale(0.6);
-    transition: all 0.3s ease-in-out;
-    opacity: 0.5 !important;
-    padding: 36px;
-}
-
-.hero-slider__slider .swiper-slide {
-    height: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.hero-slider__slider .swiper-slide-active img {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transform: scale(1);
-    height: auto !important;
-    opacity: 1 !important;
-}
-
-.hero-slider__slider .swiper-button-prev {
-    top: 50%;
-    left: 25%;
-}
-
-.hero-slider__slider .swiper-button-next {
-    top: 50%;
-    right: 25%;
+  margin: 56px 0;
 }
 
 .hero-slider__slider {
-    max-width: 100%;
-    overflow: hidden;
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  /* Tailwind max-h-[60%] on this element caps height below the side-circle
+     diameter and clips circles into ovals — let the stage size from content. */
+  max-height: none !important;
+  overflow: hidden;
 }
 
-@media (max-width: 1024px) {
+/*
+  Slides are stacked with CSS Grid (all sharing grid-area 1/1) rather than
+  position:absolute. Grid auto-sizes the row to the tallest stacked item's
+  natural content height, so the stage's height comes from the product
+  images themselves — it does not depend on any ancestor having an
+  explicit pixel/percentage height (Tailwind's h-1/3 on this element's
+  ancestors is not a reliable height source since its own parent is an
+  auto-height flex column).
+*/
+.hero-slider__stage {
+  display: grid;
+  width: 100%;
+  perspective: 900px;
+}
 
-    .hero-slider__slider .swiper-slide-prev img,
-    .hero-slider__slider .swiper-slide-next img {
-        width: auto;
-        height: 50%;
-    }
+/*
+  Every slide keeps the SAME outer box size/shape at all times (the active
+  slide's rectangular dimensions) — only transform/opacity change between
+  roles. Circle masking and square image cropping live on the inner
+  .hero-slider__slide-media wrapper so object-fit:contain crops from a
+  predictable 1:1 region instead of the landscape outer box.
+*/
+.hero-slider__slide {
+  grid-area: 1 / 1;
+  position: relative;
+  width: var(--hero-slider-active-width, 50%);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transform-style: preserve-3d;
+  transform:
+    translateX(calc(var(--hero-slider-side-offset, 70%) * var(--d, 0)))
+    translateZ(-80px)
+    rotateY(calc(var(--hero-slider-rotate, 25deg) * var(--d, 0) * -1))
+    scale(var(--hero-slider-side-scale, 1));
+  transition:
+    transform var(--hero-slider-duration, 800ms) var(--hero-slider-easing, cubic-bezier(0.22, 1, 0.36, 1)),
+    opacity var(--hero-slider-duration, 800ms) var(--hero-slider-easing, cubic-bezier(0.22, 1, 0.36, 1));
+  will-change: transform, opacity;
+  z-index: 1;
+}
+
+/*
+  Side slides: fixed square media box (diameter = 2 × circle radius) centered
+  inside the constant outer slide. border-radius + overflow:hidden produce the
+  circle; object-fit:contain on the img shows the whole product in the square.
+*/
+.hero-slider__slide-media {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  width: calc(var(--hero-slider-side-width, 90px) * 2);
+  height: calc(var(--hero-slider-side-width, 90px) * 2);
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--hero-slider-side-bg, rgb(248 249 251));
+  transition:
+    width var(--hero-slider-duration, 800ms) var(--hero-slider-easing, cubic-bezier(0.22, 1, 0.36, 1)),
+    height var(--hero-slider-duration, 800ms) var(--hero-slider-easing, cubic-bezier(0.22, 1, 0.36, 1)),
+    border-radius var(--hero-slider-duration, 800ms) var(--hero-slider-easing, cubic-bezier(0.22, 1, 0.36, 1)),
+    background-color var(--hero-slider-duration, 800ms) var(--hero-slider-easing, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+.hero-slider__slide-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  padding: 14%;
+  box-sizing: border-box;
+  transition: padding var(--hero-slider-duration, 800ms) var(--hero-slider-easing, cubic-bezier(0.22, 1, 0.36, 1));
+}
+
+.hero-slider__slide.is-adjacent {
+  opacity: var(--hero-slider-side-opacity, 0.9);
+  pointer-events: auto;
+}
+
+.hero-slider__slide.is-active {
+  opacity: var(--hero-slider-active-opacity, 1);
+  pointer-events: auto;
+  transform: translateX(0) translateZ(0) rotateY(0deg) scale(var(--hero-slider-active-scale, 1));
+  z-index: 10;
+}
+
+.hero-slider__slide.is-active .hero-slider__slide-media {
+  position: relative;
+  top: auto;
+  left: auto;
+  translate: none;
+  width: 100%;
+  min-width: 100%;
+  align-self: stretch;
+  flex-shrink: 0;
+  height: auto;
+  border-radius: 0;
+  overflow: visible;
+  background: transparent;
+}
+
+.hero-slider__slide.is-active .hero-slider__slide-media img {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
+  object-position: center;
+  padding: 36px;
+  box-sizing: border-box;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-slider__slide,
+  .hero-slider__slide-media {
+    transition: none;
+  }
+}
+
+.hero-slider__prev,
+.hero-slider__next {
+  position: absolute;
+  top: 50%;
+  translate: 0 -50%;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+  background: rgb(243 244 246);
+  color: rgb(55 65 81);
+  border-radius: 9999px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.hero-slider__prev:hover,
+.hero-slider__next:hover {
+  background: rgb(229 231 235);
+}
+
+/* In the gap between side circle and active slide — tucked near center product */
+.hero-slider__prev {
+  left: calc(50% - (var(--hero-slider-active-width, 50%) * 0.5) - 12px);
+}
+
+.hero-slider__next {
+  right: calc(50% - (var(--hero-slider-active-width, 50%) * 0.5) - 12px);
+}
+
+.hero-slider__prev svg,
+.hero-slider__next svg {
+  width: 16px;
+  height: 16px;
+}
+
+.hero-slider__prev svg {
+  transform: rotate(90deg);
+}
+
+.hero-slider__next svg {
+  transform: rotate(-90deg);
 }
 
 @media (max-width: 768px) {
-    .hero-slider__slider {
-        margin-top: 24px !important;
-        padding-top: 88px !important;
-    }
+  .hero-slider__slider {
+    margin-top: 24px !important;
+    padding-top: 88px !important;
+  }
 
-    .hero-slider__slider .swiper-wrapper .swiper-slide,
-    .hero-slider__slider .swiper-wrapper .swiper-slide-active,
-    .hero-slider__slider .swiper-wrapper .swiper-slide-prev,
-    .hero-slider__slider .swiper-wrapper .swiper-slide-next {
-        width: 100% !important;
-    }
+  .hero-slider__slide {
+    width: 100%;
+    transform: translateX(calc(var(--hero-slider-mobile-offset, 100%) * var(--d, 0))) translateZ(0) rotateY(0deg) scale(1);
+  }
 
-    .hero-slider__slider .swiper-button-prev {
-        top: 10%;
-        left: 40%;
-    }
+  .hero-slider__slide.is-active {
+    transform: translateX(0) translateZ(0) rotateY(0deg) scale(1);
+  }
 
-    .hero-slider__slider .swiper-button-next {
-        top: 10%;
-        right: 40%;
-    }
+  .hero-slider__slide-media {
+    position: relative;
+    top: auto;
+    left: auto;
+    translate: none;
+    width: 100%;
+    height: auto;
+    border-radius: 0;
+    overflow: visible;
+    background: transparent;
+    transition: none;
+  }
+
+  .hero-slider__slide-media img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    object-fit: contain;
+    padding: 0;
+  }
+
+  .hero-slider__prev {
+    top: 10%;
+    left: 40%;
+  }
+
+  .hero-slider__next {
+    top: 10%;
+    right: 40%;
+  }
 }

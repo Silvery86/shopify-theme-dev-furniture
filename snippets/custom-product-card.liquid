@@ -13,7 +13,7 @@
   assign card_media = card_product.selected_or_first_available_variant.featured_media | default: card_product.featured_media
   assign second_image = card_product.images[1]
 -%}
-<div class="product_container h-full product-{{ card_product.id }} swiper-slide !flex flex-col justify-between gap-0">
+<div class="product_container h-full product-{{ card_product.id }} row-slider__item !flex flex-col justify-between gap-0">
   <div class="product__image  relative overflow-hidden group">
     {% assign compare_price = card_product.compare_at_price %}
     {% assign current_price = card_product.price %}

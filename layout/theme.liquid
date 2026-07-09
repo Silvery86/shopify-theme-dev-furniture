@@ -293,12 +293,6 @@
       >
     {%- endif -%}
 
-    {% comment %} Load swiper in specific page  {% endcomment %}
-    {% assign valid_templates = 'index,collection,product' | split: ',' %}
-    {% if valid_templates contains template.name %}
-      {{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
-      <script src="{{ "swiper-bundle.min.js" |  asset_url }}" defer></script>
-    {% endif %}
     <script>
       if (Shopify.designMode) {
         document.documentElement.classList.add('shopify-design-mode');
