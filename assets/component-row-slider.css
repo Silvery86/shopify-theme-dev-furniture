@@ -1,0 +1,114 @@
+row-slider-component {
+  position: relative;
+  display: block;
+  --row-slider-slides: var(--row-slider-slides-mobile, 1);
+}
+
+@media (min-width: 768px) {
+  row-slider-component {
+    --row-slider-slides: var(--row-slider-slides-desktop, 4);
+  }
+}
+
+.row-slider__viewport {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.row-slider__viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.row-slider__track {
+  display: flex;
+  gap: var(--row-slider-gap, 24px);
+}
+
+.row-slider__track > .row-slider__item {
+  scroll-snap-align: start;
+  flex: 0 0 calc((100% - var(--row-slider-gap, 24px) * (var(--row-slider-slides, 1) - 1)) / var(--row-slider-slides, 1));
+  min-width: 0;
+}
+
+row-slider-component[data-direction='vertical'] .row-slider__viewport {
+  overflow-x: hidden;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+}
+
+row-slider-component[data-direction='vertical'] .row-slider__track {
+  flex-direction: column;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .row-slider__viewport {
+    scroll-behavior: auto;
+  }
+}
+
+.row-slider__prev,
+.row-slider__next {
+  position: absolute;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 9999px;
+  cursor: pointer;
+  background: rgb(243 244 246);
+  color: rgb(55 65 81);
+  top: 38%;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.row-slider__prev:hover,
+.row-slider__next:hover {
+  background: rgb(229 231 235);
+}
+
+.row-slider__prev {
+  left: 0;
+}
+
+.row-slider__next {
+  right: 0;
+}
+
+.row-slider__prev .icon,
+.row-slider__next .icon {
+  width: 16px;
+  height: 16px;
+}
+
+.row-slider__prev .icon {
+  transform: rotate(90deg);
+}
+
+.row-slider__next .icon {
+  transform: rotate(-90deg);
+}
+
+@media (max-width: 768px) {
+  .row-slider__prev,
+  .row-slider__next {
+    top: calc(100% - 20px);
+  }
+
+  .row-slider__prev {
+    left: calc(50% - 50px);
+  }
+
+  .row-slider__next {
+    right: calc(50% - 50px);
+  }
+}

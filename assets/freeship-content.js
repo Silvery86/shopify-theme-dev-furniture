@@ -9,4 +9,14 @@ const endDate = new Date(today);
 endDate.setDate(today.getDate() + 10);
 
 const dateRangeText = `${formatDate(startDate)} – ${formatDate(endDate)}`;
-document.getElementById('shipping-date-range').textContent = dateRangeText;
+
+function renderShippingDateRange() {
+    const el = document.getElementById('shipping-date-range');
+    if (el) el.textContent = dateRangeText;
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', renderShippingDateRange);
+} else {
+    renderShippingDateRange();
+}

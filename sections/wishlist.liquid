@@ -91,8 +91,10 @@
               productGrid.appendChild(li);
             }
           });
-          initializeQuickAddToCart();
-          initWishlistEvents();
+          // Quick-add and wishlist toggling are handled by document-level
+          // delegation (assets/quick-add-to-cart.js, assets/wishlist.js).
+          // Here we only repaint icon state for the freshly injected cards.
+          if (window.paintWishlistIcons) window.paintWishlistIcons(productGrid);
         })
         .catch((error) => {
           productGrid.innerHTML = `<li class="p-4 col-span-full text-red-600">Error loading wishlist products.</li>`;
@@ -100,56 +102,13 @@
         });
     }
 
-    // Initialize wishlist toggle buttons
-    function initWishlistEvents() {
-      const wishlistKey = 'wishlist';
-
-      function getWishlist() {
-        const list = localStorage.getItem(wishlistKey);
-        return list ? JSON.parse(list) : [];
-      }
-
-      function saveWishlist(list) {
-        localStorage.setItem(wishlistKey, JSON.stringify(list));
-      }
-
-      function updateHeartIcon(imgEl, isAdded) {
-        if (isAdded) {
-          imgEl.src = window.wishlistIcons.filled;
-        } else {
-          imgEl.src = window.wishlistIcons.empty;
-        }
-      }
-
-      document.querySelectorAll('.wishlist-toggle').forEach((link) => {
-        const productHandle = link.getAttribute('data-product-handle');
-        const img = link.querySelector('.heart-icon');
-        const wishlist = getWishlist();
-        const isInWishlist = wishlist.includes(productHandle);
-
-        updateHeartIcon(img, isInWishlist);
-
-        link.removeEventListener('click', handleClick);
-        link.addEventListener('click', handleClick);
-
-        function handleClick(e) {
-          e.preventDefault();
-          let wishlist = getWishlist();
-
-          if (wishlist.includes(productHandle)) {
-            wishlist = wishlist.filter((id) => id !== productHandle);
-            updateHeartIcon(img, false);
-          } else {
-            wishlist.push(productHandle);
-            updateHeartIcon(img, true);
-          }
-
-          saveWishlist(wishlist);
-
-          loadWishlistProducts();
-        }
-      });
-    }
+    // The global wishlist handler (assets/wishlist.js) owns toggling, icon
+    // state, and persistence via document-level delegation. This page only
+    // needs to re-render its grid when the wishlist changes, so an un-favorited
+    // card disappears immediately.
+    document.addEventListener('wishlist:change', function () {
+      loadWishlistProducts();
+    });
 
     loadWishlistProducts();
   });

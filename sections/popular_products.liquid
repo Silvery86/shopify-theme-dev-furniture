@@ -11,6 +11,9 @@
   {{ 'component-swatch.css' | asset_url | stylesheet_tag }}
 {% endif %}
 
+{{ 'component-row-slider.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'component-row-slider.js' | asset_url }}" defer="defer"></script>
+
 <div class="page-width">
   <div id="{{ section.id }}" class="popular-products h-[60vh] md:h-[40vh]">
     <div class="popular-products__heading h-[10%] flex flex-row justify-between items-center md:mb-5 mb-8">
@@ -21,51 +24,33 @@
         <a href="{{ section.settings.popular-products__url }}">View all ></a>
       </div>
     </div>
-    <div
-      class="swiper popular-products__slider h-[90%] !pb-[50px] md:!pb-[20px] md:!px-[20px]"
-      data-desktop="{{ section.settings.products-per-slide-desktop }}"
-      data-mobile="1"
+    <row-slider-component
+      class="popular-products__slider h-[90%] !pb-[50px] md:!pb-[20px] md:!px-[20px]"
+      style="--row-slider-slides-desktop: {{ section.settings.products-per-slide-desktop }}; --row-slider-slides-mobile: 1; --row-slider-gap: 24px;"
+      data-loop="true"
     >
-      <div class="popular-products__container h-full swiper-wrapper">
-        {% for product in section.settings['popular-products-list'] limit: 8 %}
-             {% render 'custom-product-card',
+      <button type="button" class="row-slider__prev" aria-label="{{ 'general.slider.previous_slide' | t }}">
+        <span class="icon svg-wrapper">{{- 'icon-caret.svg' | inline_asset_content -}}</span>
+      </button>
+      <button type="button" class="row-slider__next" aria-label="{{ 'general.slider.next_slide' | t }}">
+        <span class="icon svg-wrapper">{{- 'icon-caret.svg' | inline_asset_content -}}</span>
+      </button>
+      <div class="row-slider__viewport h-full">
+        <div class="popular-products__container row-slider__track h-full">
+          {% for product in section.settings['popular-products-list'] limit: 8 %}
+            {% render 'custom-product-card',
                     card_product: product,
                     show_secondary_image: true,
                     lazy_load: true,
                     show_add_to_cart: true,
                     show_variant_picker: true
                   %}
-        {% endfor %}
+          {% endfor %}
+        </div>
       </div>
-      <div class="swiper-button-prev left-0 bg-gray-100 rounded-full after:text-gray-700" ></div>
-      <div class="swiper-button-next right-0 bg-gray-100 rounded-full after:text-gray-700"></div>
-    </div>
+    </row-slider-component>
   </div>
 </div>
-<script async>
-  document.addEventListener('DOMContentLoaded', function () {
-    const sliderEl = document.querySelector('.popular-products__slider');
-    if (sliderEl && typeof Swiper !== 'undefined') {
-      new Swiper(sliderEl, {
-        slidesPerView: parseInt(sliderEl.dataset.desktop) || 4,
-        spaceBetween: 24,
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        },
-        breakpoints: {
-          0: {
-            slidesPerView: parseInt(sliderEl.dataset.mobile) || 1,
-          },
-          768: {
-            slidesPerView: parseInt(sliderEl.dataset.desktop) || 4,
-          },
-        },
-        loop: true,
-      });
-    }
-  });
-</script>
 <style>
   .popular-products {
     margin: 56px 0;
@@ -73,38 +58,6 @@
   .popular-products__container .swatch {
     width: 16px;
   }
-  .swiper-button-prev,
-  .swiper-button-next {
-    display: flex !important;
-    width: 40px; 
-    height: 40px;
-    align-items: center;
-    justify-content: center;
-    top: 38%;
-  }
-  .swiper-button-prev::after,
-  .swiper-button-next::after {
-    font-size: 16px;
-  }
-  .popular-products__slider .swiper-button-prev {
-    left: 0;
-  }
-  .popular-products__slider .swiper-button-next {
-    right: 0;
-  }
-   @media (max-width: 768px) {
-    .popular-products__slider {
-      & .swiper-button-prev{
-        top: calc(100% - 20px);
-        left: calc(50% - 50px);
-      }
-      & .swiper-button-next{
-        top: calc(100% - 20px);
-        right: calc(50% - 50px);
-      }
-    }
-   
-   }
 </style>
 {% schema %}
 {
@@ -141,7 +94,7 @@
       "step": 1,
       "label": "Products per slide (desktop)",
       "default": 4
-    }    
+    }
   ],
   "presets": [
     {

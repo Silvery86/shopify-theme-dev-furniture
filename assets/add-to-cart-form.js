@@ -7,6 +7,7 @@ function initializeAddToCartForm(modalElement) {
           super();
           // Initialize the form logic
           this.form = this.querySelector('form');
+          if (!this.form) return;
           this.variantIdInput.disabled = false;
           this.form.addEventListener('submit', this.onSubmitHandler.bind(this));
 
@@ -96,7 +97,9 @@ function initializeAddToCartForm(modalElement) {
                   this.cart.renderContents(response);
                 });
               }
-              modalElement.classList.add('hidden');
+              // Hide the quick-add modal this form lives in (fall back to the
+              // element passed at init for backwards compatibility).
+              (this.closest('#quick-add-to-cart') || modalElement)?.classList.add('hidden');
             })
             .catch((e) => {
               console.error(e);

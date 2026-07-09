@@ -4,30 +4,39 @@
   <div class="hero-slider__title max-h-[20%] w-3/4 flex justify-center items-start text-grey-900 font-bold text-[34px] md:text-[48px] lg:text-[56px] text-center">
     {{ section.settings['hero-slider-title'] }}
   </div>
-  <div class="hero-slider__products swiper max-h-[60%] hero-slider__slider h-1/3 overflow-hidden">
-    <div
-      class="swiper-button-prev left-0 bg-gray-100 rounded-full after:text-gray-700 hover:bg-gray-200 transition-colors duration-300"
-    ></div>
-    <div
-      class="swiper-button-next right-0 bg-gray-100 rounded-full after:text-gray-700 hover:bg-gray-200 transition-colors duration-300"
-    ></div>
-    <div class="swiper-wrapper">
+  <hero-slider-component
+    class="hero-slider__products max-h-[60%] hero-slider__slider h-1/3 overflow-hidden"
+    style="--hero-slider-duration: {{ section.settings.transition_duration }}ms; --hero-slider-easing: {{ section.settings.transition_easing }}; --hero-slider-active-scale: {{ section.settings.active_scale }}; --hero-slider-side-scale: {{ section.settings.side_scale }}; --hero-slider-side-opacity: {{ section.settings.side_opacity }}; --hero-slider-active-width: {{ section.settings.active_width }}%; --hero-slider-side-width: {{ section.settings.side_width }}px; --hero-slider-side-offset: {{ section.settings.side_offset }}%; --hero-slider-rotate: {{ section.settings.side_rotation }}deg;"
+    data-loop="{{ section.settings.enable_loop }}"
+    data-swipe="{{ section.settings.enable_swipe }}"
+  >
+    <button type="button" class="hero-slider__prev" aria-label="{{ 'general.slider.previous_slide' | t }}">
+      <span class="icon svg-wrapper">{{- 'icon-caret.svg' | inline_asset_content -}}</span>
+    </button>
+    <button type="button" class="hero-slider__next" aria-label="{{ 'general.slider.next_slide' | t }}">
+      <span class="icon svg-wrapper">{{- 'icon-caret.svg' | inline_asset_content -}}</span>
+    </button>
+    <div class="hero-slider__stage" aria-live="polite">
       {% for product in section.settings['hero-slider-products'] limit: 10 %}
         <div
-          class="swiper-slide product__image"
+          class="hero-slider__slide product__image"
+          data-index="{{ forloop.index0 }}"
           data-handle="{{ product.handle }}"
+          aria-hidden="true"
         >
-          <img
-            class="product-main-image"
-            id="product-image-{{ product.id }}"
-            src="{{ product.featured_media | image_url: width: 500 }}"
-            width="auto"
-            height="auto"
-          >
+          <div class="hero-slider__slide-media">
+            <img
+              class="product-main-image"
+              id="product-image-{{ product.id }}"
+              src="{{ product.featured_media | image_url: width: 1200 }}"
+              alt="{{ product.featured_media.alt | default: product.title | escape }}"
+              loading="lazy"
+            >
+          </div>
         </div>
       {% endfor %}
     </div>
-  </div>
+  </hero-slider-component>
   <div class="hero-slider__content max-h-[20%] h-1/3 flex flex-col justify-start items-center gap-4 mt-4">
     <div class="product__title text-gray-700 font-medium text-[16px]"></div>
     <div class="product__price text-gray-900 font-semibold text-[24px]"></div>
@@ -54,6 +63,115 @@
       "type": "product_list",
       "id": "hero-slider-products",
       "label": "Select your products"
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "range",
+      "id": "transition_duration",
+      "min": 200,
+      "max": 1200,
+      "step": 50,
+      "unit": "ms",
+      "label": "Transition duration",
+      "default": 800
+    },
+    {
+      "type": "select",
+      "id": "transition_easing",
+      "label": "Transition easing",
+      "options": [
+        { "value": "cubic-bezier(0.22, 1, 0.36, 1)", "label": "Smooth" },
+        { "value": "ease", "label": "Ease" },
+        { "value": "ease-in-out", "label": "Ease in-out" },
+        { "value": "ease-out", "label": "Ease out" },
+        { "value": "linear", "label": "Linear" }
+      ],
+      "default": "cubic-bezier(0.22, 1, 0.36, 1)"
+    },
+    {
+      "type": "range",
+      "id": "active_width",
+      "min": 30,
+      "max": 70,
+      "step": 5,
+      "unit": "%",
+      "label": "Active slide width",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "active_scale",
+      "min": 0.8,
+      "max": 1.3,
+      "step": 0.1,
+      "label": "Active slide scale",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "side_width",
+      "min": 40,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Side circle size (radius)",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "side_offset",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Side circle distance from center",
+      "info": "Percentage of the active slide's width (all slides share the same box size). Larger = further from center.",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "side_scale",
+      "min": 0.5,
+      "max": 1.3,
+      "step": 0.1,
+      "label": "Side slide scale",
+      "info": "Extra shrink/grow applied on top of the side circle size.",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "side_opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "label": "Side slide opacity",
+      "default": 0.9
+    },
+    {
+      "type": "range",
+      "id": "side_rotation",
+      "min": 0,
+      "max": 45,
+      "step": 5,
+      "unit": "deg",
+      "label": "Side slide 3D rotation",
+      "info": "Tilts the side products inward, like they're on a circular track.",
+      "default": 25
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_loop",
+      "label": "Loop slides",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_swipe",
+      "label": "Enable swipe/drag",
+      "default": true
     }
   ],
   "presets": [

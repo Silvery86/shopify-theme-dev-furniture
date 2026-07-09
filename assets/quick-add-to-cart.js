@@ -1,71 +1,93 @@
-function initializeQuickAddToCart() {
-  document.querySelectorAll('.add-to-cart-btn').forEach(button => {
-    button.addEventListener('click', function (e) {
-      e.preventDefault();
-      const productHandle = button.getAttribute('data-product-handle');
-      const cartDrawer = document.querySelector('cart-drawer');
-      if (cartDrawer) {
-        cartDrawer.close();
-      }
-      fetch(`/products/${productHandle}?sections=quick-view-modal`)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`Failed to load product: ${productHandle}`);
-          }
-          return response.json();
-        })
-        .then(data => {
-          const htmlString = data['quick-view-modal'] || '';
-          const modal = document.getElementById('quick-add-to-cart');
-          const modalBody = modal.querySelector('.modal-body');
-          const modalContent = modal.querySelector('.modal-content');
+(function () {
+  // Cache rendered quick-view section HTML per product handle so re-opening the
+  // same product doesn't hit the network again.
+  const quickAddCache = new Map();
 
-          modalBody.innerHTML = htmlString;
+  function getModal() {
+    return document.getElementById('quick-add-to-cart');
+  }
 
-          modal.classList.remove('hidden');
-          modal.classList.add('flex');
-
-          modalContent.classList.remove('translate-y-[100%]', 'opacity-0');
-          modalContent.classList.add('translate-y-0', 'opacity-100'); 
-
-          initializeAddToCartForm(modal);
-          initQuickViewVariantSync(modal);
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    });
-  });
-
-  document.querySelector('.close-modal').addEventListener('click', function () {
-    const modal = document.getElementById('quick-add-to-cart');
+  function closeQuickAdd() {
+    const modal = getModal();
+    if (!modal) return;
     const modalContent = modal.querySelector('.modal-content');
-    
-    modalContent.classList.remove('translate-y-0', 'opacity-100');
-    modalContent.classList.add('translate-y-[100%]', 'opacity-0');
-    
+    if (modalContent) {
+      modalContent.classList.remove('translate-y-0', 'opacity-100');
+      modalContent.classList.add('translate-y-[100%]', 'opacity-0');
+    }
     setTimeout(() => {
       modal.classList.add('hidden');
       modal.classList.remove('flex');
-    }, 300);  
+    }, 300);
+  }
+
+  function showQuickAdd(htmlString) {
+    const modal = getModal();
+    if (!modal) return;
+    const modalBody = modal.querySelector('.modal-body');
+    const modalContent = modal.querySelector('.modal-content');
+    if (!modalBody || !modalContent) return;
+
+    modalBody.innerHTML = htmlString;
+
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+
+    modalContent.classList.remove('translate-y-[100%]', 'opacity-0');
+    modalContent.classList.add('translate-y-0', 'opacity-100');
+
+    initializeAddToCartForm(modal);
+    initQuickViewVariantSync(modal);
+  }
+
+  function openQuickAdd(productHandle) {
+    if (!productHandle) return;
+
+    const cartDrawer = document.querySelector('cart-drawer');
+    if (cartDrawer) cartDrawer.close();
+
+    if (quickAddCache.has(productHandle)) {
+      showQuickAdd(quickAddCache.get(productHandle));
+      return;
+    }
+
+    fetch(`/products/${productHandle}?sections=quick-view-modal`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Failed to load product: ${productHandle}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        const htmlString = data['quick-view-modal'] || '';
+        quickAddCache.set(productHandle, htmlString);
+        showQuickAdd(htmlString);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  // Single delegated listener bound once. Works for dynamically appended cards
+  // (view-more, recent-viewed) with no re-binding, and safely handles the case
+  // where the close button / overlay isn't present.
+  document.addEventListener('click', function (e) {
+    const addButton = e.target.closest('.add-to-cart-btn');
+    if (addButton) {
+      e.preventDefault();
+      openQuickAdd(addButton.getAttribute('data-product-handle'));
+      return;
+    }
+
+    if (e.target.closest('.close-modal') || e.target.closest('#quick-add-to-cart__overlay')) {
+      closeQuickAdd();
+    }
   });
 
-  const overlay = document.getElementById('quick-add-to-cart__overlay');
-  if (overlay) {
-    overlay.addEventListener('click', function () {
-      const modal = document.getElementById('quick-add-to-cart');
-      const modalContent = modal.querySelector('.modal-content');
-
-      modalContent.classList.remove('translate-y-0', 'opacity-100');
-      modalContent.classList.add('translate-y-[100%]', 'opacity-0');
-      
-      setTimeout(() => {
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-      }, 300); 
-    });
-  }
-}
+  // Backward-compatible no-op: delegation already covers every current and
+  // future `.add-to-cart-btn`, so callers no longer need to re-initialize.
+  window.initializeQuickAddToCart = function () {};
+})();
 
 function initQuickViewVariantSync(modal) {
   const form = modal.querySelector('form[id^="product-form"]');
@@ -120,7 +142,6 @@ function initQuickViewVariantSync(modal) {
 
       if (matchedVariant) {
         variantIdInput.value = matchedVariant.id;
-        console.log("Variant updated:", matchedVariant.id);
       } else {
         console.warn("No matching variant found for:", selectedOptions);
       }

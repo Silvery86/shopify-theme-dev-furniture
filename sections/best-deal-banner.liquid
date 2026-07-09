@@ -1,25 +1,36 @@
+{{ 'component-row-slider.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'component-row-slider.js' | asset_url }}" defer="defer"></script>
+
 <div class="page-width">
   <div class="best-deal flex flex-col md:flex-row items-stretch">
     {% assign product = section.settings['best-deal-product'] %}
     {% if product %}
-      <div class="swiper best-deal__slider  w-full md:w-1/2 bg-gray-100 rounded-t-2xl md:rounded-l-2xl md:rounded-t-none">
-        <div class="best-deal__gallery swiper-wrapper">
-          {% for media in product.media limit: 10 %}
-            {% if media.media_type == 'image' %}
-              <div class="swiper-slide aspect-square overflow-hidden group">
-                <img
-                  src="{{ media | image_url: width: 600 }}"
-                  alt="{{ media.alt | escape }}"
-                  width="{{ media.width }}"
-                  height="{{ media.height }}"
-                  class="w-full h-full rounded-2xl object-cover transition-transform duration-300 ease-in-out hover:scale-90"
-                  loading="lazy"
-                >
-              </div>
-            {% endif %}
-          {% endfor %}
+      <row-slider-component
+        class="best-deal__slider w-full md:w-1/2 bg-gray-100 rounded-t-2xl md:rounded-l-2xl md:rounded-t-none"
+        style="--row-slider-slides-desktop: 1; --row-slider-slides-mobile: 1; --row-slider-gap: 0px;"
+        data-loop="true"
+        data-autoplay="true"
+        data-autoplay-delay="3000"
+      >
+        <div class="row-slider__viewport">
+          <div class="best-deal__gallery row-slider__track">
+            {% for media in product.media limit: 10 %}
+              {% if media.media_type == 'image' %}
+                <div class="row-slider__item aspect-square overflow-hidden group">
+                  <img
+                    src="{{ media | image_url: width: 600 }}"
+                    alt="{{ media.alt | escape }}"
+                    width="{{ media.width }}"
+                    height="{{ media.height }}"
+                    class="w-full h-full rounded-2xl object-cover transition-transform duration-300 ease-in-out hover:scale-90"
+                    loading="lazy"
+                  >
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
         </div>
-      </div>
+      </row-slider-component>
 
       <div class="best-deal__content w-full md:w-1/2 flex flex-col justify-center gap-4 bg-gray-800 items-center text-white rounded-b-2xl md:rounded-r-2xl md:rounded-bl-none min-h-[500px]">
         <div class="best-deal__badge text-gray-300 font-light text-[14px]">
@@ -64,42 +75,9 @@
     {% endif %}
   </div>
 </div>
-<script async>
-  document.addEventListener('DOMContentLoaded', function () {
-    const sliderEl = document.querySelector('.best-deal__slider');
-    if (sliderEl && typeof Swiper !== 'undefined') {
-      new Swiper(sliderEl, {
-        slidesPerView: 1,
-        autoplay: {
-          delay: 3000,
-          disableOnInteraction: false,
-        },
-        loop: true,
-      });
-    }
-  });
-</script>
 <style>
   .best-deal {
     margin: 56px 0;
-  }
-  .swiper-button-prev,
-  .swiper-button-next {
-    display: flex !important;
-    width: 40px;
-    height: 40px;
-    align-items: center;
-    justify-content: center;
-  }
-  .swiper-button-prev::after,
-  .swiper-button-next::after {
-    font-size: 16px;
-  }
-  .swiper-button-prev {
-    left: 0;
-  }
-  .swiper-button-next {
-    right: 0;
   }
 </style>
 {% schema %}

@@ -496,15 +496,19 @@
                   show_pickup_availability: true
                 -%}
               {%- when 'payment-content' -%}
+                {%- liquid
+                  assign installments = block.settings.installments | default: 4
+                  assign installment_amount = product.selected_or_first_available_variant.price | divided_by: installments | money
+                -%}
                 <div class="flex items-center justify-between w-full" {{ block.shopify_attributes }}>
                   <div class="text-gray-900 font-normal text-[14px]">
                     <p>
-                      Pay 4 interest-free payments of
-                      <span class="font-bold">$89.00</span> with
+                      Pay {{ installments }} interest-free payments of
+                      <span class="font-bold">{{ installment_amount }}</span> with
                     </p>
                     <p class="mt-1">
                       We provide a
-                      <span class="font-semibold">3-year warranty</span>
+                      <span class="font-semibold">{{ block.settings.warranty_text | default: '3-year warranty' }}</span>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         class="inline w-10 h-10 text-gray-700 ml-1"
@@ -821,7 +825,24 @@
     {
       "type": "payment-content",
       "name": "Payment Content",
-      "settings": []
+      "settings": [
+        {
+          "type": "range",
+          "id": "installments",
+          "label": "Number of installments",
+          "min": 2,
+          "max": 12,
+          "step": 1,
+          "default": 4,
+          "info": "Per-installment amount is calculated from the current variant price."
+        },
+        {
+          "type": "text",
+          "id": "warranty_text",
+          "label": "Warranty text",
+          "default": "3-year warranty"
+        }
+      ]
     },
     {
       "type": "freeship-content",

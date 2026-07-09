@@ -7,9 +7,11 @@
 
 {{ 'quantity-popover.css' | asset_url | stylesheet_tag }}
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-row-slider.css' | asset_url | stylesheet_tag }}
 
 <script src="{{ 'cart.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'quantity-popover.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'component-row-slider.js' | asset_url }}" defer="defer"></script>
 
 <style>
   .drawer {
@@ -59,23 +61,33 @@
               {{ settings.cart_drawer_product_list_title }}
             </div>
             <div class="cart-drawer__product-list mb-10">
-              <div
-                class="swiper cart-drawer__slider h-[400px] md:h-[300px] !p-[6px] md:!p-[24px] md:pb-20 pb-40!"
+              <row-slider-component
+                class="cart-drawer__slider h-[400px] md:h-[300px] !p-[6px] md:!p-[24px] md:pb-20 pb-40!"
+                style="--row-slider-slides-desktop: 1; --row-slider-slides-mobile: 1; --row-slider-gap: 24px;"
+                data-loop="true"
+                data-autoplay="true"
+                data-autoplay-delay="3000"
               >
-                <div class="cart-drawer__container swiper-wrapper">
-                  {% for product in settings.cart_drawer_product_list %}
-                    {% render 'custom-product-card',
-                      card_product: product,
-                      show_secondary_image: true,
-                      lazy_load: true,
-                      show_add_to_cart: true,
-                      show_variant_picker: true
-                    %}
-                  {% endfor %}
+                <button type="button" class="row-slider__prev" aria-label="{{ 'general.slider.previous_slide' | t }}">
+                  <span class="icon svg-wrapper">{{- 'icon-caret.svg' | inline_asset_content -}}</span>
+                </button>
+                <button type="button" class="row-slider__next" aria-label="{{ 'general.slider.next_slide' | t }}">
+                  <span class="icon svg-wrapper">{{- 'icon-caret.svg' | inline_asset_content -}}</span>
+                </button>
+                <div class="row-slider__viewport h-full">
+                  <div class="cart-drawer__container row-slider__track h-full">
+                    {% for product in settings.cart_drawer_product_list %}
+                      {% render 'custom-product-card',
+                        card_product: product,
+                        show_secondary_image: true,
+                        lazy_load: true,
+                        show_add_to_cart: true,
+                        show_variant_picker: true
+                      %}
+                    {% endfor %}
+                  </div>
                 </div>
-                <div class="swiper-button-prev left-0 bg-gray-100 rounded-full after:text-gray-700"></div>
-                <div class="swiper-button-next right-0 bg-gray-100 rounded-full after:text-gray-700"></div>
-              </div>
+              </row-slider-component>
             </div>
           {%- endif -%}
         </div>
@@ -580,19 +592,28 @@
   {% if cart != empty %}
     <!-- Tailwind CSS: Apply classes for transitions and transform -->
     <div class="hidden lg:!flex cart-drawer__product-list-slider transition-all duration-300 ease-in-out opacity-0 translate-y-0">
-      <div class="swiper bg-white cart-drawer__slider h-[400px] md:h-[300px] !p-[6px] md:!p-[24px] md:pb-20 pb-40!">
-        <div class="cart-drawer__container swiper-wrapper">
-          {% for product in settings.cart_drawer_product_list %}
-            {% render 'custom-product-card',
-              card_product: product,
-              show_secondary_image: true,
-              lazy_load: true,
-              show_add_to_cart: true,
-              show_variant_picker: true
-            %}
-          {% endfor %}
+      <row-slider-component
+        class="bg-white cart-drawer__slider h-[400px] md:h-[300px] !p-[6px] md:!p-[24px] md:pb-20 pb-40!"
+        style="--row-slider-slides-desktop: 3; --row-slider-slides-mobile: 3; --row-slider-gap: 24px;"
+        data-direction="vertical"
+        data-loop="true"
+        data-autoplay="true"
+        data-autoplay-delay="3000"
+      >
+        <div class="row-slider__viewport h-full">
+          <div class="cart-drawer__container row-slider__track h-full">
+            {% for product in settings.cart_drawer_product_list %}
+              {% render 'custom-product-card',
+                card_product: product,
+                show_secondary_image: true,
+                lazy_load: true,
+                show_add_to_cart: true,
+                show_variant_picker: true
+              %}
+            {% endfor %}
+          </div>
         </div>
-      </div>
+      </row-slider-component>
     </div>
   {% endif %}
 </cart-drawer>
@@ -604,28 +625,7 @@
     }
   </style>
 {% endif %}
-{% if cart == empty %}
-  <script async>
-    document.addEventListener('DOMContentLoaded', function () {
-      const sliderEl = document.querySelector('.cart-drawer__slider');
-      if (sliderEl && typeof Swiper !== 'undefined') {
-        new Swiper(sliderEl, {
-          slidesPerView: 1,
-          spaceBetween: 24,
-          autoplay: {
-            delay: 3000,
-            disableOnInteraction: false,
-          },
-          navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-          },
-          loop: true,
-        });
-      }
-    });
-  </script>
-{% else %}
+{% unless cart == empty %}
   <style>
     .drawer {
       justify-content: flex-start;
@@ -641,21 +641,4 @@
       min-height: fit-content;
     }
   </style>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const sliderEl = document.querySelector('.cart-drawer__slider');
-      if (sliderEl && typeof Swiper !== 'undefined') {
-        new Swiper(sliderEl, {
-          direction: 'vertical',
-          slidesPerView: 3,
-          loop: true,
-          spaceBetween: 24,
-          autoplay: {
-            delay: 3000,
-            disableOnInteraction: false,
-          },
-        });
-      }
-    });
-  </script>
-{% endif %}
+{% endunless %}
